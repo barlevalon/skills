@@ -2,6 +2,12 @@
 
 All notable changes to this package are documented here.
 
+## [0.1.1] - 2026-06-05
+
+### Fixed
+- Use block scalar frontmatter for the skill description so YAML parsers accept colon-space text.
+- Strengthen package validation for multiline skill frontmatter.
+
 ## [0.1.0] - 2026-06-05
 
 ### Added

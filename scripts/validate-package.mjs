@@ -31,16 +31,7 @@ const match = skill.match(/^---\n([\s\S]*?)\n---\n/);
 if (!match) {
   fail('skill frontmatter missing');
 } else {
-  const frontmatter = Object.fromEntries(
-    match[1]
-      .split('\n')
-      .filter(Boolean)
-      .map((line) => {
-        const index = line.indexOf(':');
-        if (index === -1) return [line, ''];
-        return [line.slice(0, index).trim(), line.slice(index + 1).trim()];
-      }),
-  );
+  const frontmatter = parseFrontmatter(match[1]);
 
   const name = frontmatter.name;
   const description = frontmatter.description;
@@ -48,6 +39,9 @@ if (!match) {
   if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name ?? '')) fail('skill name must be kebab-case');
   if (!description) fail('skill description missing');
   if ((description ?? '').length > 1024) fail('skill description exceeds 1024 characters');
+  if (/^description: .*:\s+/.test(match[1])) {
+    fail('description must use block scalar when it contains colon-space text');
+  }
 }
 
 for (const requiredFile of ['README.md', 'LICENSE', 'CHANGELOG.md', 'docs/usage.md', 'docs/release.md']) {
@@ -56,3 +50,32 @@ for (const requiredFile of ['README.md', 'LICENSE', 'CHANGELOG.md', 'docs/usage.
 
 if (process.exitCode) process.exit(process.exitCode);
 console.log('package validation passed');
+
+function parseFrontmatter(text) {
+  const fields = {};
+  const lines = text.split('\n');
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    if (!line.trim()) continue;
+    if (/^\s/.test(line)) continue;
+
+    const match = line.match(/^([a-zA-Z0-9_-]+):\s*(.*)$/);
+    if (!match) {
+      fail(`invalid frontmatter line: ${line}`);
+      continue;
+    }
+
+    const [, key, rawValue] = match;
+    if (rawValue === '>' || rawValue === '|') {
+      const block = [];
+      for (let next = index + 1; next < lines.length && /^\s+/.test(lines[next]); next += 1) {
+        block.push(lines[next].trim());
+        index = next;
+      }
+      fields[key] = block.join(rawValue === '>' ? ' ' : '\n');
+      continue;
+    }
+    fields[key] = rawValue.trim().replace(/^['"]|['"]$/g, '');
+  }
+  return fields;
+}

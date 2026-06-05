@@ -1,6 +1,12 @@
 ---
 name: manual-release
-description: AI-assisted manual release workflow for software repos. Use when preparing releases, choosing SemVer bumps, drafting changelogs or release notes, validating release readiness, replacing commit-driven release automation, or creating project-local release policy. Conservative by default: discovers local tooling/policy, cites git/PR evidence, and never tags, pushes, publishes, or deploys without explicit approval.
+description: >
+  AI-assisted manual release workflow for software repos. Use when preparing
+  releases, choosing SemVer bumps, drafting changelogs or release notes,
+  validating release readiness, replacing commit-driven release automation, or
+  creating project-local release policy. Conservative by default: discovers
+  local tooling/policy, cites git/PR evidence, and never tags, pushes,
+  publishes, or deploys without explicit approval.
 ---
 
 # Manual Release
