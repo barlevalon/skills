@@ -2,6 +2,11 @@
 
 All notable changes to this package are documented here.
 
+## [0.1.2] - 2026-06-05
+
+### Fixed
+- Fix Trusted Publisher workflow by avoiding setup-node registry token config and using a current npm CLI.
+
 ## [0.1.1] - 2026-06-05
 
 ### Fixed

@@ -40,7 +40,7 @@ After the package exists on npm, configure Trusted Publisher for future releases
 - Workflow: `publish.yml`
 - Environment: none, unless npm requires one for the package settings
 
-The GitHub workflow has `id-token: write` and publishes with provenance:
+The GitHub workflow has `id-token: write`, avoids `actions/setup-node` `registry-url` token config so npm can use OIDC, upgrades to a current npm, and publishes with provenance:
 
 ```bash
 npm publish --provenance --access public
