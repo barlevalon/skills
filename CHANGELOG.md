@@ -4,6 +4,8 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.1.3] - 2026-06-06
+
 ### Changed
 - Restructure the package as a skills monorepo under `skills/<category>/<skill>/`.
 - Rename package metadata from `manual-release-skill` to `@barlevalon/skills`.
