@@ -1,10 +1,10 @@
 # Maintainer release process
 
-This package is intentionally small: one skill plus documentation.
+This package is a small skills collection. It currently contains one skill.
 
 ## Versioning
 
-Use SemVer for the npm package:
+Use SemVer for the npm packages:
 
 - Patch: wording fixes, safety clarifications, docs updates
 - Minor: new workflow sections or materially better release analysis behavior
@@ -17,41 +17,42 @@ npm ci
 npm run ci
 ```
 
-`npm run ci` validates the package manifest, skill frontmatter, required docs,
-and npm package contents.
+`npm run ci` validates package manifests, skill frontmatter, required docs,
+the root bundle package, and each individual skill package.
 
 ## First npm publish bootstrap
 
-npm Trusted Publisher setup currently requires the package to already exist.
-For the first publish only, publish manually from a clean checkout:
+npm Trusted Publisher setup currently requires each package to already exist.
+For the first publish only, publish each package manually from a clean checkout:
 
 ```bash
 npm login
 npm whoami
 npm run ci
-npm publish
+npm publish --access public
+npm publish ./skills/release/release-prep --access public
 ```
 
-After the package exists on npm, configure Trusted Publisher for future releases:
+After packages exist on npm, configure Trusted Publisher for future releases for each package:
 
-- Package: `manual-release-skill`
+- Packages: `@barlevalon/skills`, `@barlevalon/release-prep-skill`
 - Publisher: GitHub Actions
-- Repository owner/name: `barlevalon/manual-release-skill`
+- Repository owner/name: `barlevalon/skills`
 - Workflow: `publish.yml`
 - Environment: none, unless npm requires one for the package settings
 
 The GitHub workflow has `id-token: write`, avoids `actions/setup-node` `registry-url` token config so npm can use OIDC, upgrades to a current npm, and publishes with provenance:
 
 ```bash
-npm publish --provenance --access public
+node scripts/publish-packages.mjs
 ```
 
 No `NPM_TOKEN` repository secret is required after Trusted Publisher is configured.
-The workflow checks whether `package.json`'s version already exists on npm and skips publish when it does, so the bootstrap release can be mirrored on GitHub without failing on duplicate publish.
+The workflow checks whether each package version already exists on npm and skips already-published versions, so the bootstrap release can be mirrored on GitHub without failing on duplicate publish.
 
 ## Release steps
 
-1. Update `package.json` version.
+1. Update root and skill package versions.
 2. Update `CHANGELOG.md`.
 3. Commit with:
 
@@ -68,12 +69,12 @@ The workflow checks whether `package.json`'s version already exists on npm and s
    ```
 
 6. Create a GitHub Release for the tag.
-7. The `Publish npm package` workflow publishes to npm when the release is published.
+7. The `Publish npm packages` workflow publishes the root bundle and individual skill packages to npm when the release is published.
 
 ## Manual dry run
 
 ```bash
-npm publish --dry-run --access public
+node scripts/publish-packages.mjs --dry-run
 ```
 
 Do not publish manually except for the first bootstrap publish or when GitHub

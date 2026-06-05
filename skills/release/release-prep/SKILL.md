@@ -1,7 +1,7 @@
 ---
-name: manual-release
+name: release-prep
 description: >
-  AI-assisted manual release workflow for software repos. Use when preparing
+  AI-assisted release preparation workflow for software repos. Use when preparing
   releases, choosing SemVer bumps, drafting changelogs or release notes,
   validating release readiness, replacing commit-driven release automation, or
   creating project-local release policy. Conservative by default: discovers
@@ -9,7 +9,7 @@ description: >
   publishes, or deploys without explicit approval.
 ---
 
-# Manual Release
+# Release Prep
 
 Prepare releases from repository evidence, not blind commit-message automation.
 

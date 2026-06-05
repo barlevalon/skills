@@ -1,4 +1,4 @@
-name: Publish npm package
+name: Publish npm packages
 
 on:
   release:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       dry_run:
-        description: Run pack validation without publishing
+        description: Run publish dry-run without publishing
         required: true
         default: true
         type: boolean
@@ -28,28 +28,9 @@ jobs:
         run: npm install -g npm@latest
       - run: npm ci
       - run: npm run ci
-      - name: Read package metadata
-        id: package
-        shell: bash
-        run: |
-          node - <<'NODE' >> "$GITHUB_OUTPUT"
-          const pkg = require('./package.json');
-          console.log(`name=${pkg.name}`);
-          console.log(`version=${pkg.version}`);
-          NODE
-      - name: Check whether package version already exists
-        id: published
-        shell: bash
-        run: |
-          if npm view "${{ steps.package.outputs.name }}@${{ steps.package.outputs.version }}" version >/dev/null 2>&1; then
-            echo "exists=true" >> "$GITHUB_OUTPUT"
-            echo "${{ steps.package.outputs.name }}@${{ steps.package.outputs.version }} already exists on npm; skipping publish."
-          else
-            echo "exists=false" >> "$GITHUB_OUTPUT"
-          fi
-      - name: Dry-run package
+      - name: Dry-run packages
         if: github.event_name == 'workflow_dispatch' && inputs.dry_run
-        run: npm publish --dry-run --access public
-      - name: Publish package
-        if: steps.published.outputs.exists != 'true' && (github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run))
-        run: npm publish --provenance --access public
+        run: node scripts/publish-packages.mjs --dry-run
+      - name: Publish packages
+        if: github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && !inputs.dry_run)
+        run: node scripts/publish-packages.mjs

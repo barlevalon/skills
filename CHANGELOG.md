@@ -2,6 +2,14 @@
 
 All notable changes to this package are documented here.
 
+## Unreleased
+
+### Changed
+- Restructure the package as a skills monorepo under `skills/<category>/<skill>/`.
+- Rename package metadata from `manual-release-skill` to `@barlevalon/skills`.
+- Rename the skill from `manual-release` to `release-prep` and move it to `skills/release/release-prep/`.
+- Add per-skill package metadata so `release-prep` can be installed independently.
+
 ## [0.1.2] - 2026-06-05
 
 ### Fixed

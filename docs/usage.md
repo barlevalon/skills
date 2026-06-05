@@ -1,6 +1,6 @@
 # Usage
 
-`manual-release` is a skill for release preparation, not a release bot.
+This repo currently ships the `release-prep` skill for release preparation.
 It keeps release decisions evidence-backed and approval-gated.
 
 ## Install
@@ -8,33 +8,41 @@ It keeps release decisions evidence-backed and approval-gated.
 This package uses the portable Agent Skills layout:
 
 ```text
-skills/manual-release/SKILL.md
+skills/release/release-prep/SKILL.md
 ```
 
 Use whichever install path your agent harness supports.
 
 ### Generic
 
-Clone the repository and add `skills/manual-release` to your agent's skill directory or configured skill paths.
+Clone the repository and add `skills/` or `skills/release/release-prep` to your agent's skill paths.
 
 ```bash
-git clone https://github.com/barlevalon/manual-release-skill.git
+git clone https://github.com/barlevalon/skills.git
 ```
 
-### npm package
+### npm packages
 
-After npm publish, use the package name with compatible tooling:
+Install all skills:
 
 ```text
-manual-release-skill
+@barlevalon/skills
+```
+
+Install only this skill:
+
+```text
+@barlevalon/release-prep-skill
 ```
 
 ### Pi
 
 ```bash
-pi install npm:manual-release-skill
-pi install git:github.com/barlevalon/manual-release-skill@v0.1.0
-pi install /path/to/manual-release-skill
+pi install npm:@barlevalon/skills
+pi install npm:@barlevalon/release-prep-skill
+pi install git:github.com/barlevalon/skills
+pi install /path/to/skills
+pi install /path/to/skills/skills/release/release-prep
 ```
 
 ## Prompts
