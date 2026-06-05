@@ -20,6 +20,34 @@ npm run ci
 `npm run ci` validates the package manifest, skill frontmatter, required docs,
 and npm package contents.
 
+## First npm publish bootstrap
+
+npm Trusted Publisher setup currently requires the package to already exist.
+For the first publish only, publish manually from a clean checkout:
+
+```bash
+npm login
+npm whoami
+npm run ci
+npm publish
+```
+
+After the package exists on npm, configure Trusted Publisher for future releases:
+
+- Package: `manual-release-skill`
+- Publisher: GitHub Actions
+- Repository owner/name: `barlevalon/manual-release-skill`
+- Workflow: `publish.yml`
+- Environment: none, unless npm requires one for the package settings
+
+The GitHub workflow has `id-token: write` and publishes with provenance:
+
+```bash
+npm publish --provenance --access public
+```
+
+No `NPM_TOKEN` repository secret is required after Trusted Publisher is configured.
+
 ## Release steps
 
 1. Update `package.json` version.
@@ -41,21 +69,11 @@ and npm package contents.
 6. Create a GitHub Release for the tag.
 7. The `Publish npm package` workflow publishes to npm when the release is published.
 
-## Publishing requirements
-
-GitHub Actions needs an npm automation token in the repository secret:
-
-```text
-NPM_TOKEN
-```
-
-The publish workflow uses npm provenance and `--access public`.
-
 ## Manual dry run
 
 ```bash
 npm publish --dry-run --access public
 ```
 
-Do not publish manually unless GitHub Actions is unavailable and the release has
-been approved.
+Do not publish manually except for the first bootstrap publish or when GitHub
+Actions is unavailable and the release has been approved.

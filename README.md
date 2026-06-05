@@ -123,7 +123,7 @@ Other Agent Skills-compatible tools can ignore that field and load the standard 
 
 - `CI` validates skill metadata and npm package contents on pushes and PRs.
 - `Publish npm package` publishes to npm when a GitHub Release is published.
-- Publishing requires repository secret `NPM_TOKEN`.
+- Publishing uses npm Trusted Publisher / GitHub OIDC; no npm token secret is required after the package is configured on npm.
 
 ## License
 
