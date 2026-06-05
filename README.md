@@ -30,7 +30,7 @@ Packages declare Pi compatibility through `package.json`:
 ```json
 {
   "pi": {
-    "skills": ["./skills"]
+    "skills": ["./skills/*/*/SKILL.md"]
   }
 }
 ```

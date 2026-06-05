@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.1.4] - 2026-06-06
+
+### Fixed
+- Point Pi package manifests at `SKILL.md` files so README files are not discovered as skills.
+
 ## [0.1.3] - 2026-06-06
 
 ### Changed

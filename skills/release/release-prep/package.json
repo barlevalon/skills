@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/release-prep-skill",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "An Agent Skill for evidence-backed release preparation, changelog drafting, SemVer recommendations, and approval-gated publishing plans.",
   "license": "MIT",
   "author": "Alon Bar-Lev",
@@ -37,7 +37,7 @@
   },
   "pi": {
     "skills": [
-      "./"
+      "./SKILL.md"
     ]
   }
 }

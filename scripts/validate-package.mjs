@@ -24,7 +24,10 @@ if (!pkg.pi || !Array.isArray(pkg.pi.skills) || pkg.pi.skills.length === 0) {
 }
 
 for (const skillPath of pkg.pi?.skills ?? []) {
-  if (!exists(skillPath)) fail(`declared skill path does not exist: ${skillPath}`);
+  if (!skillPath.endsWith('/SKILL.md')) {
+    fail(`root pi.skills entries must point at SKILL.md files, not directories: ${skillPath}`);
+  }
+  if (!matchesSkillPath(skillPath)) fail(`declared skill path does not match any skill: ${skillPath}`);
 }
 
 for (const requiredFile of ['README.md', 'LICENSE', 'CHANGELOG.md', 'docs/usage.md', 'docs/release.md', 'skills/README.md']) {
@@ -79,6 +82,16 @@ for (const file of skillFiles) {
 if (process.exitCode) process.exit(process.exitCode);
 console.log(`package validation passed (${skillFiles.length} skill${skillFiles.length === 1 ? '' : 's'})`);
 
+function matchesSkillPath(pattern) {
+  const normalizedPattern = pattern.replace(/^\.\//, '');
+  const regex = new RegExp(`^${normalizedPattern.split('*').map(escapeRegex).join('[^/]+')}$`);
+  return findFiles(path.join(root, 'skills'), 'SKILL.md').some((file) => regex.test(relative(file)));
+}
+
+function escapeRegex(text) {
+  return text.replace(/[|\\{}()[\]^$+?.]/g, '\\$&');
+}
+
 function validateSkillPackage(packageFile, skillName, skillDir) {
   const skillPackage = readJson(packageFile);
   if (!skillPackage.name) fail(`${packageFile} package name missing`);
@@ -90,8 +103,8 @@ function validateSkillPackage(packageFile, skillName, skillDir) {
   if (!Array.isArray(skillPackage.files) || !skillPackage.files.includes('SKILL.md')) {
     fail(`${packageFile} files must include SKILL.md`);
   }
-  if (!skillPackage.pi || !Array.isArray(skillPackage.pi.skills) || !skillPackage.pi.skills.includes('./')) {
-    fail(`${packageFile} pi.skills must include ./ so the skill directory is installable directly`);
+  if (!skillPackage.pi || !Array.isArray(skillPackage.pi.skills) || !skillPackage.pi.skills.includes('./SKILL.md')) {
+    fail(`${packageFile} pi.skills must include ./SKILL.md so README.md is not discovered as a skill`);
   }
   for (const requiredFile of ['README.md', 'LICENSE']) {
     if (!exists(`${skillDir}/${requiredFile}`)) fail(`${skillDir}/${requiredFile} missing`);
