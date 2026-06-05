@@ -1,14 +1,26 @@
 # Maintainer release process
 
-This package is a small skills collection published as a root bundle plus individually installable skill packages.
+This repo publishes two kinds of npm packages:
+
+- Root bundle: `@barlevalon/skills`
+- Individual skill packages: `@barlevalon/<skill>-skill`
+
+Versions are **independent**. Do not bump every package just because one skill changed.
 
 ## Versioning
 
-Use SemVer for the npm packages:
+Use SemVer per package:
 
 - Patch: wording fixes, safety clarifications, docs updates
-- Minor: new workflow sections or materially better release analysis behavior
+- Minor: new skill behavior, new workflow sections, or materially better analysis behavior
 - Major: incompatible skill behavior or package layout changes
+
+Examples:
+
+- Change only `tdd`: bump `skills/engineering/tdd/package.json` only.
+- Change only release docs: bump root `package.json` only if the bundled package should be republished.
+- Add a new skill: publish that skill at `0.1.0` or `1.0.0` as appropriate; bump the root bundle because its contents changed.
+- Change shared repo tooling only: no npm release unless package contents or publish behavior changed.
 
 ## Pre-release validation
 
@@ -23,19 +35,17 @@ the root bundle package, and each individual skill package.
 ## First npm publish bootstrap
 
 npm Trusted Publisher setup currently requires each package to already exist.
-For the first publish only, publish each package manually from a clean checkout:
+For the first publish of a new package only, publish it manually from a clean checkout:
 
 ```bash
 npm login
 npm whoami
 npm run ci
-npm publish --access public
-npm publish ./skills/release/release-prep --access public
+npm publish ./skills/<category>/<skill> --access public
 ```
 
-After packages exist on npm, configure Trusted Publisher for future releases for each package:
+After the package exists on npm, configure Trusted Publisher for it:
 
-- Packages: `@barlevalon/skills`, `@barlevalon/caveman-commit-skill`, `@barlevalon/grill-with-docs-skill`, `@barlevalon/tdd-skill`, `@barlevalon/release-prep-skill`
 - Publisher: GitHub Actions
 - Repository owner/name: `barlevalon/skills`
 - Workflow: `publish.yml`
@@ -48,28 +58,32 @@ node scripts/publish-packages.mjs
 ```
 
 No `NPM_TOKEN` repository secret is required after Trusted Publisher is configured.
-The workflow checks whether each package version already exists on npm and skips already-published versions, so the bootstrap release can be mirrored on GitHub without failing on duplicate publish.
+The publish script checks whether each package version already exists on npm and skips already-published versions, so independent package versions are safe.
 
 ## Release steps
 
-1. Update root and skill package versions.
-2. Update `CHANGELOG.md`.
-3. Commit with:
+1. Decide which package(s) need a release.
+2. Bump only those package manifests.
+3. Update `CHANGELOG.md` for repo-visible changes. For detailed skill-only notes, prefer the skill README or a future per-skill changelog.
+4. Commit with a specific subject, for example:
 
    ```text
-   release: vX.Y.Z
+   release: tdd-skill v0.2.1
+   release: bundle v0.2.1
    ```
 
-4. Push to `main` and verify CI is green.
-5. Create and push a tag:
+5. Push to `main` and verify CI is green.
+6. Create and push a tag:
 
    ```bash
-   git tag vX.Y.Z
-   git push origin main vX.Y.Z
+   git tag tdd-skill-v0.2.1
+   git push origin main tdd-skill-v0.2.1
    ```
 
-6. Create a GitHub Release for the tag.
-7. The `Publish npm packages` workflow publishes the root bundle and individual skill packages to npm when the release is published.
+   For a coordinated bundle release, `vX.Y.Z` is fine.
+
+7. Create a GitHub Release for the tag.
+8. The `Publish npm packages` workflow publishes only package versions that do not already exist on npm.
 
 ## Manual dry run
 
@@ -77,5 +91,4 @@ The workflow checks whether each package version already exists on npm and skips
 node scripts/publish-packages.mjs --dry-run
 ```
 
-Do not publish manually except for the first bootstrap publish or when GitHub
-Actions is unavailable and the release has been approved.
+Do not publish manually except for first-package bootstrap or when GitHub Actions is unavailable and the release has been approved.

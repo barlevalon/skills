@@ -74,7 +74,7 @@ skills/
       LICENSE
 ```
 
-New skills should use `skills/<category>/<skill>/SKILL.md`, include a local `package.json`, and keep skill names globally unique.
+New skills should use `skills/<category>/<skill>/SKILL.md`, include a local `package.json`, and keep skill names globally unique. Skill packages version independently from the root bundle.
 
 ## Credits
 

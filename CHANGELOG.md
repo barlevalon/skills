@@ -4,6 +4,9 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Changed
+- Clarify that root and individual skill package versions are released independently.
+
 ## [0.2.0] - 2026-06-06
 
 ### Added
