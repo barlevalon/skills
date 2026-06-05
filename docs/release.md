@@ -1,6 +1,6 @@
 # Maintainer release process
 
-This package is a small skills collection. It currently contains one skill.
+This package is a small skills collection published as a root bundle plus individually installable skill packages.
 
 ## Versioning
 
@@ -35,7 +35,7 @@ npm publish ./skills/release/release-prep --access public
 
 After packages exist on npm, configure Trusted Publisher for future releases for each package:
 
-- Packages: `@barlevalon/skills`, `@barlevalon/release-prep-skill`
+- Packages: `@barlevalon/skills`, `@barlevalon/caveman-commit-skill`, `@barlevalon/grill-with-docs-skill`, `@barlevalon/tdd-skill`, `@barlevalon/release-prep-skill`
 - Publisher: GitHub Actions
 - Repository owner/name: `barlevalon/skills`
 - Workflow: `publish.yml`

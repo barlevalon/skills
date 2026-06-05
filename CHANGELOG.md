@@ -4,6 +4,8 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.2.0] - 2026-06-06
+
 ### Added
 - Add customized `caveman-commit`, `grill-with-docs`, and `tdd` skills with per-skill package metadata and creator credits.
 

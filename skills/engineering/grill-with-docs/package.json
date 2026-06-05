@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/grill-with-docs-skill",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "Grilling session that challenges plans against the existing domain model, sharpens terminology, and updates CONTEXT.md/ADRs inline as decisions crystallise.",
   "license": "MIT",
   "author": "Alon Bar-Lev",

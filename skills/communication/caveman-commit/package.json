@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/caveman-commit-skill",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "A release-aware Agent Skill for terse commit messages using scope-first subjects and optional Conventional Commit metadata.",
   "license": "MIT",
   "author": "Alon Bar-Lev",
