@@ -47,6 +47,7 @@ npm publish --provenance --access public
 ```
 
 No `NPM_TOKEN` repository secret is required after Trusted Publisher is configured.
+The workflow checks whether `package.json`'s version already exists on npm and skips publish when it does, so the bootstrap release can be mirrored on GitHub without failing on duplicate publish.
 
 ## Release steps
 
