@@ -1,5 +1,8 @@
 # pi-manual-release
 
+[![CI](https://github.com/barlevalon/pi-manual-release/actions/workflows/ci.yml/badge.svg)](https://github.com/barlevalon/pi-manual-release/actions/workflows/ci.yml)
+[![npm](https://img.shields.io/npm/v/pi-manual-release.svg)](https://www.npmjs.com/package/pi-manual-release)
+
 A small [Pi](https://pi.dev/) / Agent Skills package for AI-assisted manual software releases.
 
 It helps agents prepare releases from repository evidence instead of blindly deriving release meaning from commit-message automation.
@@ -23,7 +26,7 @@ It helps agents prepare releases from repository evidence instead of blindly der
 
 ## Install
 
-From npm, after publish:
+From npm:
 
 ```bash
 pi install npm:pi-manual-release
@@ -86,6 +89,18 @@ The package declares the skill through `package.json`:
   }
 }
 ```
+
+## Documentation
+
+- [Usage](docs/usage.md)
+- [Maintainer release process](docs/release.md)
+- [Changelog](CHANGELOG.md)
+
+## CI/CD
+
+- `CI` validates skill metadata and npm package contents on pushes and PRs.
+- `Publish npm package` publishes to npm when a GitHub Release is published.
+- Publishing requires repository secret `NPM_TOKEN`.
 
 ## License
 
