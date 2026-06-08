@@ -24,4 +24,3 @@ Maintainers should also read [release.md](release.md).
 - **I do not use Pi. Can I still use this?** Yes. Each skill is a plain `SKILL.md` file. Load it as a custom instruction, rule, prompt, or context file in your tool.
 - **Where do I start?** Use [workflow.md](workflow.md) to pick a skill, then open that skill's `SKILL.md`.
 - **Do I need the whole bundle?** No. You can use one skill directory or one `SKILL.md` file.
-- **Are private workflows included?** No. This repo intentionally contains only public, portable workflows.

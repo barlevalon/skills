@@ -29,23 +29,21 @@ skills/release/release-prep/    # one skill plus support files
 
 If your tool only accepts text instructions, open the relevant `SKILL.md` and paste or import its contents.
 
-## Option 2: Install from npm
+## Option 2: Load from npm packages
 
 Best for harnesses that understand npm skill packages.
 
-Install the full bundle:
+Use your harness's npm/package command with the full bundle:
 
-```bash
-npm view @barlevalon/skills
+```text
+@barlevalon/skills
 ```
 
-Then use your harness's package-install command for npm packages.
+Or load one skill package when you only need a small workflow:
 
-Install one skill package when you only need a small workflow:
-
-```bash
-npm view @barlevalon/tdd-skill
-npm view @barlevalon/release-prep-skill
+```text
+@barlevalon/tdd-skill
+@barlevalon/release-prep-skill
 ```
 
 Package names follow this pattern:
@@ -54,10 +52,11 @@ Package names follow this pattern:
 @barlevalon/<skill-name>-skill
 ```
 
-The root bundle is:
+To inspect package metadata with npm itself:
 
-```text
-@barlevalon/skills
+```bash
+npm view @barlevalon/skills
+npm view @barlevalon/tdd-skill
 ```
 
 ## Option 3: Pi install commands
@@ -113,10 +112,6 @@ Fix:
 
 - keep the packaged copy and remove the duplicate local copy, or
 - keep the local development copy and disable/remove the packaged copy.
-
-## What is intentionally excluded
-
-This public bundle avoids private or machine-specific skills, including company workflows, personal note-vault paths, desktop-specific system configuration, printer setup, and local environment CLIs.
 
 ## Validate this repo
 
