@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "description": "A monorepo of portable Agent Skills for AI-assisted engineering workflows.",
   "license": "MIT",
-  "author": "Alon Bar-Lev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/barlevalon/skills.git"
@@ -44,5 +43,6 @@
     "skills": [
       "./skills/*/*/SKILL.md"
     ]
-  }
+  },
+  "curator": "Alon Hearter"
 }

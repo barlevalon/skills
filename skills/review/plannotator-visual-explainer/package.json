@@ -1,0 +1,43 @@
+{
+  "name": "@barlevalon/plannotator-visual-explainer-skill",
+  "version": "0.1.0",
+  "description": "Generate self-contained HTML visualizations with Plannotator theming. Use for implementation plans, PR explainers, architecture diagrams, data tables, slide decks, and any visual explanation of technical concepts. Pla...",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barlevalon/skills.git",
+    "directory": "skills/review/plannotator-visual-explainer"
+  },
+  "bugs": {
+    "url": "https://github.com/barlevalon/skills/issues"
+  },
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/review/plannotator-visual-explainer#readme",
+  "keywords": [
+    "agent-skill",
+    "agent-skills",
+    "ai-agent",
+    "pi",
+    "pi-package",
+    "plannotator-visual-explainer",
+    "review",
+    "skills"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "SKILL.md",
+    "references/design-system.md",
+    "references/pr-components.md",
+    "references/svg-patterns.md",
+    "references/theme-override.md"
+  ],
+  "scripts": {
+    "pack:check": "npm pack --dry-run"
+  },
+  "pi": {
+    "skills": [
+      "./SKILL.md"
+    ]
+  },
+  "curator": "Alon Hearter"
+}

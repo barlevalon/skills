@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "description": "Grilling session that challenges plans against the existing domain model, sharpens terminology, and updates CONTEXT.md/ADRs inline as decisions crystallise.",
   "license": "MIT",
-  "author": "Alon Bar-Lev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/barlevalon/skills.git",
@@ -37,5 +36,6 @@
     "skills": [
       "./SKILL.md"
     ]
-  }
+  },
+  "curator": "Alon Hearter"
 }

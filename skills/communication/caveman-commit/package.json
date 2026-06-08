@@ -3,7 +3,6 @@
   "version": "0.2.0",
   "description": "A release-aware Agent Skill for terse commit messages using scope-first subjects and optional Conventional Commit metadata.",
   "license": "MIT",
-  "author": "Alon Bar-Lev",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/barlevalon/skills.git",
@@ -35,5 +34,6 @@
     "skills": [
       "./SKILL.md"
     ]
-  }
+  },
+  "curator": "Alon Hearter"
 }

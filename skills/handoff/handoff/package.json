@@ -1,0 +1,38 @@
+{
+  "name": "@barlevalon/handoff-skill",
+  "version": "0.1.0",
+  "description": "Compact the current conversation into a handoff document for another agent to pick up.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barlevalon/skills.git",
+    "directory": "skills/handoff/handoff"
+  },
+  "bugs": {
+    "url": "https://github.com/barlevalon/skills/issues"
+  },
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/handoff/handoff#readme",
+  "keywords": [
+    "agent-skill",
+    "agent-skills",
+    "ai-agent",
+    "handoff",
+    "pi",
+    "pi-package",
+    "skills"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "SKILL.md"
+  ],
+  "scripts": {
+    "pack:check": "npm pack --dry-run"
+  },
+  "pi": {
+    "skills": [
+      "./SKILL.md"
+    ]
+  },
+  "curator": "Alon Hearter"
+}

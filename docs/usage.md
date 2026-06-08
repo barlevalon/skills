@@ -1,56 +1,41 @@
 # Usage
 
-This package ships portable Agent Skills for AI-assisted engineering workflows.
-
-## Included skills
-
-- `caveman-commit` — release-aware terse commit messages.
-- `grill-with-docs` — stress-test plans against project language and documentation.
-- `tdd` — red-green-refactor implementation workflow.
-- `release-prep` — evidence-backed release preparation and approval-gated publishing plans.
+This package ships a portable workflow bundle of Agent Skills.
 
 ## Install
 
-This package uses the portable Agent Skills layout:
-
-```text
-skills/<category>/<skill>/SKILL.md
-```
-
-Use whichever install path your agent harness supports.
-
-### Generic
-
-Clone the repository and add `skills/` or a specific skill directory to your agent's skill paths.
-
-```bash
-git clone https://github.com/barlevalon/skills.git
-```
-
-### npm packages
-
 Install all skills:
-
-```text
-@barlevalon/skills
-```
-
-Install only one skill:
-
-```text
-@barlevalon/tdd-skill
-@barlevalon/release-prep-skill
-```
-
-### Pi
 
 ```bash
 pi install npm:@barlevalon/skills
-pi install npm:@barlevalon/tdd-skill
-pi install git:github.com/barlevalon/skills
-pi install /path/to/skills
-pi install /path/to/skills/skills/engineering/tdd
 ```
+
+Install one skill:
+
+```bash
+pi install npm:@barlevalon/tdd-skill
+pi install npm:@barlevalon/release-prep-skill
+```
+
+Use a local checkout while developing:
+
+```bash
+pi -e .
+pi -e ./skills/engineering/tdd
+```
+
+## Workflow map
+
+- Commit messages: `caveman-commit`
+- Diagnosis and bug fixing: `diagnose`, `tdd`
+- Planning and product docs: `write-a-prd`, `prd-to-plan`, `grill-with-docs`
+- Architecture review: `improve-codebase-architecture`
+- Prototyping: `prototype`
+- Review/evaluation: `plannotator-*`, `thermo-nuclear-code-quality-review`
+- Release prep: `release-prep`
+- Documentation work: `documentation-system`
+- Skill discovery: `find-skills`
+- Handoffs: `handoff`
 
 ## Example prompts
 
@@ -64,6 +49,10 @@ Use TDD to implement this bug fix.
 
 ```text
 Grill this plan against the domain docs before we build it.
+```
+
+```text
+Run a strict code-quality review.
 ```
 
 ```text

@@ -4,6 +4,9 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Added
+- Expand the repository into a comprehensive workflow bundle of local skills.
+
 ### Changed
 - Clarify that root and individual skill package versions are released independently.
 

@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compound Planning Report Template</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #fdfcfb;
+      --surface: #ffffff;
+      --surface-warm: #fff8ed;
+      --text: #0f172a;
+      --muted: #64748b;
+      --faint: #cbd5e1;
+      --border: #e2e8f0;
+      --amber: #d97706;
+      --amber-soft: #fef3c7;
+      --emerald: #059669;
+      --rose: #e11d48;
+      --indigo: #4f46e5;
+      --slate: #475569;
+      --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Inter", system-ui, sans-serif;
+      --serif: "Playfair Display", Georgia, serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.65;
+    }
+    main {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 56px 32px 72px;
+    }
+    header.report-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 32px;
+      align-items: flex-start;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 96px;
+    }
+    h1, h2, h3 { font-family: var(--serif); line-height: 1.08; margin: 0; }
+    h1 { font-size: clamp(2.25rem, 5vw, 4rem); font-weight: 700; }
+    h2 { font-size: clamp(1.9rem, 4vw, 3rem); margin-bottom: 24px; }
+    h3 { font-size: 1.45rem; margin-bottom: 10px; }
+    .meta, .mono { font-family: var(--mono); color: var(--muted); font-size: 0.85rem; }
+    .section { margin: 0 0 128px; }
+    .narrative {
+      font-family: var(--serif);
+      font-size: clamp(1.45rem, 3vw, 2rem);
+      line-height: 1.35;
+      max-width: 760px;
+    }
+    .highlight { background: var(--amber-soft); color: #92400e; padding: 0 0.18em; border-radius: 0.18em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.04);
+    }
+    .kpi { font-family: var(--mono); font-size: 2rem; font-weight: 600; color: var(--amber); }
+    .bar {
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .bar > span { display: block; height: 100%; background: var(--amber); width: var(--value, 50%); }
+    .quote {
+      margin: 16px 0 0;
+      padding-left: 18px;
+      border-left: 3px solid var(--amber);
+      color: var(--slate);
+      font-family: var(--serif);
+      font-style: italic;
+    }
+    .tag {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--indigo);
+      background: #eef2ff;
+      border-radius: 999px;
+      padding: 4px 9px;
+      margin-bottom: 12px;
+    }
+    .action {
+      border-left: 4px solid var(--emerald);
+      background: linear-gradient(90deg, #ecfdf5, var(--surface));
+    }
+    footer {
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      text-align: center;
+      color: var(--muted);
+      font-family: var(--serif);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="report-header">
+      <div>
+        <h1>Compound Planning Report</h1>
+        <p class="meta">Project · Date range</p>
+      </div>
+      <div class="mono">denials · days · categories</div>
+    </header>
+
+    <section class="section">
+      <p class="narrative">Use this template for visual language only. Replace every placeholder with findings from the current corpus.</p>
+      <div class="grid" aria-label="KPI examples">
+        <div class="card"><div class="kpi">Metric</div><div class="meta">Short explanation</div></div>
+        <div class="card"><div class="kpi">Metric</div><div class="meta">Short explanation</div></div>
+        <div class="card"><div class="kpi">Metric</div><div class="meta">Short explanation</div></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Section title</h2>
+      <div class="card">
+        <span class="tag">Category</span>
+        <h3>Finding title</h3>
+        <div class="bar"><span style="--value: 65%"></span></div>
+        <p>Describe the finding in grounded, user-specific prose.</p>
+        <blockquote class="quote">Insert a real quote from the analyzed corpus.</blockquote>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Actions</h2>
+      <div class="grid">
+        <div class="card action"><h3>Prompt improvement</h3><p>Specific change to try next.</p></div>
+        <div class="card action"><h3>Workflow guardrail</h3><p>Specific review gate or habit to add.</p></div>
+      </div>
+    </section>
+
+    <footer>Analysis of the current planning corpus.</footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "name": "@barlevalon/thermo-nuclear-code-quality-review-skill",
+  "version": "0.1.0",
+  "description": "Run an extremely strict maintainability review for abstraction quality, giant files, and spaghetti-condition growth. Use for a thermo-nuclear code quality review, thermonuclear review, deep code quality audit, or espe...",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barlevalon/skills.git",
+    "directory": "skills/evaluation/thermo-nuclear-code-quality-review"
+  },
+  "bugs": {
+    "url": "https://github.com/barlevalon/skills/issues"
+  },
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/evaluation/thermo-nuclear-code-quality-review#readme",
+  "keywords": [
+    "agent-skill",
+    "agent-skills",
+    "ai-agent",
+    "evaluation",
+    "pi",
+    "pi-package",
+    "skills",
+    "thermo-nuclear-code-quality-review"
+  ],
+  "files": [
+    "LICENSE",
+    "README.md",
+    "SKILL.md"
+  ],
+  "scripts": {
+    "pack:check": "npm pack --dry-run"
+  },
+  "pi": {
+    "skills": [
+      "./SKILL.md"
+    ]
+  },
+  "curator": "Alon Hearter"
+}
