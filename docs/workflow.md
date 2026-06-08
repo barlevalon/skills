@@ -1,40 +1,50 @@
 # Workflow map
 
-Use this when you are not sure which skill to choose.
+## Plan
 
-## Starting a feature
+| Situation | Use |
+|---|---|
+| Idea is fuzzy | `write-a-prd` |
+| PRD needs implementation phases | `prd-to-plan` |
+| Plan needs pressure-testing | `grill-with-docs` |
+| UI/state/design is uncertain | `prototype` |
 
-- Fuzzy idea → `write-a-prd`
-- PRD needs an implementation plan → `prd-to-plan`
-- Plan needs pressure-testing → `grill-with-docs`
-- Unsure about UX/state/design → `prototype`
+## Build or fix
 
-## Fixing or changing code
+| Situation | Use |
+|---|---|
+| Failure is unclear | `diagnose` |
+| Behavior change is clear | `tdd` |
+| Need broader context | `zoom-out` |
+| Need worktree/branch help | `worktrunk` |
 
-- Failure is unclear → `diagnose`
-- Behavior change is clear → `tdd`
-- Need broader context first → `zoom-out`
-- Need branch/worktree help → `worktrunk`
+## Review
 
-## Reviewing work
+| Situation | Use |
+|---|---|
+| Strict maintainability review | `thermo-nuclear-code-quality-review` |
+| Architecture feels tangled | `improve-codebase-architecture` |
+| Need a visual explanation | `plannotator-visual-explainer` |
+| Want to learn from rejected plans | `plannotator-compound` |
+| Goal needs a reviewed execution package | `plannotator-setup-goal` |
 
-- Strict maintainability review → `thermo-nuclear-code-quality-review`
-- Architecture feels tangled → `improve-codebase-architecture`
-- Need a visual explanation → `plannotator-visual-explainer`
-- Want to learn from rejected plans → `plannotator-compound`
-- Turning a goal into an execution package → `plannotator-setup-goal`
+## Communicate
 
-## Writing and communicating
+| Situation | Use |
+|---|---|
+| Docs work | `documentation-system` |
+| Commit message | `caveman-commit` |
+| Very concise responses | `caveman` |
+| Continue in another session | `handoff` |
 
-- Docs work → `documentation-system`
-- Commit message → `caveman-commit`
-- Very concise agent responses → `caveman`
-- Continue in another session → `handoff`
+## Release
 
-## Releasing
+| Situation | Use |
+|---|---|
+| Changelog, version choice, release validation | `release-prep` |
 
-- Changelog, version choice, release validation → `release-prep`
+## Extend
 
-## Finding more
-
-- Need a skill this bundle does not have → `find-skills`
+| Situation | Use |
+|---|---|
+| Need a workflow this repo does not include | `find-skills` |

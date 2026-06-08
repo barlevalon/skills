@@ -1,19 +1,25 @@
 # Docs
 
-Start here:
+## Read these first
 
-1. [Setup](setup.md) — give the repo to your agent.
-2. [Workflow map](workflow.md) — choose the right skill.
-3. [Skill reference](usage.md) — quick list of every skill.
+- [Setup](setup.md) — wire the repo into your agent or editor.
+- [Workflow map](workflow.md) — choose the right skill for the job.
+- [Skill reference](usage.md) — full skill list and invocation examples.
 
-Maintainers: [release process](release.md).
+## Mental model
 
-## Short version
+A skill is not an app you run. It is a reusable procedure for an agent.
 
-Give your agent this repo:
+Each skill lives in a folder:
 
 ```text
-https://github.com/barlevalon/skills
+skills/<category>/<skill>/SKILL.md
 ```
 
-Then ask it to use a skill, like `tdd`, `diagnose`, or `release-prep`.
+`SKILL.md` gives the agent the workflow. Optional `references/`, `scripts/`, and `assets/` are loaded only when needed.
+
+That is the same progressive-disclosure pattern used by modern agent skill systems: small discovery metadata first, detailed instructions only when relevant, supporting files only on demand.
+
+## Maintainers
+
+- [Release process](release.md)

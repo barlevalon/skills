@@ -1,62 +1,47 @@
 # Skill reference
 
-Use this page when you know what you want and need the skill name.
-
-## Common prompts
+Ask for a skill by name, or describe the work and let the agent choose.
 
 ```text
-Use TDD to implement this change.
+Use the tdd skill.
+Use diagnose before fixing this bug.
+Use release-prep for the next release.
 ```
 
-```text
-Diagnose this failure before fixing it.
-```
+## Full list
 
-```text
-Run a strict code-quality review.
-```
-
-```text
-Prepare the next release.
-```
-
-## Skills
-
-| Need | Skill |
+| Skill | Use it for |
 |---|---|
-| Concise communication | `caveman` |
-| Commit message | `caveman-commit` |
-| Caveman mode help | `caveman-help` |
-| Find more skills | `find-skills` |
-| Write or improve docs | `documentation-system` |
-| Diagnose a bug or regression | `diagnose` |
-| Stress-test a plan against docs/ADRs | `grill-with-docs` |
-| Improve architecture | `improve-codebase-architecture` |
-| Turn a PRD into implementation phases | `prd-to-plan` |
-| Prototype an idea | `prototype` |
-| Build test-first | `tdd` |
-| Manage branches/worktrees | `worktrunk` |
-| Write a PRD | `write-a-prd` |
-| Ask for broader context | `zoom-out` |
-| Strict maintainability review | `thermo-nuclear-code-quality-review` |
-| Hand off a session | `handoff` |
-| Prepare a release | `release-prep` |
-| Analyze rejected planning feedback | `plannotator-compound` |
-| Create a reviewed goal package | `plannotator-setup-goal` |
-| Create a visual explanation | `plannotator-visual-explainer` |
+| `caveman` | concise responses |
+| `caveman-commit` | commit messages |
+| `caveman-help` | caveman mode reference |
+| `find-skills` | finding more skills |
+| `documentation-system` | tutorials, how-tos, reference docs, explanations |
+| `diagnose` | hard bugs and regressions |
+| `grill-with-docs` | stress-testing plans against docs and ADRs |
+| `improve-codebase-architecture` | deeper modules, cleaner seams, testability |
+| `prd-to-plan` | turning a PRD into implementation phases |
+| `prototype` | throwaway UI or logic prototypes |
+| `tdd` | red/green/refactor implementation |
+| `worktrunk` | branch and worktree workflow |
+| `write-a-prd` | creating a PRD |
+| `zoom-out` | broader context before changing code |
+| `thermo-nuclear-code-quality-review` | strict maintainability review |
+| `handoff` | compacting a session for another agent |
+| `release-prep` | changelog, version choice, release validation |
+| `plannotator-compound` | learning from rejected plans |
+| `plannotator-setup-goal` | turning an objective into a reviewed goal package |
+| `plannotator-visual-explainer` | HTML visual explanations |
 
-## Where skills live
+## Paths
 
-In this repo:
-
-```text
-skills/<category>/<skill>/SKILL.md
-```
-
-Example:
+Give the agent a complete skill folder:
 
 ```text
-skills/engineering/tdd/SKILL.md
+skills/engineering/tdd/
+skills/engineering/diagnose/
+skills/release/release-prep/
+skills/documentation/documentation-system/
 ```
 
-Some skills include helper files. If unsure, give your agent the whole skill folder.
+The `SKILL.md` file is the entry point. Helper files in the same folder are part of the skill.

@@ -1,8 +1,8 @@
 # Setup
 
-These skills are plain Markdown files. Your agent can use them from a GitHub URL, an npm skill package, or a local checkout.
+These skills are plain Markdown instructions. Use the pattern your agent already supports: repo URL, local files, `AGENTS.md`, editor rules, or npm skill packages.
 
-## Fastest path
+## Fast path
 
 Give your agent this repo:
 
@@ -13,116 +13,125 @@ https://github.com/barlevalon/skills
 Then ask for a workflow:
 
 ```text
-Use TDD to implement this change.
+Use the tdd skill.
+Use the diagnose skill.
+Use the release-prep skill.
 ```
 
-```text
-Diagnose this bug before fixing it.
-```
+## Local files
 
-```text
-Prepare a release plan.
-```
-
-## If your agent needs local files
-
-Clone the repo:
+Use a local checkout when your tool cannot fetch GitHub URLs:
 
 ```bash
 git clone https://github.com/barlevalon/skills.git
 ```
 
-Then give the agent the whole bundle:
+Give the agent the whole skills bundle:
 
 ```text
-skills/
+/path/to/skills/skills/
 ```
 
-Or one skill:
+Or give it one complete skill folder:
 
 ```text
-skills/engineering/tdd/SKILL.md
-skills/release/release-prep/SKILL.md
-skills/documentation/documentation-system/SKILL.md
+/path/to/skills/skills/engineering/tdd/
+/path/to/skills/skills/release/release-prep/
+/path/to/skills/skills/documentation/documentation-system/
 ```
 
-If a skill links to helper files, give the agent the whole skill folder.
+Prefer the folder over only `SKILL.md`; many skills link helper files next to `SKILL.md`.
 
-## opencode
+## Reusable rule text
 
-opencode reads project instructions from `AGENTS.md`.
-
-In the project where you use opencode, add a short skills block to `AGENTS.md`:
+Most tools need the same project instruction. Use this text, changing the local path if needed:
 
 ```md
-## Agent skills
-
 Use workflow skills from https://github.com/barlevalon/skills.
 
 When I ask for a named workflow, read the matching `SKILL.md` before acting.
 Examples:
-- TDD: `skills/engineering/tdd/SKILL.md`
-- Diagnose: `skills/engineering/diagnose/SKILL.md`
-- Release prep: `skills/release/release-prep/SKILL.md`
+- `tdd` -> `skills/engineering/tdd/SKILL.md`
+- `diagnose` -> `skills/engineering/diagnose/SKILL.md`
+- `release-prep` -> `skills/release/release-prep/SKILL.md`
+- `documentation-system` -> `skills/documentation/documentation-system/SKILL.md`
 
-If you cannot fetch GitHub URLs directly, ask me for the local checkout path.
-If a skill links to helper files, read those from the same skill folder too.
+If you cannot fetch the repo URL, ask me for a local checkout path.
+If the skill links to helper files, read those too.
 ```
 
-Then run opencode in your project and ask normally:
+## Where to put it
 
-```text
-Use TDD to implement this change.
-```
+### opencode and Codex
 
-Tip: if you do not have `AGENTS.md` yet, run `/init` in opencode first, then add the block above.
+Put the reusable rule text in your project `AGENTS.md`.
 
-## VS Code with AI extensions
+opencode tip: run `/init` if you do not have `AGENTS.md` yet, then add the rule text.
 
-Best option: tell the extension to use this repo:
+### Cursor
 
-```text
+Create `.cursor/rules/workflow-skills.mdc`:
+
+```mdc
+---
+description: Use shared workflow skills from barlevalon/skills
+alwaysApply: false
+---
+
 Use workflow skills from https://github.com/barlevalon/skills.
-For TDD, read skills/engineering/tdd/SKILL.md before acting.
+
+When I ask for a named workflow, read the matching `SKILL.md` before acting.
+If you cannot fetch the repo URL, ask me for a local checkout path.
+If the skill links to helper files, read those too.
 ```
 
-If your extension cannot fetch repo URLs, add this repo as a second folder in your VS Code workspace:
+### VS Code Copilot
 
-1. Clone `https://github.com/barlevalon/skills`.
-2. Open your project in VS Code.
-3. Use **File → Add Folder to Workspace...**.
-4. Add the cloned skills repo folder.
-5. Ask your extension to use a skill file.
+Put the reusable rule text in `.github/copilot-instructions.md`.
 
-Example prompts:
+One-off prompt:
 
 ```text
-Use the TDD workflow from skills/engineering/tdd/SKILL.md to implement this change.
+Use https://github.com/barlevalon/skills, read skills/engineering/tdd/SKILL.md, then implement this change test-first.
 ```
 
-```text
-Read skills/release/release-prep/SKILL.md and prepare a release plan.
-```
+### Continue
 
-```text
-Use skills/documentation/documentation-system/SKILL.md to clean up these docs.
-```
-
-If your extension supports custom instructions, add:
+Create `.continue/rules/workflow-skills.md`:
 
 ```md
-Use workflow skills from https://github.com/barlevalon/skills. When I ask for a named workflow, read the matching `SKILL.md` before acting. If you need local files, ask for the checkout path.
+---
+name: Workflow skills
+---
+
+Use workflow skills from https://github.com/barlevalon/skills.
+When I ask for a named workflow, read the matching `SKILL.md` before acting.
+If you cannot fetch the repo URL, ask for a local checkout path.
+If the skill links to helper files, read those too.
 ```
 
-## npm package
+### Cline
 
-If your agent supports npm skill packages, use:
+Create `.clinerules/workflow-skills.md`:
+
+```md
+# Workflow skills
+
+Use workflow skills from https://github.com/barlevalon/skills.
+When I ask for a named workflow, read the matching `SKILL.md` before acting.
+If you cannot fetch the repo URL, ask for a local checkout path.
+If the skill links to helper files, read those too.
+```
+
+## Package-aware tools
+
+If your tool supports npm skill packages directly, use:
 
 ```text
 @barlevalon/skills
 ```
 
-Single-skill packages are also available:
+Single-skill packages are available too:
 
 ```text
 @barlevalon/tdd-skill
@@ -131,24 +140,12 @@ Single-skill packages are also available:
 
 ## Pi
 
-Pi users can install from npm:
-
 ```bash
 pi install npm:@barlevalon/skills
 ```
 
-Or run from a checkout:
+or from a checkout:
 
 ```bash
 pi -e .
-```
-
-## Updating
-
-If you use the GitHub repo URL, there is nothing to update.
-
-If you cloned the repo:
-
-```bash
-git pull
 ```
