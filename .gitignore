@@ -2,3 +2,5 @@ node_modules/
 npm-debug.log*
 *.tgz
 .DS_Store
+
+.pi/
