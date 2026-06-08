@@ -11,7 +11,7 @@ const packages = [root, ...findSkillPackageDirs()].map((directory) => ({
 
 for (const { directory, manifest } of packages) {
   const spec = `${manifest.name}@${manifest.version}`;
-  if (!dryRun && packageExists(spec)) {
+  if (!dryRun && packageExists(manifest.name, manifest.version)) {
     console.log(`${spec} already exists on npm; skipping publish.`);
     continue;
   }
@@ -21,7 +21,7 @@ for (const { directory, manifest } of packages) {
   else args.push('--provenance');
 
   console.log(`${dryRun ? 'Dry-run' : 'Publishing'} ${spec}`);
-  run('npm', args);
+  runPublish(spec, args);
 }
 
 function findSkillPackageDirs() {
@@ -41,12 +41,29 @@ function findSkillPackageDirs() {
   return dirs.sort();
 }
 
-function packageExists(spec) {
-  const result = spawnSync('npm', ['view', spec, 'version'], { stdio: 'ignore' });
-  return result.status === 0;
+function packageExists(name, version) {
+  const view = spawnSync('npm', ['view', `${name}@${version}`, 'version'], { stdio: 'ignore' });
+  if (view.status === 0) return true;
+
+  // Newly published packages can have dist-tags before the full package document
+  // is visible through `npm view`. Treat a matching tag as existing so release
+  // workflows do not try to republish during npm registry propagation lag.
+  const distTag = spawnSync('npm', ['dist-tag', 'ls', name], { encoding: 'utf8' });
+  return distTag.status === 0 && distTag.stdout.split('\n').some((line) => line.trim().endsWith(`: ${version}`));
 }
 
-function run(command, args) {
-  const result = spawnSync(command, args, { stdio: 'inherit' });
-  if (result.status !== 0) process.exit(result.status ?? 1);
+function runPublish(spec, args) {
+  const result = spawnSync('npm', args, { encoding: 'utf8' });
+  if (result.stdout) process.stdout.write(result.stdout);
+  if (result.stderr) process.stderr.write(result.stderr);
+
+  if (result.status === 0) return;
+
+  const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`;
+  if (output.includes('previously published versions')) {
+    console.log(`${spec} already exists on npm; skipping publish.`);
+    return;
+  }
+
+  process.exit(result.status ?? 1);
 }
