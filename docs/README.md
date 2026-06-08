@@ -2,7 +2,7 @@
 
 Start here:
 
-1. [Setup](setup.md) — get the repo into your agent.
+1. [Setup](setup.md) — give the repo to your agent.
 2. [Workflow map](workflow.md) — choose the right skill.
 3. [Skill reference](usage.md) — quick list of every skill.
 
@@ -10,6 +10,10 @@ Maintainers: [release process](release.md).
 
 ## Short version
 
-Clone this repo, then give your agent access to `skills/` or to one `SKILL.md` file.
+Give your agent this repo:
 
-Most skills work anywhere because they are just Markdown instructions.
+```text
+https://github.com/barlevalon/skills
+```
+
+Then ask it to use a skill, like `tdd`, `diagnose`, or `release-prep`.

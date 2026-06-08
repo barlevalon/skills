@@ -1,32 +1,16 @@
 # Setup
 
-These skills are plain Markdown files. The easiest setup is to clone the repo and let your agent read the skill you want.
+These skills are plain Markdown files. Your agent can use them from a GitHub URL, an npm skill package, or a local checkout.
 
-## 1. Clone the repo
+## Fastest path
 
-```bash
-git clone https://github.com/barlevalon/skills.git
-```
-
-## 2. Give your agent the right file or folder
-
-Use the whole bundle:
+Give your agent this repo:
 
 ```text
-skills/
+https://github.com/barlevalon/skills
 ```
 
-Use one skill:
-
-```text
-skills/engineering/tdd/SKILL.md
-skills/release/release-prep/SKILL.md
-skills/documentation/documentation-system/SKILL.md
-```
-
-If a skill links to helper files, give the agent the whole skill folder.
-
-## 3. Ask for the workflow
+Then ask for a workflow:
 
 ```text
 Use TDD to implement this change.
@@ -40,6 +24,30 @@ Diagnose this bug before fixing it.
 Prepare a release plan.
 ```
 
+## If your agent needs local files
+
+Clone the repo:
+
+```bash
+git clone https://github.com/barlevalon/skills.git
+```
+
+Then give the agent the whole bundle:
+
+```text
+skills/
+```
+
+Or one skill:
+
+```text
+skills/engineering/tdd/SKILL.md
+skills/release/release-prep/SKILL.md
+skills/documentation/documentation-system/SKILL.md
+```
+
+If a skill links to helper files, give the agent the whole skill folder.
+
 ## opencode
 
 opencode reads project instructions from `AGENTS.md`.
@@ -49,14 +57,15 @@ In the project where you use opencode, add a short skills block to `AGENTS.md`:
 ```md
 ## Agent skills
 
-Use workflow skills from `/path/to/barlevalon/skills`.
+Use workflow skills from https://github.com/barlevalon/skills.
 
 When I ask for a named workflow, read the matching `SKILL.md` before acting.
 Examples:
-- TDD: `/path/to/barlevalon/skills/skills/engineering/tdd/SKILL.md`
-- Diagnose: `/path/to/barlevalon/skills/skills/engineering/diagnose/SKILL.md`
-- Release prep: `/path/to/barlevalon/skills/skills/release/release-prep/SKILL.md`
+- TDD: `skills/engineering/tdd/SKILL.md`
+- Diagnose: `skills/engineering/diagnose/SKILL.md`
+- Release prep: `skills/release/release-prep/SKILL.md`
 
+If you cannot fetch GitHub URLs directly, ask me for the local checkout path.
 If a skill links to helper files, read those from the same skill folder too.
 ```
 
@@ -70,14 +79,20 @@ Tip: if you do not have `AGENTS.md` yet, run `/init` in opencode first, then add
 
 ## VS Code with AI extensions
 
-Clone this repo next to your project, then make it visible to your AI extension.
+Best option: tell the extension to use this repo:
 
-Best option: add both folders to one VS Code workspace:
+```text
+Use workflow skills from https://github.com/barlevalon/skills.
+For TDD, read skills/engineering/tdd/SKILL.md before acting.
+```
 
-1. Open your project in VS Code.
-2. Use **File → Add Folder to Workspace...**.
-3. Add the cloned `skills` repo folder.
-4. Ask your extension to use a skill file.
+If your extension cannot fetch repo URLs, add this repo as a second folder in your VS Code workspace:
+
+1. Clone `https://github.com/barlevalon/skills`.
+2. Open your project in VS Code.
+3. Use **File → Add Folder to Workspace...**.
+4. Add the cloned skills repo folder.
+5. Ask your extension to use a skill file.
 
 Example prompts:
 
@@ -93,21 +108,15 @@ Read skills/release/release-prep/SKILL.md and prepare a release plan.
 Use skills/documentation/documentation-system/SKILL.md to clean up these docs.
 ```
 
-If your extension supports custom instructions, add something like this to its project instructions:
+If your extension supports custom instructions, add:
 
 ```md
-Use workflow skills from the `skills` workspace folder. When I ask for a named workflow, read the matching `SKILL.md` before acting. If the skill links to helper files, read those too.
+Use workflow skills from https://github.com/barlevalon/skills. When I ask for a named workflow, read the matching `SKILL.md` before acting. If you need local files, ask for the checkout path.
 ```
 
 ## npm package
 
-The bundle is also on npm:
-
-```bash
-npm install @barlevalon/skills
-```
-
-Use npm when your agent has first-class support for npm skill packages. In that case, load:
+If your agent supports npm skill packages, use:
 
 ```text
 @barlevalon/skills
@@ -136,14 +145,10 @@ pi -e .
 
 ## Updating
 
+If you use the GitHub repo URL, there is nothing to update.
+
 If you cloned the repo:
 
 ```bash
 git pull
-```
-
-If you installed from npm:
-
-```bash
-npm update @barlevalon/skills
 ```

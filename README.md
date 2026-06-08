@@ -9,13 +9,17 @@ Use it when you want an agent to follow a better process for planning, debugging
 
 ## Quick start
 
-Clone the repo:
+Give your agent this repo:
+
+```text
+https://github.com/barlevalon/skills
+```
+
+If your agent needs local files instead of URLs, clone the repo and give it `skills/` or one `SKILL.md` file:
 
 ```bash
 git clone https://github.com/barlevalon/skills.git
 ```
-
-Point your agent at the repo, the `skills/` directory, or one skill file:
 
 ```text
 skills/
@@ -23,7 +27,7 @@ skills/engineering/tdd/SKILL.md
 skills/release/release-prep/SKILL.md
 ```
 
-Then ask naturally:
+Ask naturally:
 
 ```text
 Use TDD to implement this change.
