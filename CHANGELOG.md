@@ -4,6 +4,14 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.4.0] - 2026-07-02
+
+### Added
+- Add `writing-great-skills` for evaluating and improving skill predictability.
+
+### Changed
+- Simplify public setup and usage documentation for repository-based skill loading.
+
 ## [0.3.0] - 2026-06-08
 
 ### Added
