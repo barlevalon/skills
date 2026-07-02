@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/worktrunk-skill",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Use Worktrunk for git worktree workflows, hooks, config, aliases, approvals, LLM commit generation, and troubleshooting.",
   "license": "MIT",
   "repository": {
