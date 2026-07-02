@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/improve-codebase-architecture-skill",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Scan a codebase for deepening opportunities, present a visual HTML report, then grill through the selected candidate.",
   "license": "MIT",
   "repository": {

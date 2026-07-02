@@ -4,6 +4,8 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.5.0] - 2026-07-02
+
 ### Added
 - Add reusable `grilling`, `domain-modeling`, and `codebase-design` skills.
 

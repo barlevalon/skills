@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/grill-with-docs-skill",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Composable grilling session that pressure-tests plans while maintaining CONTEXT.md and ADRs as decisions crystallise.",
   "license": "MIT",
   "repository": {
