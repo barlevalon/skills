@@ -1,11 +1,25 @@
 # worktrunk
 
-Use Worktrunk for git worktree workflows whenever working in a git repository. Prefer `wt` over manual branch/worktree lifecycle commands when creating task branches, switching contexts, spawning parallel agents, merging locally, cleaning up merged branches, configuring hooks, or inspecting multi-worktree status. Triggers include git workflow requests, branch creation, branch switching, worktrees, parallel agents, stacked branches, merge cleanup, hook setup, and worktree status.
+Use Worktrunk for git worktree workflows, hooks, config, aliases, approvals, LLM commit generation, and troubleshooting.
+
+## Credits
+
+Based on [`max-sixty/worktrunk`](https://github.com/max-sixty/worktrunk/tree/main/skills/worktrunk) by Maximilian Roos.
 
 ## Skill
 
 - [`SKILL.md`](SKILL.md)
 
-## Credits
+## References
 
-Based on [`max-sixty/worktrunk`](https://github.com/max-sixty/worktrunk/tree/main/skills/worktrunk) by Maximilian Roos.
+- [`reference/config.md`](reference/config.md)
+- [`reference/hook.md`](reference/hook.md)
+- [`reference/switch.md`](reference/switch.md)
+- [`reference/merge.md`](reference/merge.md)
+- [`reference/remove.md`](reference/remove.md)
+- [`reference/list.md`](reference/list.md)
+- [`reference/llm-commits.md`](reference/llm-commits.md)
+- [`reference/extending.md`](reference/extending.md)
+- [`reference/tips-patterns.md`](reference/tips-patterns.md)
+- [`reference/shell-integration.md`](reference/shell-integration.md)
+- [`reference/troubleshooting.md`](reference/troubleshooting.md)

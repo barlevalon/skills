@@ -1,7 +1,7 @@
 {
   "name": "@barlevalon/worktrunk-skill",
   "version": "0.1.0",
-  "description": "Use Worktrunk for git worktree workflows whenever working in a git repository. Prefer `wt` over manual branch/worktree lifecycle commands when creating task branches, switching contexts, spawning parallel agents, merg...",
+  "description": "Use Worktrunk for git worktree workflows, hooks, config, aliases, approvals, LLM commit generation, and troubleshooting.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -26,7 +26,17 @@
     "LICENSE",
     "README.md",
     "SKILL.md",
-    "references/common-patterns.md"
+    "reference/config.md",
+    "reference/hook.md",
+    "reference/switch.md",
+    "reference/merge.md",
+    "reference/remove.md",
+    "reference/list.md",
+    "reference/llm-commits.md",
+    "reference/extending.md",
+    "reference/tips-patterns.md",
+    "reference/shell-integration.md",
+    "reference/troubleshooting.md"
   ],
   "scripts": {
     "pack:check": "npm pack --dry-run"

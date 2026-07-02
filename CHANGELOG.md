@@ -4,6 +4,9 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Changed
+- Expand `worktrunk` with current upstream config, hook, approval, alias, LLM commit, and troubleshooting guidance.
+
 ## [0.5.0] - 2026-07-02
 
 ### Added
