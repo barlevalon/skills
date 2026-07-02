@@ -28,6 +28,7 @@ Use release-prep for the next release.
 | `zoom-out` | broader context before changing code |
 | `thermo-nuclear-code-quality-review` | strict maintainability review |
 | `handoff` | compacting a session for another agent |
+| `writing-great-skills` | writing and editing predictable skills |
 | `release-prep` | changelog, version choice, release validation |
 | `plannotator-compound` | learning from rejected plans |
 | `plannotator-setup-goal` | turning an objective into a reviewed goal package |
@@ -42,6 +43,7 @@ skills/engineering/tdd/
 skills/engineering/diagnose/
 skills/release/release-prep/
 skills/documentation/documentation-system/
+skills/productivity/writing-great-skills/
 ```
 
 The `SKILL.md` file is the entry point. Helper files in the same folder are part of the skill.

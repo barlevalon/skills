@@ -33,6 +33,7 @@
 | Situation | Use |
 |---|---|
 | Docs work | `documentation-system` |
+| Skill authoring | `writing-great-skills` |
 | Commit message | `caveman-commit` |
 | Very concise responses | `caveman` |
 | Continue in another session | `handoff` |

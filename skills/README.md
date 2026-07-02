@@ -36,6 +36,10 @@ Portable Agent Skills in this repository.
 
 - [`handoff`](handoff/handoff/SKILL.md)
 
+## Productivity
+
+- [`writing-great-skills`](productivity/writing-great-skills/SKILL.md)
+
 ## Release
 
 - [`release-prep`](release/release-prep/SKILL.md)

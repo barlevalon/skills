@@ -49,6 +49,7 @@ git clone https://github.com/barlevalon/skills.git
 | Improve architecture | `improve-codebase-architecture` |
 | Review code | `thermo-nuclear-code-quality-review` |
 | Write docs | `documentation-system` |
+| Write or edit skills | `writing-great-skills` |
 | Release | `release-prep` |
 | Commit message | `caveman-commit` |
 | Handoff | `handoff` |
@@ -66,7 +67,7 @@ Full list: [docs/usage.md](docs/usage.md)
 ## Credits
 
 - `caveman`, `caveman-commit`, `caveman-help`: based on `JuliusBrussee/caveman` by Julius Brussee.
-- `diagnose`, `grill-with-docs`, `handoff`, `improve-codebase-architecture`, `prd-to-plan`, `prototype`, `write-a-prd`, `zoom-out`: based on `mattpocock/skills` by Matt Pocock.
+- `diagnose`, `grill-with-docs`, `handoff`, `improve-codebase-architecture`, `prd-to-plan`, `prototype`, `write-a-prd`, `writing-great-skills`, `zoom-out`: based on `mattpocock/skills` by Matt Pocock.
 - `find-skills`: based on `vercel-labs/skills` by Vercel.
 - `worktrunk`: based on `max-sixty/worktrunk` by Maximilian Roos.
 - `thermo-nuclear-code-quality-review`: based on `cursor/plugins` by Cursor.
