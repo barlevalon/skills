@@ -1,6 +1,8 @@
 # improve-codebase-architecture
 
-Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate tightly-coupled modules, or make a codebase more testable and AI-navigable.
+Scan a codebase for deepening opportunities, present a visual HTML report, then grill through the selected candidate.
+
+It composes the reusable `codebase-design`, `domain-modeling`, and `grilling` disciplines.
 
 ## Credits
 
@@ -9,3 +11,4 @@ Based on [`mattpocock/skills`](https://github.com/mattpocock/skills/tree/main/sk
 ## Skill
 
 - [`SKILL.md`](SKILL.md)
+- [`HTML-REPORT.md`](HTML-REPORT.md)

@@ -17,7 +17,10 @@ Use release-prep for the next release.
 | `caveman-help` | caveman mode reference |
 | `find-skills` | finding more skills |
 | `documentation-system` | tutorials, how-tos, reference docs, explanations |
+| `codebase-design` | reusable deep-module design vocabulary |
 | `diagnose` | hard bugs and regressions |
+| `domain-modeling` | sharpening CONTEXT.md language and ADR decisions |
+| `grilling` | reusable plan/design interview loop |
 | `grill-with-docs` | stress-testing plans against docs and ADRs |
 | `improve-codebase-architecture` | deeper modules, cleaner seams, testability |
 | `prd-to-plan` | turning a PRD into implementation phases |
@@ -41,6 +44,8 @@ Give the agent a complete skill folder:
 ```text
 skills/engineering/tdd/
 skills/engineering/diagnose/
+skills/engineering/codebase-design/
+skills/engineering/domain-modeling/
 skills/release/release-prep/
 skills/documentation/documentation-system/
 skills/productivity/writing-great-skills/

@@ -1,88 +1,74 @@
 ---
 name: grill-with-docs
-description: Grilling session that challenges your plan against the existing domain model, sharpens terminology, and updates documentation (CONTEXT.md, ADRs) inline as decisions crystallise. Use when user wants to stress-test a plan against their project's language and documented decisions.
+description: Grilling session that challenges plans against the existing domain model, sharpens terminology, and updates CONTEXT.md/ADRs inline as decisions crystallise.
 ---
 
-<what-to-do>
+# Grill With Docs
 
-Interview me relentlessly about every aspect of this plan until we reach a shared understanding. Walk down each branch of the design tree, resolving dependencies between decisions one-by-one. For each question, provide your recommended answer.
+Compose two reusable disciplines:
 
-Ask the questions one at a time, waiting for feedback on each question before continuing.
+- **grilling** — interview the user relentlessly about a plan or design until every branch of the decision tree is resolved.
+- **domain-modeling** — keep the project's domain language and architectural decisions current as the grilling session reveals them.
 
-If a question can be answered by exploring the codebase, explore the codebase instead.
+Use this when the user wants to stress-test a plan against the project's language, constraints, and documented decisions.
 
-</what-to-do>
+## Process
 
-<supporting-info>
+### 1. Load domain context
 
-## Domain awareness
+Before asking design questions, inspect the project's domain docs when present:
 
-During codebase exploration, also look for existing documentation:
+- `CONTEXT-MAP.md` for multi-context repos
+- root or context-local `CONTEXT.md`
+- relevant ADRs under `docs/adr/`
 
-### File structure
+If no context docs exist, do not create them yet. Create files lazily only when a real term or decision crystallises.
 
-Most repos have a single context:
+### 2. Run the grilling loop
 
-```
-/
-├── CONTEXT.md
-├── docs/
-│   └── adr/
-│       ├── 0001-event-sourced-orders.md
-│       └── 0002-postgres-for-write-model.md
-└── src/
-```
+Apply the grilling discipline:
 
-If a `CONTEXT-MAP.md` exists at the root, the repo has multiple contexts. The map points to where each one lives:
+- Ask one question at a time.
+- Provide your recommended answer with each question.
+- Walk the design tree by dependencies: resolve prerequisite decisions before downstream ones.
+- If a question can be answered by inspecting the codebase, inspect the codebase instead of asking.
+- Continue until the plan is concrete enough to implement or the user decides to stop.
 
-```
-/
-├── CONTEXT-MAP.md
-├── docs/
-│   └── adr/                          ← system-wide decisions
-├── src/
-│   ├── ordering/
-│   │   ├── CONTEXT.md
-│   │   └── docs/adr/                 ← context-specific decisions
-│   └── billing/
-│       ├── CONTEXT.md
-│       └── docs/adr/
-```
+Do not dump a questionnaire. One branch, one question, one answer.
 
-Create files lazily — only when you have something to write. If no `CONTEXT.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+### 3. Maintain the domain model inline
 
-## During the session
+Apply the domain-modeling discipline during the conversation:
 
-### Challenge against the glossary
+- If the user uses a term that conflicts with `CONTEXT.md`, call it out immediately and ask which meaning is correct.
+- If the user uses vague or overloaded language, propose a precise canonical term.
+- Use concrete scenarios to probe edge cases and force boundary decisions.
+- Cross-reference code when claims about current behavior are uncertain.
+- When a term is resolved, update the appropriate `CONTEXT.md` immediately.
 
-When the user uses a term that conflicts with the existing language in `CONTEXT.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y — which is it?"
+`CONTEXT.md` is a glossary, not an implementation spec. It should contain domain concepts, not implementation details.
 
-### Sharpen fuzzy language
+Use the format from the domain-modeling skill's `CONTEXT-FORMAT.md` when available.
 
-When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account' — do you mean the Customer or the User? Those are different things."
+### 4. Offer ADRs sparingly
 
-### Discuss concrete scenarios
+Offer an ADR only when all are true:
 
-When domain relationships are being discussed, stress-test them with specific scenarios. Invent scenarios that probe edge cases and force the user to be precise about the boundaries between concepts.
+1. **Hard to reverse** — changing later has meaningful cost.
+2. **Surprising without context** — a future reader would wonder why.
+3. **Real trade-off** — there were genuine alternatives.
 
-### Cross-reference with code
+Frame it as:
 
-When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible — which is right?"
+> Want me to record this as an ADR so future agents do not re-litigate it?
 
-### Update CONTEXT.md inline
+Use the format from the domain-modeling skill's `ADR-FORMAT.md` when available.
 
-When a term is resolved, update `CONTEXT.md` right there. Don't batch these up — capture them as they happen. Use the format in [CONTEXT-FORMAT.md](./CONTEXT-FORMAT.md).
+## Output
 
-`CONTEXT.md` should be totally devoid of implementation details. Do not treat `CONTEXT.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+End with:
 
-### Offer ADRs sparingly
-
-Only offer to create an ADR when all three are true:
-
-1. **Hard to reverse** — the cost of changing your mind later is meaningful
-2. **Surprising without context** — a future reader will wonder "why did they do it this way?"
-3. **The result of a real trade-off** — there were genuine alternatives and you picked one for specific reasons
-
-If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
-
-</supporting-info>
+- resolved decisions
+- remaining open questions
+- changed docs, if any
+- next implementation step, if clear

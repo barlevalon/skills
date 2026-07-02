@@ -1,31 +1,31 @@
 {
-  "name": "@barlevalon/grill-with-docs-skill",
-  "version": "0.2.0",
-  "description": "Composable grilling session that pressure-tests plans while maintaining CONTEXT.md and ADRs as decisions crystallise.",
+  "name": "@barlevalon/grilling-skill",
+  "version": "0.1.0",
+  "description": "Reusable interview loop for pressure-testing a plan or design until every branch of the decision tree is resolved.",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/barlevalon/skills.git",
-    "directory": "skills/engineering/grill-with-docs"
+    "directory": "skills/productivity/grilling"
   },
   "bugs": {
     "url": "https://github.com/barlevalon/skills/issues"
   },
-  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/engineering/grill-with-docs#readme",
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/productivity/grilling#readme",
   "keywords": [
     "agent-skill",
     "agent-skills",
     "ai-agent",
-    "engineering",
-    "grill-with-docs",
+    "grilling",
     "pi",
     "pi-package",
+    "productivity",
     "skills"
   ],
   "files": [
-    "SKILL.md",
+    "LICENSE",
     "README.md",
-    "LICENSE"
+    "SKILL.md"
   ],
   "scripts": {
     "pack:check": "npm pack --dry-run"

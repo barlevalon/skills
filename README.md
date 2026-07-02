@@ -42,11 +42,11 @@ git clone https://github.com/barlevalon/skills.git
 
 | Work | Skill |
 |---|---|
-| Plan a feature | `write-a-prd`, `prd-to-plan`, `grill-with-docs` |
+| Plan a feature | `write-a-prd`, `prd-to-plan`, `grill-with-docs`, `grilling` |
 | Debug | `diagnose` |
 | Build test-first | `tdd` |
 | Prototype | `prototype` |
-| Improve architecture | `improve-codebase-architecture` |
+| Improve architecture | `improve-codebase-architecture`, `codebase-design`, `domain-modeling` |
 | Review code | `thermo-nuclear-code-quality-review` |
 | Write docs | `documentation-system` |
 | Write or edit skills | `writing-great-skills` |
@@ -67,7 +67,7 @@ Full list: [docs/usage.md](docs/usage.md)
 ## Credits
 
 - `caveman`, `caveman-commit`, `caveman-help`: based on `JuliusBrussee/caveman` by Julius Brussee.
-- `diagnose`, `grill-with-docs`, `handoff`, `improve-codebase-architecture`, `prd-to-plan`, `prototype`, `write-a-prd`, `writing-great-skills`, `zoom-out`: based on `mattpocock/skills` by Matt Pocock.
+- `codebase-design`, `diagnose`, `domain-modeling`, `grilling`, `grill-with-docs`, `handoff`, `improve-codebase-architecture`, `prd-to-plan`, `prototype`, `write-a-prd`, `writing-great-skills`, `zoom-out`: based on `mattpocock/skills` by Matt Pocock.
 - `find-skills`: based on `vercel-labs/skills` by Vercel.
 - `worktrunk`: based on `max-sixty/worktrunk` by Maximilian Roos.
 - `thermo-nuclear-code-quality-review`: based on `cursor/plugins` by Cursor.

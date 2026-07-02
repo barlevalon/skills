@@ -1,7 +1,7 @@
 {
   "name": "@barlevalon/improve-codebase-architecture-skill",
   "version": "0.1.0",
-  "description": "Find deepening opportunities in a codebase, informed by the domain language in CONTEXT.md and the decisions in docs/adr/. Use when the user wants to improve architecture, find refactoring opportunities, consolidate ti...",
+  "description": "Scan a codebase for deepening opportunities, present a visual HTML report, then grill through the selected candidate.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -23,9 +23,7 @@
     "skills"
   ],
   "files": [
-    "DEEPENING.md",
-    "INTERFACE-DESIGN.md",
-    "LANGUAGE.md",
+    "HTML-REPORT.md",
     "LICENSE",
     "README.md",
     "SKILL.md"

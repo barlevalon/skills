@@ -6,7 +6,8 @@
 |---|---|
 | Idea is fuzzy | `write-a-prd` |
 | PRD needs implementation phases | `prd-to-plan` |
-| Plan needs pressure-testing | `grill-with-docs` |
+| Plan needs pressure-testing | `grill-with-docs` or `grilling` |
+| Domain language is fuzzy | `domain-modeling` |
 | UI/state/design is uncertain | `prototype` |
 
 ## Build or fix
@@ -24,6 +25,7 @@
 |---|---|
 | Strict maintainability review | `thermo-nuclear-code-quality-review` |
 | Architecture feels tangled | `improve-codebase-architecture` |
+| Need reusable module/interface vocabulary | `codebase-design` |
 | Need a visual explanation | `plannotator-visual-explainer` |
 | Want to learn from rejected plans | `plannotator-compound` |
 | Goal needs a reviewed execution package | `plannotator-setup-goal` |

@@ -18,7 +18,9 @@ Portable Agent Skills in this repository.
 
 ## Engineering
 
+- [`codebase-design`](engineering/codebase-design/SKILL.md)
 - [`diagnose`](engineering/diagnose/SKILL.md)
+- [`domain-modeling`](engineering/domain-modeling/SKILL.md)
 - [`grill-with-docs`](engineering/grill-with-docs/SKILL.md)
 - [`improve-codebase-architecture`](engineering/improve-codebase-architecture/SKILL.md)
 - [`prd-to-plan`](engineering/prd-to-plan/SKILL.md)
@@ -38,6 +40,7 @@ Portable Agent Skills in this repository.
 
 ## Productivity
 
+- [`grilling`](productivity/grilling/SKILL.md)
 - [`writing-great-skills`](productivity/writing-great-skills/SKILL.md)
 
 ## Release

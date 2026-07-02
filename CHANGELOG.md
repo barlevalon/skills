@@ -4,6 +4,13 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Added
+- Add reusable `grilling`, `domain-modeling`, and `codebase-design` skills.
+
+### Changed
+- Compose `grill-with-docs` and `improve-codebase-architecture` from reusable grilling, domain-modeling, and codebase-design disciplines.
+- Move architecture review output toward Matt Pocock's visual HTML report flow.
+
 ## [0.4.0] - 2026-07-02
 
 ### Added
