@@ -67,6 +67,8 @@ Why: bulk tests encode imagined design, outrun feedback, and often test shapes i
 Before writing code:
 
 - [ ] Confirm public interface changes with user when non-obvious.
+- [ ] Identify the public seam under test: the interface where behavior is observed without reaching inside.
+- [ ] Confirm non-obvious or newly introduced seams with the user before writing tests.
 - [ ] List behaviors to test, not implementation steps.
 - [ ] Prioritize critical paths and complex logic; do not chase fake completeness.
 - [ ] Identify opportunities for [deep modules](deep-modules.md).
@@ -80,6 +82,7 @@ Ask: "What public behavior must exist? Which behavior matters first?"
 Write one minimal test for one observable behavior.
 
 Requirements:
+- Uses a confirmed public seam only.
 - Uses public interface only.
 - Name describes behavior.
 - Tests real code where practical.
@@ -140,6 +143,7 @@ Pick next behavior based on what the last cycle taught you. One behavior at a ti
 
 ```text
 [ ] Test describes observable behavior, not implementation
+[ ] Test uses a confirmed public seam
 [ ] Test uses public interface only
 [ ] Test failed before implementation
 [ ] Failure reason was correct
@@ -200,6 +204,7 @@ If output/copy/CLI shape changed, add or update a CLI contract test.
 - Failure reason not inspected.
 - Test name describes implementation.
 - Test asserts private calls, call order, or internal collaborators.
+- Test is tautological: expected value recomputes the implementation instead of coming from an independent literal, spec, or worked example.
 - Mock setup dominates test logic.
 - New method exists only for tests.
 - Fixing test during GREEN because implementation disagrees.
@@ -221,6 +226,8 @@ If output/copy/CLI shape changed, add or update a CLI contract test.
 - [ ] Each new behavior test was observed failing for correct reason.
 - [ ] All relevant tests pass.
 - [ ] Tests verify public behavior.
+- [ ] Tests exercise confirmed public seams.
+- [ ] Expected values come from independent literals, specs, or worked examples.
 - [ ] Mocks are boundary-only or justified.
 - [ ] No test-only production APIs added.
 - [ ] Manual QA discoveries became regression tests.
