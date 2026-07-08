@@ -3,26 +3,26 @@
 Use the installer. It asks which harnesses and skills you want, then writes the right files for each tool.
 
 ```bash
-npx -y -p @barlevalon/skills@latest barlevalon-skills install
+npx @barlevalon/skills@latest install
 ```
 
 Non-interactive examples:
 
 ```bash
 # Install tdd and diagnose for VS Code extensions
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --agent vscode --skill tdd --skill diagnose --yes
+npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose --yes
 
 # Install every skill for every supported harness
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --all --yes
+npx @barlevalon/skills@latest install --all --yes
 
 # Install release-prep globally for Claude Code
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --agent claude-code --skill release-prep --global --yes
+npx @barlevalon/skills@latest install --agent claude-code --skill release-prep --global --yes
 ```
 
 List available skills:
 
 ```bash
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --list
+npx @barlevalon/skills@latest install --list
 ```
 
 ## Supported harnesses

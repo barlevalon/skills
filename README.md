@@ -12,7 +12,7 @@ A skill is a directory with a `SKILL.md` entry point plus any helper references,
 Run the installer:
 
 ```bash
-npx -y -p @barlevalon/skills@latest barlevalon-skills install
+npx @barlevalon/skills@latest install
 ```
 
 It asks which harnesses and skills to install, then writes the right files for each tool.
@@ -27,9 +27,9 @@ Supported targets:
 Examples:
 
 ```bash
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --agent vscode --skill tdd --skill diagnose --yes
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --agent claude-code --skill release-prep --global --yes
-npx -y -p @barlevalon/skills@latest barlevalon-skills install --all --yes
+npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose --yes
+npx @barlevalon/skills@latest install --agent claude-code --skill release-prep --global --yes
+npx @barlevalon/skills@latest install --all --yes
 ```
 
 See [docs/setup.md](docs/setup.md) for options and manual fallback setup.

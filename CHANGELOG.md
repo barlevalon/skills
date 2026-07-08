@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.2] - 2026-07-08
+
+### Fixed
+- Rename the installer binary to `skills` so `npx @barlevalon/skills install` works directly.
+
 ## [0.7.1] - 2026-07-08
 
 ### Fixed

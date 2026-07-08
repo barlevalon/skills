@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cwd = process.cwd();
-const MARKER = 'barlevalon-skills';
+const MARKER = 'skills';
 
 const HARNESS_OPTIONS = [
   { id: 'pi', label: 'Pi' },
@@ -18,14 +18,14 @@ const HARNESS_OPTIONS = [
   { id: 'claude-code', label: 'Claude Code' },
 ];
 
-const HELP = `barlevalon-skills install
+const HELP = `skills install
 
 Install barlevalon workflow skills for supported agent harnesses.
 
 Usage:
-  npx -y -p @barlevalon/skills@latest barlevalon-skills install
-  npx -y -p @barlevalon/skills@latest barlevalon-skills install --agent vscode --skill tdd --skill diagnose
-  npx -y -p @barlevalon/skills@latest barlevalon-skills install --all --yes
+  npx @barlevalon/skills@latest install
+  npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose
+  npx @barlevalon/skills@latest install --all --yes
 
 Options:
   -a, --agent <name>    Harness to install for: pi, opencode, vscode, claude-code, all
