@@ -225,8 +225,8 @@ async function chooseSkills(rl, skills) {
 async function chooseScope(rl, harnesses) {
   const hasProjectOnlyDocs = harnesses.includes('vscode');
   const projectLabel = hasProjectOnlyDocs
-    ? 'Project — write repo-local skill folders and instruction files (recommended)'
-    : 'Project — install for this repository (recommended)';
+    ? 'Project — write repo-local skill folders and instruction files'
+    : 'Project — install for this repository';
   const globalLabel = hasProjectOnlyDocs
     ? 'Global — install user skill folders only; Copilot repo instructions are skipped'
     : 'Global — install for your user account';

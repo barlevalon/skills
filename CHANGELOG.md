@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.4] - 2026-07-08
+
+### Changed
+- Remove opinionated “recommended” wording from the scope picker labels.
+
 ## [0.7.3] - 2026-07-08
 
 ### Changed
