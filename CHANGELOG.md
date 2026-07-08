@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.1] - 2026-07-08
+
+### Fixed
+- Document a package-exec installer command that works even inside a local checkout of this package.
+
 ## [0.7.0] - 2026-07-08
 
 ### Added

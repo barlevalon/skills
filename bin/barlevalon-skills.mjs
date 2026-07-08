@@ -23,9 +23,9 @@ const HELP = `barlevalon-skills install
 Install barlevalon workflow skills for supported agent harnesses.
 
 Usage:
-  npx @barlevalon/skills install
-  npx @barlevalon/skills install --agent vscode --skill tdd --skill diagnose
-  npx @barlevalon/skills install --all --yes
+  npx -y -p @barlevalon/skills@latest barlevalon-skills install
+  npx -y -p @barlevalon/skills@latest barlevalon-skills install --agent vscode --skill tdd --skill diagnose
+  npx -y -p @barlevalon/skills@latest barlevalon-skills install --all --yes
 
 Options:
   -a, --agent <name>    Harness to install for: pi, opencode, vscode, claude-code, all
