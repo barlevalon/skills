@@ -15,7 +15,7 @@ Run the installer:
 npx @barlevalon/skills@latest install
 ```
 
-It asks which harnesses and skills to install, then writes the right files for each tool.
+It opens an interactive picker for harnesses, skills, and scope, then writes the right files for each tool.
 
 Supported targets:
 

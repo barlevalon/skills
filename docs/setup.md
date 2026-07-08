@@ -1,6 +1,6 @@
 # Setup
 
-Use the installer. It asks which harnesses and skills you want, then writes the right files for each tool.
+Use the installer. It opens an interactive picker for harnesses, skills, and scope, then writes the right files for each tool.
 
 ```bash
 npx @barlevalon/skills@latest install
@@ -19,7 +19,7 @@ npx @barlevalon/skills@latest install --all --yes
 npx @barlevalon/skills@latest install --agent claude-code --skill release-prep --global --yes
 ```
 
-List available skills:
+List available skills without full descriptions:
 
 ```bash
 npx @barlevalon/skills@latest install --list
@@ -31,10 +31,12 @@ npx @barlevalon/skills@latest install --list
 |---|---|
 | Pi | Runs `pi install` for `@barlevalon/skills` or selected single-skill npm packages |
 | OpenCode | Copies selected skill folders to `.opencode/skills/` or `~/.config/opencode/skills/` |
-| VS Code | Copies skills to `.agents/skills/` and `.claude/skills/`, then updates `AGENTS.md` and `.github/copilot-instructions.md` |
+| VS Code | Project scope: copies skills to `.agents/skills/` and `.claude/skills/`, then updates `AGENTS.md` and `.github/copilot-instructions.md`. Global scope: copies skills to `~/.agents/skills/` and `~/.claude/skills/` |
 | Claude Code | Copies selected skill folders to `.claude/skills/` or `~/.claude/skills/` |
 
-The VS Code target is meant for repositories used with Copilot, Claude Code, and Codex extensions. It installs native skill folders where the extensions can use them and adds instruction files for tools that rely on repository guidance.
+The VS Code target is meant for repositories used with Copilot, Claude Code, and Codex extensions. Project scope installs native skill folders where extensions can use them and adds instruction files for tools that rely on repository guidance. Global scope skips Copilot repo instructions because those are project files.
+
+For skill descriptions, use the [README skill table](../README.md#pick-a-skill) or [skill reference](usage.md).
 
 ## Options
 

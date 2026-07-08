@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/skills",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "A monorepo of portable Agent Skills for AI-assisted engineering workflows.",
   "license": "MIT",
   "repository": {
@@ -48,5 +48,8 @@
       "./skills/*/*/SKILL.md"
     ]
   },
-  "curator": "Alon Hearter"
+  "curator": "Alon Hearter",
+  "dependencies": {
+    "@inquirer/prompts": "^8.5.2"
+  }
 }

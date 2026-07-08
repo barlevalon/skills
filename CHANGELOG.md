@@ -4,6 +4,15 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.3] - 2026-07-08
+
+### Changed
+- Use interactive checkbox/select prompts for harness, skill, and scope selection.
+- Show compact skill names in installer lists instead of full descriptions.
+
+### Fixed
+- Copy skills correctly when the installer runs from npm's temporary `node_modules` cache.
+
 ## [0.7.2] - 2026-07-08
 
 ### Fixed

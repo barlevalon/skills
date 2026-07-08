@@ -6,6 +6,7 @@ import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { checkbox, confirm, select, Separator } from '@inquirer/prompts';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cwd = process.cwd();
@@ -56,32 +57,40 @@ async function main() {
   const skills = discoverSkills();
 
   if (args.list) {
-    for (const skill of skills) console.log(`${skill.name}\t${skill.category}\t${skill.description}`);
+    console.log('Available skills:');
+    for (const skill of skills) console.log(`- ${skill.name} (${skill.category})`);
+    console.log('\nDescriptions: https://github.com/barlevalon/skills#pick-a-skill');
     return;
   }
 
   if (command !== 'install') throw new Error(`unknown command: ${command}`);
 
-  const rl = readline.createInterface({ input, output });
+  const rl = input.isTTY && output.isTTY ? null : readline.createInterface({ input, output });
   try {
     const yes = Boolean(args.yes);
-    const scope = args.global ? 'global' : 'project';
     const harnessInput = args.all
       ? ['all']
       : args.agent?.length
         ? args.agent
         : yes
           ? ['vscode']
-          : await chooseMany(rl, 'Install for which harnesses?', HARNESS_OPTIONS, ['vscode']);
+          : await chooseHarnesses(rl);
     const skillInput = args.all
       ? ['all']
       : args.skill?.length
         ? args.skill
         : yes
           ? ['all']
-          : await chooseMany(rl, 'Install which skills?', skills.map((skill) => ({ id: skill.name, label: `${skill.name} — ${skill.description}` })), ['all']);
+          : await chooseSkills(rl, skills);
     const chosenHarnesses = normalizeHarnesses(harnessInput);
     const chosenSkills = normalizeSkills(skillInput, skills);
+    const scope = args.global
+      ? 'global'
+      : args.project
+        ? 'project'
+        : yes
+          ? 'project'
+          : await chooseScope(rl, chosenHarnesses);
 
     const selectedSkills = skills.filter((skill) => chosenSkills.includes(skill.name));
     if (selectedSkills.length === 0) throw new Error('no skills selected');
@@ -100,7 +109,7 @@ async function main() {
       if (harness === 'pi') installPi(selectedSkills, scope);
       else if (harness === 'opencode') installSkillCopies(selectedSkills, scope === 'global' ? path.join(os.homedir(), '.config/opencode/skills') : path.join(cwd, '.opencode/skills'), args.force);
       else if (harness === 'claude-code') installSkillCopies(selectedSkills, scope === 'global' ? path.join(os.homedir(), '.claude/skills') : path.join(cwd, '.claude/skills'), args.force);
-      else if (harness === 'vscode') installVSCode(selectedSkills, args.force, confirmed);
+      else if (harness === 'vscode') installVSCode(selectedSkills, scope, args.force, confirmed);
       else throw new Error(`unsupported harness: ${harness}`);
     }
 
@@ -108,7 +117,7 @@ async function main() {
     console.log('  Use tdd to implement this change.');
     console.log('  Use diagnose before fixing this bug.');
   } finally {
-    rl.close();
+    rl?.close();
   }
 }
 
@@ -185,7 +194,59 @@ function discoverSkills() {
   return skills.sort((left, right) => left.name.localeCompare(right.name));
 }
 
-async function chooseMany(rl, title, options, defaults = []) {
+async function chooseHarnesses(rl) {
+  if (input.isTTY && output.isTTY) {
+    return checkbox({
+      message: 'Install for which harnesses?',
+      choices: HARNESS_OPTIONS.map((option) => ({ name: option.label, value: option.id, checked: option.id === 'vscode' })),
+      required: true,
+    });
+  }
+  return chooseManyFallback(rl, 'Install for which harnesses?', HARNESS_OPTIONS, ['vscode']);
+}
+
+async function chooseSkills(rl, skills) {
+  if (input.isTTY && output.isTTY) {
+    const selected = await checkbox({
+      message: 'Install which skills?',
+      choices: [
+        { name: 'All skills', value: 'all', checked: true },
+        new Separator(),
+        ...skills.map((skill) => ({ name: `${skill.name} (${skill.category})`, value: skill.name })),
+      ],
+      required: true,
+      pageSize: 15,
+    });
+    return selected;
+  }
+  return chooseManyFallback(rl, 'Install which skills?', skills.map((skill) => ({ id: skill.name, label: `${skill.name} (${skill.category})` })), ['all']);
+}
+
+async function chooseScope(rl, harnesses) {
+  const hasProjectOnlyDocs = harnesses.includes('vscode');
+  const projectLabel = hasProjectOnlyDocs
+    ? 'Project — write repo-local skill folders and instruction files (recommended)'
+    : 'Project — install for this repository (recommended)';
+  const globalLabel = hasProjectOnlyDocs
+    ? 'Global — install user skill folders only; Copilot repo instructions are skipped'
+    : 'Global — install for your user account';
+
+  if (input.isTTY && output.isTTY) {
+    return select({
+      message: 'Install scope?',
+      choices: [
+        { name: projectLabel, value: 'project' },
+        { name: globalLabel, value: 'global' },
+      ],
+      default: 'project',
+    });
+  }
+
+  const answer = (await rl.question(`Install scope? project/global [project]: `)).trim().toLowerCase();
+  return answer === 'global' || answer === 'g' ? 'global' : 'project';
+}
+
+async function chooseManyFallback(rl, title, options, defaults = []) {
   console.log(`\n${title}`);
   options.forEach((option, index) => console.log(`  ${index + 1}. ${option.label}`));
   const suffix = defaults.length ? ` [${defaults.join(', ')}]` : '';
@@ -194,6 +255,9 @@ async function chooseMany(rl, title, options, defaults = []) {
 }
 
 async function askYesNo(rl, question, defaultValue) {
+  if (input.isTTY && output.isTTY) {
+    return confirm({ message: question, default: defaultValue });
+  }
   const suffix = defaultValue ? 'Y/n' : 'y/N';
   const answer = (await rl.question(`${question} (${suffix}) `)).trim().toLowerCase();
   if (!answer) return defaultValue;
@@ -254,7 +318,12 @@ function buildPlan(harnesses, skills, scope) {
     if (harness === 'pi') plan.push(`Pi: install ${skills.length === discoverSkills().length ? '@barlevalon/skills' : `${skills.length} single-skill package(s)`} to ${scope} settings`);
     if (harness === 'opencode') plan.push(`OpenCode: copy ${skills.length} skill folder(s) to ${scope === 'global' ? '~/.config/opencode/skills' : '.opencode/skills'}`);
     if (harness === 'claude-code') plan.push(`Claude Code: copy ${skills.length} skill folder(s) to ${scope === 'global' ? '~/.claude/skills' : '.claude/skills'}`);
-    if (harness === 'vscode') plan.push('VS Code: copy skills to .agents/skills and .claude/skills, then update AGENTS.md and .github/copilot-instructions.md');
+    if (harness === 'vscode') {
+      const target = scope === 'global'
+        ? 'copy skills to ~/.agents/skills and ~/.claude/skills (Copilot repo instructions skipped)'
+        : 'copy skills to .agents/skills and .claude/skills, then update AGENTS.md and .github/copilot-instructions.md';
+      plan.push(`VS Code: ${target}`);
+    }
   }
   return plan;
 }
@@ -285,7 +354,13 @@ function installPi(skills, scope) {
   }
 }
 
-function installVSCode(skills, replaceAnySkillDir, confirmed) {
+function installVSCode(skills, scope, replaceAnySkillDir, confirmed) {
+  if (scope === 'global') {
+    installSkillCopies(skills, path.join(os.homedir(), '.agents/skills'), replaceAnySkillDir);
+    installSkillCopies(skills, path.join(os.homedir(), '.claude/skills'), replaceAnySkillDir);
+    return;
+  }
+
   installSkillCopies(skills, path.join(cwd, '.agents/skills'), replaceAnySkillDir);
   installSkillCopies(skills, path.join(cwd, '.claude/skills'), replaceAnySkillDir);
   upsertManagedBlock(path.join(cwd, 'AGENTS.md'), agentsBlock(skills), confirmed);
@@ -308,7 +383,11 @@ function copyDirectory(source, target, replaceAnySkillDir) {
     }
     fs.rmSync(target, { recursive: true, force: true });
   }
-  fs.cpSync(source, target, { recursive: true, dereference: true, filter: (file) => !file.includes(`${path.sep}node_modules${path.sep}`) });
+  fs.cpSync(source, target, {
+    recursive: true,
+    dereference: true,
+    filter: (file) => !path.relative(source, file).split(path.sep).includes('node_modules'),
+  });
   fs.writeFileSync(path.join(target, '.barlevalon-installed'), `source=${source}\ninstalledAt=${new Date().toISOString()}\n`);
 }
 
