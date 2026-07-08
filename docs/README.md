@@ -2,7 +2,7 @@
 
 ## Read these first
 
-- [Setup](setup.md) — wire the repo into your agent or editor.
+- [Setup](setup.md) — installer-first setup for supported agent harnesses.
 - [Workflow map](workflow.md) — choose the right skill for the job.
 - [Skill reference](usage.md) — full skill list and invocation examples.
 

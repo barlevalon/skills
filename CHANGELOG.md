@@ -4,6 +4,15 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.0] - 2026-07-08
+
+### Added
+- Add an npm installer CLI for choosing supported harnesses and skills interactively.
+- Support installer targets for Pi, OpenCode, VS Code agent extensions, and Claude Code.
+
+### Changed
+- Make README and setup docs installer-first, with manual setup as fallback.
+
 ## [0.6.0] - 2026-07-02
 
 ### Changed

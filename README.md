@@ -1,52 +1,58 @@
-# skills
+# barlevalon/skills
 
 [![CI](https://github.com/barlevalon/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/barlevalon/skills/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40barlevalon%2Fskills.svg)](https://www.npmjs.com/package/@barlevalon/skills)
 
-Reusable `SKILL.md` workflows for AI coding agents.
+Reusable Agent Skills for AI-assisted engineering workflows.
 
-A skill is a small folder with a `SKILL.md` instruction file and, when needed, supporting references, scripts, or templates. Agents load the skill when the task matches it, then read helper files only as needed.
+A skill is a directory with a `SKILL.md` entry point plus any helper references, scripts, or templates it needs. Agents see the skill name and description first, then load the full skill only when the task matches.
 
-## Start
+## Install
 
-Give your agent this repo:
-
-```text
-https://github.com/barlevalon/skills
-```
-
-Then ask for a workflow:
-
-```text
-Use TDD to implement this change.
-Diagnose this bug before fixing it.
-Prepare a release plan.
-```
-
-If your agent cannot read GitHub URLs, clone the repo and give it the local `skills/` folder or a complete skill folder.
+Run the installer:
 
 ```bash
-git clone https://github.com/barlevalon/skills.git
+npx @barlevalon/skills install
 ```
 
-## Use with your tool
+It asks which harnesses and skills to install, then writes the right files for each tool.
 
-- opencode / Codex: add an `AGENTS.md` rule. See [setup](docs/setup.md#opencode-and-codex).
-- Cursor: add a `.cursor/rules` rule. See [setup](docs/setup.md#cursor).
-- VS Code Copilot: add `.github/copilot-instructions.md`. See [setup](docs/setup.md#vs-code-copilot).
-- Continue: add a `.continue/rules` rule. See [setup](docs/setup.md#continue).
-- Cline: add a `.clinerules/` rule. See [setup](docs/setup.md#cline).
-- Package-aware tools: use `@barlevalon/skills`.
+Supported targets:
+
+- Pi
+- OpenCode
+- VS Code with Copilot, Claude, or Codex extensions
+- Claude Code
+
+Examples:
+
+```bash
+npx @barlevalon/skills install --agent vscode --skill tdd --skill diagnose --yes
+npx @barlevalon/skills install --agent claude-code --skill release-prep --global --yes
+npx @barlevalon/skills install --all --yes
+```
+
+See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
+
+## Use
+
+Ask your agent for a workflow:
+
+```text
+Use tdd to implement this change.
+Use diagnose before fixing this bug.
+Use release-prep for the next release.
+```
 
 ## Pick a skill
 
-| Work | Skill |
+| Work | Skills |
 |---|---|
 | Plan a feature | `write-a-prd`, `prd-to-plan`, `grill-with-docs`, `grilling` |
 | Debug | `diagnose` |
 | Build test-first | `tdd` |
 | Prototype | `prototype` |
-| Improve architecture | `improve-codebase-architecture`, `codebase-design`, `domain-modeling` |
+| Improve architecture | `improve-codebase-architecture`, `codebase-design`, `domain-modeling`, `zoom-out` |
 | Review code | `thermo-nuclear-code-quality-review` |
 | Write docs | `documentation-system` |
 | Write or edit skills | `writing-great-skills` |

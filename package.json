@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/skills",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "A monorepo of portable Agent Skills for AI-assisted engineering workflows.",
   "license": "MIT",
   "repository": {
@@ -23,7 +23,11 @@
     "pi-package",
     "skills"
   ],
+  "bin": {
+    "barlevalon-skills": "./bin/barlevalon-skills.mjs"
+  },
   "files": [
+    "bin",
     "skills",
     "docs",
     "CHANGELOG.md",
