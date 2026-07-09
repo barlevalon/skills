@@ -17,7 +17,7 @@ Use SemVer per package:
 
 Examples:
 
-- Change only `tdd`: bump `skills/engineering/tdd/package.json` only.
+- Change only `tdd`: bump `skills/tdd/package.json` only.
 - Change only release docs: bump root `package.json` only if the bundled package should be republished.
 - Add a new skill: publish that skill at `0.1.0` or `1.0.0` as appropriate; bump the root bundle because its contents changed.
 - Change shared repo tooling only: no npm release unless package contents or publish behavior changed.
@@ -92,3 +92,23 @@ node scripts/publish-packages.mjs --dry-run
 ```
 
 Do not publish manually except for first-package bootstrap or when GitHub Actions is unavailable and the release has been approved.
+
+## Deprecating old vendored skill packages
+
+When a vendored third-party skill moves to direct upstream installation, prefer `npm deprecate` over `npm unpublish`. Deprecation keeps old installs reproducible while warning new users to install the root bootstrap or the canonical upstream skill.
+
+Use explicit approval before running deprecation commands. Template:
+
+```bash
+npm deprecate @barlevalon/<skill>-skill@"*" \
+  "Deprecated: @barlevalon/skills installs the canonical upstream skill directly; use npx @barlevalon/skills@latest install."
+```
+
+Use a more specific message for removed-without-replacement skills, for example `zoom-out`:
+
+```bash
+npm deprecate @barlevalon/zoom-out-skill@"*" \
+  "Deprecated: this vendored skill was removed; no replacement is installed by @barlevalon/skills."
+```
+
+Do not unpublish unless a package is dangerous or legally problematic and npm's unpublish policy allows it.

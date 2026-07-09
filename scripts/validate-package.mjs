@@ -41,10 +41,7 @@ const names = new Map();
 for (const file of skillFiles) {
   const skillFile = relative(file);
   const parts = skillFile.split('/');
-  if (parts.length < 4) fail(`${skillFile} must live under skills/<category>/<skill>/SKILL.md`);
-
-  const categoryReadme = `skills/${parts[1]}/README.md`;
-  if (!exists(categoryReadme)) fail(`${categoryReadme} missing for ${skillFile}`);
+  if (parts.length !== 3) fail(`${skillFile} must live under skills/<skill>/SKILL.md`);
 
   const skillDir = parts.slice(0, -1).join('/');
   const skillPackageFile = `${skillDir}/package.json`;

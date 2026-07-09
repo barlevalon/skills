@@ -14,9 +14,17 @@ const MARKER = 'skills';
 const LOCAL_SOURCE = 'barlevalon';
 const MATT_SOURCE = 'matt';
 const MATT_REPO = 'mattpocock/skills';
+const CAVEMAN_REPO = 'JuliusBrussee/caveman';
+const VERCEL_SKILLS_REPO = 'vercel-labs/skills';
+const WORKTRUNK_REPO = 'max-sixty/worktrunk';
+const CURSOR_PLUGINS_REPO = 'cursor/plugins';
+const PLANNOTATOR_REPO = 'backnotprop/plannotator';
 const DEFAULT_MATT_REF = 'main';
 const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.1';
+const BOOTSTRAP_PLANNOTATOR_SKILLS = ['plannotator-review', 'plannotator-annotate', 'plannotator-last', 'plannotator-visual-explainer'];
+const BOOTSTRAP_MATT_GLOBAL_SKILLS = ['codebase-design', 'diagnosing-bugs', 'domain-modeling', 'grill-with-docs', 'improve-codebase-architecture', 'grilling', 'handoff', 'writing-great-skills', 'prototype', 'to-spec', 'to-tickets'];
 const RENAMED_SKILLS = new Map([
+  ['diagnose', 'diagnosing-bugs'],
   ['write-a-prd', 'to-spec'],
   ['prd-to-plan', 'to-tickets'],
 ]);
@@ -48,12 +56,12 @@ const HELP = `skills install
 Bootstrap Alon's agentic environment.
 
 With no flags, installs Matt workflow skills into the current repo,
-barlevalon personal/global skills into your user-level skill folders,
-and reports pre-existing skill folders left untouched.
+local barlevalon skills plus canonical upstream global skills into your
+user-level skill folders, and reports untouched skill folders.
 
 Usage:
   npx @barlevalon/skills@latest install
-  npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose
+  npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill release-prep
   npx @barlevalon/skills@latest install --bundle matt-core --agent vscode --project --yes
   npx @barlevalon/skills@latest install --source matt --skill wayfinder --yes
 
@@ -221,48 +229,71 @@ async function installBootstrap(args, rl, yes) {
     ref: DEFAULT_MATT_REF,
     label: MATT_BUNDLES.get(BOOTSTRAP_PROJECT_BUNDLE).label,
   };
-  const projectLoaded = loadSkills(projectSkillSet, args);
+  let projectLoaded;
+  let upstreamGlobalLoaded;
+  let plannotatorLoaded;
   try {
+    projectLoaded = loadSkills(projectSkillSet, args);
+    upstreamGlobalLoaded = loadBootstrapGlobalUpstreamSkills(DEFAULT_MATT_REF);
+    plannotatorLoaded = loadPlannotatorSkills(DEFAULT_MATT_REF);
     const projectSkills = selectBundleSkills(BOOTSTRAP_PROJECT_BUNDLE, projectLoaded.skills);
-    const globalSkills = discoverSkills(root, { source: LOCAL_SOURCE });
+    const localGlobalSkills = discoverSkills(root, { source: LOCAL_SOURCE });
+    const upstreamGlobalSkills = upstreamGlobalLoaded.skills;
+    const plannotatorSkills = plannotatorLoaded.skills;
+    const globalTargetNames = new Set([...localGlobalSkills, ...upstreamGlobalSkills, ...plannotatorSkills].map((skill) => skill.name));
 
     console.log('\nPlan:');
     console.log(`- Repo workflow skills: install ${projectSkills.length} Matt v1.1 skill folder(s) to .agents/skills and .claude/skills`);
     console.log('- Repo instructions: update AGENTS.md and .github/copilot-instructions.md');
-    console.log(`- Global personal skills: install ${globalSkills.length} barlevalon skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
-    console.log(`\nSource: github:${MATT_REPO}@${projectSkillSet.ref}`);
+    console.log(`- Global local skills: install ${localGlobalSkills.length} barlevalon fork/personal skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
+    console.log(`- Global upstream skills: install ${upstreamGlobalSkills.length} canonical upstream skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
+    console.log(`- Global Plannotator skills: ensure ${plannotatorSkills.length} upstream skill folder(s) in ~/.agents/skills and ~/.claude/skills`);
+    console.log(`\nSources: github:${MATT_REPO}@${projectSkillSet.ref}, ${upstreamGlobalLoaded.sources.map((source) => `github:${source.repo}@${source.ref}`).join(', ')}, github:${PLANNOTATOR_REPO}@${plannotatorLoaded.ref}`);
 
     const untouchedReport = snapshotUntouchedSkillDirs([
       { label: 'repo .agents/skills', root: path.join(cwd, '.agents/skills'), installedNames: new Set(projectSkills.map((skill) => skill.name)) },
       { label: 'repo .claude/skills', root: path.join(cwd, '.claude/skills'), installedNames: new Set(projectSkills.map((skill) => skill.name)) },
-      { label: 'global ~/.agents/skills', root: path.join(os.homedir(), '.agents/skills'), installedNames: new Set(globalSkills.map((skill) => skill.name)) },
-      { label: 'global ~/.claude/skills', root: path.join(os.homedir(), '.claude/skills'), installedNames: new Set(globalSkills.map((skill) => skill.name)) },
+      { label: 'global ~/.agents/skills', root: path.join(os.homedir(), '.agents/skills'), installedNames: globalTargetNames },
+      { label: 'global ~/.claude/skills', root: path.join(os.homedir(), '.claude/skills'), installedNames: globalTargetNames },
     ]);
 
     let confirmed = yes;
     if (!yes) {
       confirmed = await askYesNo(rl, 'Bootstrap this repo and your global agent skills?', true);
-      if (!confirmed) return { cleanup: projectLoaded.cleanup };
+      if (!confirmed) return { cleanup: () => { projectLoaded.cleanup?.(); upstreamGlobalLoaded.cleanup?.(); plannotatorLoaded.cleanup?.(); } };
     }
+
+    const globalAgentsRoot = path.join(os.homedir(), '.agents/skills');
+    const globalClaudeRoot = path.join(os.homedir(), '.claude/skills');
 
     assertCanInstallSkillCopies([
       { targetRoot: path.join(cwd, '.agents/skills'), skills: projectSkills },
       { targetRoot: path.join(cwd, '.claude/skills'), skills: projectSkills },
-      { targetRoot: path.join(os.homedir(), '.agents/skills'), skills: globalSkills },
-      { targetRoot: path.join(os.homedir(), '.claude/skills'), skills: globalSkills },
+      { targetRoot: globalAgentsRoot, skills: localGlobalSkills },
+      { targetRoot: globalClaudeRoot, skills: localGlobalSkills },
+      { targetRoot: globalAgentsRoot, skills: upstreamGlobalSkills },
+      { targetRoot: globalClaudeRoot, skills: upstreamGlobalSkills },
+      { targetRoot: globalAgentsRoot, skills: plannotatorSkills },
+      { targetRoot: globalClaudeRoot, skills: plannotatorSkills },
     ], args.force);
 
     installVSCode(projectSkills, 'project', args.force, confirmed);
-    installSkillCopies(globalSkills, path.join(os.homedir(), '.agents/skills'), args.force);
-    installSkillCopies(globalSkills, path.join(os.homedir(), '.claude/skills'), args.force);
+    installSkillCopies(localGlobalSkills, globalAgentsRoot, args.force);
+    installSkillCopies(localGlobalSkills, globalClaudeRoot, args.force);
+    installSkillCopies(upstreamGlobalSkills, globalAgentsRoot, args.force);
+    installSkillCopies(upstreamGlobalSkills, globalClaudeRoot, args.force);
+    installSkillCopies(plannotatorSkills, globalAgentsRoot, args.force);
+    installSkillCopies(plannotatorSkills, globalClaudeRoot, args.force);
 
     printUntouchedSkillDirs(untouchedReport);
 
     console.log('\nInstalled. Ask your agent for a workflow, for example:');
     for (const line of examplePrompts(projectSkills, projectSkillSet)) console.log(`  ${line}`);
-    return { cleanup: projectLoaded.cleanup };
+    return { cleanup: () => { projectLoaded.cleanup?.(); upstreamGlobalLoaded.cleanup?.(); plannotatorLoaded.cleanup?.(); } };
   } catch (error) {
-    projectLoaded.cleanup?.();
+    projectLoaded?.cleanup?.();
+    upstreamGlobalLoaded?.cleanup?.();
+    plannotatorLoaded?.cleanup?.();
     throw error;
   }
 }
@@ -310,7 +341,12 @@ function existingSkillDirNames(rootDir) {
 }
 
 function printUntouchedSkillDirs(report) {
-  const entries = report.filter((target) => target.names.length > 0);
+  const entries = report
+    .map((target) => ({
+      ...target,
+      names: target.names.filter((name) => fs.existsSync(path.join(target.root, name))),
+    }))
+    .filter((target) => target.names.length > 0);
   if (!entries.length) return;
 
   console.log('\nExisting skill folders left untouched:');
@@ -353,6 +389,121 @@ function loadSkills(skillSet, args) {
       assertBundleSkillsExist(skillSet.bundle, skills);
     }
     return { skills, cleanup: checkout.cleanup };
+  } catch (error) {
+    checkout.cleanup();
+    throw error;
+  }
+}
+
+function loadBootstrapGlobalUpstreamSkills(ref) {
+  const checkouts = [];
+  const sources = [];
+  const cleanup = () => {
+    for (const checkout of checkouts) checkout.cleanup?.();
+  };
+
+  const checkout = (repo) => {
+    const result = checkoutGitHubRepo(repo, ref ?? DEFAULT_MATT_REF);
+    checkouts.push(result);
+    sources.push({ repo, ref: result.ref });
+    return result;
+  };
+
+  try {
+    const skills = [];
+
+    const caveman = checkout(CAVEMAN_REPO);
+    skills.push(...selectSkillsByName(
+      ['caveman', 'caveman-help'],
+      discoverFlatSkills(path.join(caveman.dir, 'skills'), 'communication', {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${CAVEMAN_REPO}@${caveman.ref}:skills`,
+      }),
+      CAVEMAN_REPO,
+    ));
+
+    const vercel = checkout(VERCEL_SKILLS_REPO);
+    skills.push(...selectSkillsByName(
+      ['find-skills'],
+      discoverFlatSkills(path.join(vercel.dir, 'skills'), 'discovery', {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${VERCEL_SKILLS_REPO}@${vercel.ref}:skills`,
+      }),
+      VERCEL_SKILLS_REPO,
+    ));
+
+    const matt = checkout(MATT_REPO);
+    skills.push(...selectSkillsByName(
+      BOOTSTRAP_MATT_GLOBAL_SKILLS,
+      discoverSkills(matt.dir, {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${MATT_REPO}@${matt.ref}`,
+      }),
+      MATT_REPO,
+    ));
+
+    const worktrunk = checkout(WORKTRUNK_REPO);
+    removeKnownUpstreamSymlink(path.join(worktrunk.dir, 'skills/worktrunk/reference/README.md'), WORKTRUNK_REPO);
+    skills.push(...selectSkillsByName(
+      ['worktrunk'],
+      discoverFlatSkills(path.join(worktrunk.dir, 'skills'), 'engineering', {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${WORKTRUNK_REPO}@${worktrunk.ref}:skills`,
+      }),
+      WORKTRUNK_REPO,
+    ));
+
+    const cursor = checkout(CURSOR_PLUGINS_REPO);
+    skills.push(...selectSkillsByName(
+      ['thermo-nuclear-code-quality-review'],
+      discoverFlatSkills(path.join(cursor.dir, 'cursor-team-kit/skills'), 'evaluation', {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${CURSOR_PLUGINS_REPO}@${cursor.ref}:cursor-team-kit/skills`,
+      }),
+      CURSOR_PLUGINS_REPO,
+    ));
+
+    return { skills: skills.sort((left, right) => left.name.localeCompare(right.name)), sources, cleanup };
+  } catch (error) {
+    cleanup();
+    throw error;
+  }
+}
+
+function removeKnownUpstreamSymlink(file, label) {
+  if (!fs.existsSync(file)) return;
+  const stat = fs.lstatSync(file);
+  if (!stat.isSymbolicLink()) throw new Error(`${label} expected known symlink to still be a symlink: ${file}`);
+  fs.rmSync(file);
+}
+
+function selectSkillsByName(names, skills, label) {
+  const byName = new Map(skills.map((skill) => [skill.name, skill]));
+  return names.map((name) => {
+    const skill = byName.get(name);
+    if (!skill) throw new Error(`${label} missing upstream skill: ${name}`);
+    return skill;
+  });
+}
+
+function loadPlannotatorSkills(ref) {
+  const checkout = checkoutGitHubRepo(PLANNOTATOR_REPO, ref ?? DEFAULT_MATT_REF);
+  try {
+    const core = discoverFlatSkills(path.join(checkout.dir, 'apps/skills/core'), 'plannotator-core', {
+      source: MATT_SOURCE,
+      sourceMarkerPrefix: `github:${PLANNOTATOR_REPO}@${checkout.ref}:apps/skills/core`,
+    });
+    const extra = discoverFlatSkills(path.join(checkout.dir, 'apps/skills/extra'), 'plannotator-extra', {
+      source: MATT_SOURCE,
+      sourceMarkerPrefix: `github:${PLANNOTATOR_REPO}@${checkout.ref}:apps/skills/extra`,
+    });
+    const byName = new Map([...core, ...extra].map((skill) => [skill.name, skill]));
+    const skills = BOOTSTRAP_PLANNOTATOR_SKILLS.map((name) => {
+      const skill = byName.get(name);
+      if (!skill) throw new Error(`Plannotator upstream missing skill: ${name}`);
+      return skill;
+    });
+    return { skills, ref: checkout.ref, cleanup: checkout.cleanup };
   } catch (error) {
     checkout.cleanup();
     throw error;
@@ -419,31 +570,62 @@ function parseFrontmatter(text) {
   return fields;
 }
 
+function discoverFlatSkills(skillsRoot, category, options = {}) {
+  const skills = [];
+  for (const entry of fs.readdirSync(skillsRoot, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const dir = path.join(skillsRoot, entry.name);
+    const skillFile = path.join(dir, 'SKILL.md');
+    if (!fs.existsSync(skillFile)) continue;
+    const text = fs.readFileSync(skillFile, 'utf8');
+    const frontmatter = parseFrontmatter(text.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '');
+    const name = frontmatter.name ?? entry.name;
+    const description = frontmatter.description ?? '';
+    const sourceMarker = options.sourceMarkerPrefix ? `${options.sourceMarkerPrefix}/${entry.name}` : dir;
+    skills.push({ name, description, category, dir, source: options.source ?? LOCAL_SOURCE, sourceMarker });
+  }
+  return skills.sort((left, right) => left.name.localeCompare(right.name));
+}
+
 function discoverSkills(packageRoot = root, options = {}) {
   const skillsRoot = path.join(packageRoot, 'skills');
-  const categories = fs.readdirSync(skillsRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory());
   const skills = [];
 
-  for (const category of categories) {
+  for (const dir of findSkillDirectories(skillsRoot)) {
+    const skillFile = path.join(dir, 'SKILL.md');
+    const text = fs.readFileSync(skillFile, 'utf8');
+    const frontmatter = parseFrontmatter(text.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '');
+    const name = frontmatter.name ?? path.basename(dir);
+    const description = frontmatter.description ?? '';
+    const packageFile = path.join(dir, 'package.json');
+    const packageName = fs.existsSync(packageFile) ? JSON.parse(fs.readFileSync(packageFile, 'utf8')).name : undefined;
+    const relativeDir = path.relative(packageRoot, dir).split(path.sep).join('/');
+    const relativeSkillDir = path.relative(skillsRoot, dir).split(path.sep).join('/');
+    const category = relativeSkillDir.includes('/') ? relativeSkillDir.split('/')[0] : 'local';
+    const sourceMarker = options.sourceMarkerPrefix ? `${options.sourceMarkerPrefix}:${relativeDir}` : `package:@barlevalon/skills:${relativeDir}`;
+    skills.push({ name, description, category, dir, packageName, source: options.source ?? LOCAL_SOURCE, sourceMarker });
+  }
+
+  return skills.sort((left, right) => left.name.localeCompare(right.name));
+}
+
+function findSkillDirectories(skillsRoot) {
+  const entries = fs.readdirSync(skillsRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory());
+  const direct = entries
+    .map((entry) => path.join(skillsRoot, entry.name))
+    .filter((dir) => fs.existsSync(path.join(dir, 'SKILL.md')));
+  if (direct.length) return direct;
+
+  const nested = [];
+  for (const category of entries) {
     const categoryDir = path.join(skillsRoot, category.name);
     for (const entry of fs.readdirSync(categoryDir, { withFileTypes: true })) {
       if (!entry.isDirectory()) continue;
       const dir = path.join(categoryDir, entry.name);
-      const skillFile = path.join(dir, 'SKILL.md');
-      if (!fs.existsSync(skillFile)) continue;
-      const text = fs.readFileSync(skillFile, 'utf8');
-      const frontmatter = parseFrontmatter(text.match(/^---\n([\s\S]*?)\n---/m)?.[1] ?? '');
-      const name = frontmatter.name ?? entry.name;
-      const description = frontmatter.description ?? '';
-      const packageFile = path.join(dir, 'package.json');
-      const packageName = fs.existsSync(packageFile) ? JSON.parse(fs.readFileSync(packageFile, 'utf8')).name : undefined;
-      const relativeDir = path.relative(packageRoot, dir).split(path.sep).join('/');
-      const sourceMarker = options.sourceMarkerPrefix ? `${options.sourceMarkerPrefix}:${relativeDir}` : `package:@barlevalon/skills:${relativeDir}`;
-      skills.push({ name, description, category: category.name, dir, packageName, source: options.source ?? LOCAL_SOURCE, sourceMarker });
+      if (fs.existsSync(path.join(dir, 'SKILL.md'))) nested.push(dir);
     }
   }
-
-  return skills.sort((left, right) => left.name.localeCompare(right.name));
+  return nested;
 }
 
 async function chooseHarnesses(rl) {
@@ -600,6 +782,7 @@ function examplePrompts(skills, skillSet) {
   if (names.has('to-spec')) examples.push('Use to-spec to turn this plan into a spec.');
   if (names.has('to-tickets')) examples.push('Use to-tickets to break this spec into tickets.');
   if (names.has('tdd')) examples.push('Use tdd to implement this change.');
+  if (names.has('diagnosing-bugs')) examples.push('Use diagnosing-bugs before fixing this bug.');
   if (names.has('diagnose')) examples.push('Use diagnose before fixing this bug.');
   if (examples.length) return examples.slice(0, 2);
   return skills.slice(0, 2).map((skill) => `Use ${skill.name} for this workflow.`);

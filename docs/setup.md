@@ -9,14 +9,16 @@ npx @barlevalon/skills@latest install
 Default bootstrap:
 
 - Repo workflow layer: fetch Matt Pocock v1.1 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
-- Global personal layer: copy this package's barlevalon skills to `~/.agents/skills/` and `~/.claude/skills/`.
-- Existing skill folders that are not part of those sets are left untouched and listed after install.
+- Global local layer: copy this package's maintained local skills/forks to `~/.agents/skills/` and `~/.claude/skills/`.
+- Global upstream layer: fetch canonical skills from `JuliusBrussee/caveman`, `mattpocock/skills`, `vercel-labs/skills`, `max-sixty/worktrunk`, and `cursor/plugins`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`.
+- Global Plannotator layer: fetch `plannotator-review`, `plannotator-annotate`, `plannotator-last`, and `plannotator-visual-explainer` from `github:backnotprop/plannotator`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`.
+- Existing skill folders that are not part of those target sets are left untouched and listed after install. Existing folders that are part of the target set but not installer-managed are conflicts; use `--force` to replace them all-or-nothing.
 
 Advanced escape hatches:
 
 ```bash
-# Install tdd and diagnose from this package for VS Code extensions
-npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose --yes
+# Install local maintained skills/forks for VS Code extensions
+npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill release-prep --yes
 
 # Install Matt Pocock's core flow directly from github:mattpocock/skills
 npx @barlevalon/skills@latest install --bundle matt-core --agent vscode --project --yes
@@ -27,7 +29,7 @@ npx @barlevalon/skills@latest install --bundle matt-wayfinder --agent vscode --p
 # Install one upstream Matt skill directly
 npx @barlevalon/skills@latest install --source matt --skill wayfinder --agent vscode --project --yes
 
-# Install every skill from this package for every supported harness
+# Install every local maintained skill for every supported harness
 npx @barlevalon/skills@latest install --all --yes
 
 # Install release-prep globally for Claude Code
@@ -45,18 +47,18 @@ npx @barlevalon/skills@latest install --source matt --list
 
 | Harness | What the installer does |
 |---|---|
-| Pi | Runs `pi install` for bundled npm skills. For external GitHub sources, copies selected skill folders to `.agents/skills/` or `~/.agents/skills/`, which Pi also reads. |
+| Pi | Runs `pi install` for local npm skills. For external GitHub sources, copies selected skill folders to `.agents/skills/` or `~/.agents/skills/`, which Pi also reads. |
 | OpenCode | Copies selected skill folders to `.opencode/skills/` or `~/.config/opencode/skills/` |
 | VS Code | Project scope: copies skills to `.agents/skills/` and `.claude/skills/`, then updates `AGENTS.md` and `.github/copilot-instructions.md`. Global scope: copies skills to `~/.agents/skills/` and `~/.claude/skills/` |
 | Claude Code | Copies selected skill folders to `.claude/skills/` or `~/.claude/skills/` |
 
 The VS Code target is meant for repositories used with Copilot, Claude Code, and Codex extensions. Project scope installs native skill folders where extensions can use them and adds instruction files for tools that rely on repository guidance. Global scope skips Copilot repo instructions because those are project files.
 
-For skill descriptions, use the [README skill table](../README.md#pick-a-skill), [skill reference](usage.md), or Matt's upstream repo when installing Matt bundles.
+For skill descriptions, use the [README skill table](../README.md#pick-a-skill), [skill reference](usage.md), or upstream repositories when installing external bundles.
 
 ## External Matt Pocock bundles
 
-The installer can fetch selected skills directly from `github:mattpocock/skills` instead of copying a vendored fork from this repo.
+The installer can fetch selected skills directly from `github:mattpocock/skills`.
 
 Available bundles:
 

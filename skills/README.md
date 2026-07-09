@@ -1,60 +1,24 @@
 # Skills
 
-Portable Agent Skills in this repository.
+Portable Agent Skills maintained in this repository.
 
-## Communication
+This package is a bootstrap plus a small set of local skills/syntheses. Canonical third-party skills are fetched from upstream during install instead of vendored here.
 
-- [`caveman`](communication/caveman/SKILL.md)
-- [`caveman-commit`](communication/caveman-commit/SKILL.md)
-- [`caveman-help`](communication/caveman-help/SKILL.md)
+## Local skills
 
-## Discovery
+| Skill | Why it lives here | Influences / credits |
+|---|---|---|
+| [`caveman-commit`](caveman-commit/SKILL.md) | Local commit-message policy fork | Based on `JuliusBrussee/caveman`'s `caveman-commit` skill |
+| [`documentation-system`](documentation-system/SKILL.md) | Local documentation workflow | Inspired by Divio's four-quadrant documentation system |
+| [`tdd`](tdd/SKILL.md) | Local synthesis of test-first discipline | Influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
+| [`release-prep`](release-prep/SKILL.md) | Local release preparation workflow | Authored for this package's release process |
 
-- [`find-skills`](discovery/find-skills/SKILL.md)
+## Upstream skills installed by bootstrap
 
-## Documentation
+Default bootstrap fetches canonical skills directly from upstream repositories, including Matt Pocock workflow skills, Caveman mode/help, Vercel `find-skills`, Worktrunk, Cursor's thermo-nuclear review skill, and selected Plannotator review skills.
 
-- [`documentation-system`](documentation/documentation-system/SKILL.md)
-
-## Engineering
-
-- [`codebase-design`](engineering/codebase-design/SKILL.md)
-- [`diagnose`](engineering/diagnose/SKILL.md)
-- [`domain-modeling`](engineering/domain-modeling/SKILL.md)
-- [`grill-with-docs`](engineering/grill-with-docs/SKILL.md)
-- [`improve-codebase-architecture`](engineering/improve-codebase-architecture/SKILL.md)
-- [`prd-to-plan`](engineering/prd-to-plan/SKILL.md)
-- [`prototype`](engineering/prototype/SKILL.md)
-- [`tdd`](engineering/tdd/SKILL.md)
-- [`worktrunk`](engineering/worktrunk/SKILL.md)
-- [`write-a-prd`](engineering/write-a-prd/SKILL.md)
-- [`zoom-out`](engineering/zoom-out/SKILL.md)
-
-## Evaluation
-
-- [`thermo-nuclear-code-quality-review`](evaluation/thermo-nuclear-code-quality-review/SKILL.md)
-
-## Handoff
-
-- [`handoff`](handoff/handoff/SKILL.md)
-
-## Productivity
-
-- [`grilling`](productivity/grilling/SKILL.md)
-- [`writing-great-skills`](productivity/writing-great-skills/SKILL.md)
-
-## Release
-
-- [`release-prep`](release/release-prep/SKILL.md)
-
-## Review
-
-- [`plannotator-compound`](review/plannotator-compound/SKILL.md)
-- [`plannotator-setup-goal`](review/plannotator-setup-goal/SKILL.md)
-- [`plannotator-visual-explainer`](review/plannotator-visual-explainer/SKILL.md)
-
-Convention:
+Convention for local skills:
 
 ```text
-skills/<category>/<skill>/SKILL.md
+skills/<skill>/SKILL.md
 ```

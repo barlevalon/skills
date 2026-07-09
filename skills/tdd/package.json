@@ -1,0 +1,45 @@
+{
+  "name": "@barlevalon/tdd-skill",
+  "version": "1.0.0",
+  "description": "Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions \"red-green-refactor\", wants integration tests, or asks for test-first development.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barlevalon/skills.git",
+    "directory": "skills/tdd"
+  },
+  "bugs": {
+    "url": "https://github.com/barlevalon/skills/issues"
+  },
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/tdd#readme",
+  "keywords": [
+    "agent-skill",
+    "agent-skills",
+    "ai-agent",
+    "engineering",
+    "pi",
+    "pi-package",
+    "skills",
+    "tdd"
+  ],
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "LICENSE",
+    "deep-modules.md",
+    "interface-design.md",
+    "mocking.md",
+    "refactoring.md",
+    "testing-anti-patterns.md",
+    "tests.md"
+  ],
+  "scripts": {
+    "pack:check": "npm pack --dry-run"
+  },
+  "pi": {
+    "skills": [
+      "./SKILL.md"
+    ]
+  },
+  "curator": "Alon Hearter"
+}

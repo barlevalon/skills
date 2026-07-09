@@ -1,7 +1,7 @@
 {
   "name": "@barlevalon/skills",
-  "version": "0.7.7",
-  "description": "A monorepo of portable Agent Skills for AI-assisted engineering workflows.",
+  "version": "1.0.0",
+  "description": "Bootstrap Alon's agentic environment with maintained local skills and upstream workflow skills.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -35,7 +35,7 @@
     "LICENSE"
   ],
   "workspaces": [
-    "skills/*/*"
+    "skills/*"
   ],
   "scripts": {
     "validate": "node scripts/validate-package.mjs",
@@ -45,7 +45,7 @@
   },
   "pi": {
     "skills": [
-      "./skills/*/*/SKILL.md"
+      "./skills/*/SKILL.md"
     ]
   },
   "curator": "Alon Hearter",

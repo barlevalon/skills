@@ -1,0 +1,39 @@
+{
+  "name": "@barlevalon/caveman-commit-skill",
+  "version": "1.0.0",
+  "description": "A release-aware Agent Skill for terse commit messages using scope-first subjects and optional Conventional Commit metadata.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barlevalon/skills.git",
+    "directory": "skills/caveman-commit"
+  },
+  "bugs": {
+    "url": "https://github.com/barlevalon/skills/issues"
+  },
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/caveman-commit#readme",
+  "keywords": [
+    "agent-skill",
+    "agent-skills",
+    "ai-agent",
+    "caveman-commit",
+    "communication",
+    "pi",
+    "pi-package",
+    "skills"
+  ],
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "pack:check": "npm pack --dry-run"
+  },
+  "pi": {
+    "skills": [
+      "./SKILL.md"
+    ]
+  },
+  "curator": "Alon Hearter"
+}

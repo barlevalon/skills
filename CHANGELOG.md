@@ -4,6 +4,18 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [1.0.0] - 2026-07-09
+
+### Changed
+- Make the root package a bootstrap: install canonical third-party skills directly from upstream instead of vendoring local copies.
+- Flatten local skill layout to `skills/<skill>/`.
+- Publish surviving local skill packages at `1.0.0`: `caveman-commit`, `documentation-system`, `tdd`, and `release-prep`.
+- Install selected Plannotator skills from `backnotprop/plannotator` during bootstrap.
+
+### Removed
+- Remove vendored third-party skill copies from this package.
+- Remove the vendored `zoom-out` skill; Matt upstream removed it as unused.
+
 ## [0.7.7] - 2026-07-09
 
 ### Fixed

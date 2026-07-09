@@ -13,7 +13,7 @@ A skill is not an app you run. It is a reusable procedure for an agent.
 Each skill lives in a folder:
 
 ```text
-skills/<category>/<skill>/SKILL.md
+skills/<skill>/SKILL.md
 ```
 
 `SKILL.md` gives the agent the workflow. Optional `references/`, `scripts/`, and `assets/` are loaded only when needed.

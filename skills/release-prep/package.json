@@ -1,0 +1,43 @@
+{
+  "name": "@barlevalon/release-prep-skill",
+  "version": "1.0.0",
+  "description": "An Agent Skill for evidence-backed release preparation, changelog drafting, SemVer recommendations, and approval-gated publishing plans.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barlevalon/skills.git",
+    "directory": "skills/release-prep"
+  },
+  "bugs": {
+    "url": "https://github.com/barlevalon/skills/issues"
+  },
+  "homepage": "https://github.com/barlevalon/skills/tree/main/skills/release-prep#readme",
+  "keywords": [
+    "agent-skill",
+    "agent-skills",
+    "changelog",
+    "claude-code",
+    "codex",
+    "cursor",
+    "pi",
+    "pi-package",
+    "release-management",
+    "release-notes",
+    "semver",
+    "skills"
+  ],
+  "files": [
+    "SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "pack:check": "npm pack --dry-run"
+  },
+  "pi": {
+    "skills": [
+      "./SKILL.md"
+    ]
+  },
+  "curator": "Alon Hearter"
+}

@@ -4,8 +4,8 @@
 
 | Situation | Use |
 |---|---|
-| Idea is fuzzy | `write-a-prd` |
-| PRD needs implementation phases | `prd-to-plan` |
+| Current conversation should become a spec | `to-spec` |
+| Spec/plan needs tracer-bullet tickets | `to-tickets` |
 | Plan needs pressure-testing | `grill-with-docs` or `grilling` |
 | Domain language is fuzzy | `domain-modeling` |
 | UI/state/design is uncertain | `prototype` |
@@ -14,9 +14,8 @@
 
 | Situation | Use |
 |---|---|
-| Failure is unclear | `diagnose` |
+| Failure is unclear | `diagnosing-bugs` |
 | Behavior change is clear | `tdd` |
-| Need broader context | `zoom-out` |
 | Need worktree/branch help | `worktrunk` |
 
 ## Review
@@ -27,8 +26,6 @@
 | Architecture feels tangled | `improve-codebase-architecture` |
 | Need reusable module/interface vocabulary | `codebase-design` |
 | Need a visual explanation | `plannotator-visual-explainer` |
-| Want to learn from rejected plans | `plannotator-compound` |
-| Goal needs a reviewed execution package | `plannotator-setup-goal` |
 
 ## Communicate
 
