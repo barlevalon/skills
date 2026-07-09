@@ -1,12 +1,18 @@
 # Setup
 
-Use the installer. It opens an interactive picker for harnesses, skills, and scope, then writes the right files for each tool.
+Use the installer. With no flags, it bootstraps the normal agentic environment:
 
 ```bash
 npx @barlevalon/skills@latest install
 ```
 
-Non-interactive examples:
+Default bootstrap:
+
+- Repo workflow layer: fetch Matt Pocock v1.1 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
+- Global personal layer: copy this package's barlevalon skills to `~/.agents/skills/` and `~/.claude/skills/`.
+- Existing skill folders that are not part of those sets are left untouched and listed after install.
+
+Advanced escape hatches:
 
 ```bash
 # Install tdd and diagnose from this package for VS Code extensions
@@ -35,7 +41,7 @@ npx @barlevalon/skills@latest install --list
 npx @barlevalon/skills@latest install --source matt --list
 ```
 
-## Supported harnesses
+## Advanced targets
 
 | Harness | What the installer does |
 |---|---|

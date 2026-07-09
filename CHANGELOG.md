@@ -4,6 +4,15 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.6] - 2026-07-09
+
+### Changed
+- Make the default installer command a KISS bootstrap for Alon's agentic environment: repo workflow skills from Matt upstream plus global barlevalon personal skills.
+- Remove the confusing interactive skill-source picker from the default flow.
+
+### Added
+- Report pre-existing skill folders that were left untouched after bootstrap.
+
 ## [0.7.5] - 2026-07-08
 
 ### Added

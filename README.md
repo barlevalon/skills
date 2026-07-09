@@ -3,7 +3,7 @@
 [![CI](https://github.com/barlevalon/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/barlevalon/skills/actions/workflows/ci.yml)
 [![npm](https://img.shields.io/npm/v/%40barlevalon%2Fskills.svg)](https://www.npmjs.com/package/@barlevalon/skills)
 
-Reusable Agent Skills for AI-assisted engineering workflows.
+Alon's one-command bootstrap for an agentic engineering environment.
 
 A skill is a directory with a `SKILL.md` entry point plus any helper references, scripts, or templates it needs. Agents see the skill name and description first, then load the full skill only when the task matches.
 
@@ -15,16 +15,14 @@ Run the installer:
 npx @barlevalon/skills@latest install
 ```
 
-It opens an interactive picker for harnesses, skills, and scope, then writes the right files for each tool.
+With no flags it does the normal bootstrap:
 
-Supported targets:
+- installs Matt Pocock workflow skills into the current repo under `.agents/skills` and `.claude/skills`
+- updates repo instruction files for agents that need them
+- installs barlevalon personal/global skills under `~/.agents/skills` and `~/.claude/skills`
+- reports any pre-existing skill folders it left untouched
 
-- Pi
-- OpenCode
-- VS Code with Copilot, Claude, or Codex extensions
-- Claude Code
-
-Examples:
+Advanced escape hatches:
 
 ```bash
 npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose --yes
@@ -34,7 +32,7 @@ npx @barlevalon/skills@latest install --agent claude-code --skill release-prep -
 npx @barlevalon/skills@latest install --all --yes
 ```
 
-Matt Pocock workflow bundles are fetched directly from `github:mattpocock/skills` at install time instead of vendored here.
+Matt Pocock workflow skills are fetched directly from `github:mattpocock/skills` at install time instead of vendored here.
 
 See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
 

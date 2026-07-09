@@ -15,6 +15,7 @@ const LOCAL_SOURCE = 'barlevalon';
 const MATT_SOURCE = 'matt';
 const MATT_REPO = 'mattpocock/skills';
 const DEFAULT_MATT_REF = 'main';
+const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.1';
 const RENAMED_SKILLS = new Map([
   ['write-a-prd', 'to-spec'],
   ['prd-to-plan', 'to-tickets'],
@@ -44,14 +45,17 @@ const HARNESS_OPTIONS = [
 
 const HELP = `skills install
 
-Install barlevalon workflow skills for supported agent harnesses.
+Bootstrap Alon's agentic environment.
+
+With no flags, installs Matt workflow skills into the current repo,
+barlevalon personal/global skills into your user-level skill folders,
+and reports pre-existing skill folders left untouched.
 
 Usage:
   npx @barlevalon/skills@latest install
   npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose
   npx @barlevalon/skills@latest install --bundle matt-core --agent vscode --project --yes
   npx @barlevalon/skills@latest install --source matt --skill wayfinder --yes
-  npx @barlevalon/skills@latest install --all --yes
 
 Options:
   -a, --agent <name>    Harness to install for: pi, opencode, vscode, claude-code, all
@@ -88,6 +92,11 @@ async function main() {
   let loaded;
   try {
     const yes = Boolean(args.yes);
+    if (isBootstrapInstall(args)) {
+      loaded = await installBootstrap(args, rl, yes);
+      return;
+    }
+
     const skillSet = await chooseSkillSet(args, rl, yes);
     loaded = loadSkills(skillSet, args);
     const skills = loaded.skills;
@@ -191,6 +200,64 @@ function splitArg(value) {
   return String(value).split(',').map((part) => part.trim()).filter(Boolean);
 }
 
+function isBootstrapInstall(args) {
+  return !args.list
+    && !args.all
+    && !args.global
+    && !args.project
+    && !args.ref
+    && args.agent.length === 0
+    && args.skill.length === 0
+    && args.source.length === 0
+    && args.bundle.length === 0;
+}
+
+async function installBootstrap(args, rl, yes) {
+  const projectSkillSet = {
+    source: MATT_SOURCE,
+    bundle: BOOTSTRAP_PROJECT_BUNDLE,
+    ref: DEFAULT_MATT_REF,
+    label: MATT_BUNDLES.get(BOOTSTRAP_PROJECT_BUNDLE).label,
+  };
+  const projectLoaded = loadSkills(projectSkillSet, args);
+  try {
+    const projectSkills = selectBundleSkills(BOOTSTRAP_PROJECT_BUNDLE, projectLoaded.skills);
+    const globalSkills = discoverSkills(root, { source: LOCAL_SOURCE });
+
+    console.log('\nPlan:');
+    console.log(`- Repo workflow skills: install ${projectSkills.length} Matt v1.1 skill folder(s) to .agents/skills and .claude/skills`);
+    console.log('- Repo instructions: update AGENTS.md and .github/copilot-instructions.md');
+    console.log(`- Global personal skills: install ${globalSkills.length} barlevalon skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
+    console.log(`\nSource: github:${MATT_REPO}@${projectSkillSet.ref}`);
+
+    const untouchedReport = snapshotUntouchedSkillDirs([
+      { label: 'repo .agents/skills', root: path.join(cwd, '.agents/skills'), installedNames: new Set(projectSkills.map((skill) => skill.name)) },
+      { label: 'repo .claude/skills', root: path.join(cwd, '.claude/skills'), installedNames: new Set(projectSkills.map((skill) => skill.name)) },
+      { label: 'global ~/.agents/skills', root: path.join(os.homedir(), '.agents/skills'), installedNames: new Set(globalSkills.map((skill) => skill.name)) },
+      { label: 'global ~/.claude/skills', root: path.join(os.homedir(), '.claude/skills'), installedNames: new Set(globalSkills.map((skill) => skill.name)) },
+    ]);
+
+    let confirmed = yes;
+    if (!yes) {
+      confirmed = await askYesNo(rl, 'Bootstrap this repo and your global agent skills?', true);
+      if (!confirmed) return { cleanup: projectLoaded.cleanup };
+    }
+
+    installVSCode(projectSkills, 'project', args.force, confirmed);
+    installSkillCopies(globalSkills, path.join(os.homedir(), '.agents/skills'), args.force);
+    installSkillCopies(globalSkills, path.join(os.homedir(), '.claude/skills'), args.force);
+
+    printUntouchedSkillDirs(untouchedReport);
+
+    console.log('\nInstalled. Ask your agent for a workflow, for example:');
+    for (const line of examplePrompts(projectSkills, projectSkillSet)) console.log(`  ${line}`);
+    return { cleanup: projectLoaded.cleanup };
+  } catch (error) {
+    projectLoaded.cleanup?.();
+    throw error;
+  }
+}
+
 async function chooseSkillSet(args, rl, yes) {
   const ref = args.ref ?? DEFAULT_MATT_REF;
 
@@ -214,21 +281,33 @@ async function chooseSkillSet(args, rl, yes) {
       : { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' };
   }
 
-  if (yes || !input.isTTY || !output.isTTY) {
-    return { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' };
-  }
+  return { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' };
+}
 
-  return select({
-    message: 'Install which skill set?',
-    choices: [
-      { name: 'barlevalon skills — personal/global bundle from this package', value: { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' } },
-      ...[...MATT_BUNDLES.entries()].map(([bundle, config]) => ({
-        name: `${config.label} — fetched directly from github:${MATT_REPO}`,
-        value: { source: MATT_SOURCE, bundle, ref, label: config.label },
-      })),
-      { name: `Matt upstream — pick skills from github:${MATT_REPO}`, value: { source: MATT_SOURCE, bundle: null, ref, label: `Matt upstream (${MATT_REPO}@${ref})` } },
-    ],
+function snapshotUntouchedSkillDirs(targets) {
+  return targets.map((target) => {
+    const existing = existingSkillDirNames(target.root);
+    const untouched = existing.filter((name) => !target.installedNames.has(name));
+    return { label: target.label, root: target.root, names: untouched };
   });
+}
+
+function existingSkillDirNames(rootDir) {
+  if (!fs.existsSync(rootDir)) return [];
+  return fs.readdirSync(rootDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name)
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function printUntouchedSkillDirs(report) {
+  const entries = report.filter((target) => target.names.length > 0);
+  if (!entries.length) return;
+
+  console.log('\nExisting skill folders left untouched:');
+  for (const target of entries) {
+    console.log(`- ${target.label}: ${target.names.join(', ')}`);
+  }
 }
 
 function normalizeSource(value) {
