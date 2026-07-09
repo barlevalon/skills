@@ -522,23 +522,43 @@ function selectBundleSkills(bundle, skills) {
 }
 
 function checkoutGitHubRepo(repo, ref) {
-  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'barlevalon-skills-'));
-  const cleanup = () => fs.rmSync(dir, { recursive: true, force: true });
-  try {
-    const url = `https://github.com/${repo}.git`;
-    runGit(['clone', '--depth', '1', url, dir], `clone github:${repo}`);
-    if (ref && ref !== DEFAULT_MATT_REF) {
-      const fetch = spawnSync('git', ['-C', dir, 'fetch', '--depth', '1', 'origin', ref], { encoding: 'utf8' });
-      if (fetch.status === 0) runGit(['-C', dir, 'checkout', 'FETCH_HEAD'], `checkout ${ref}`);
-      else runGit(['-C', dir, 'checkout', ref], `checkout ${ref}`);
+  return withStatus(`Fetching github:${repo}@${ref ?? DEFAULT_MATT_REF}`, () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'barlevalon-skills-'));
+    const cleanup = () => fs.rmSync(dir, { recursive: true, force: true });
+    try {
+      const url = `https://github.com/${repo}.git`;
+      runGit(['clone', '--depth', '1', url, dir], `clone github:${repo}`);
+      if (ref && ref !== DEFAULT_MATT_REF) {
+        const fetch = spawnSync('git', ['-C', dir, 'fetch', '--depth', '1', 'origin', ref], { encoding: 'utf8' });
+        if (fetch.status === 0) runGit(['-C', dir, 'checkout', 'FETCH_HEAD'], `checkout ${ref}`);
+        else runGit(['-C', dir, 'checkout', ref], `checkout ${ref}`);
+      }
+      const resolved = spawnSync('git', ['-C', dir, 'rev-parse', 'HEAD'], { encoding: 'utf8' });
+      const resolvedRef = resolved.status === 0 ? resolved.stdout.trim() : ref;
+      return { dir, ref: resolvedRef, cleanup };
+    } catch (error) {
+      cleanup();
+      throw error;
     }
-    const resolved = spawnSync('git', ['-C', dir, 'rev-parse', 'HEAD'], { encoding: 'utf8' });
-    const resolvedRef = resolved.status === 0 ? resolved.stdout.trim() : ref;
-    return { dir, ref: resolvedRef, cleanup };
+  });
+}
+
+function withStatus(label, action) {
+  const start = Date.now();
+  process.stderr.write(`${label}...`);
+  try {
+    const result = action();
+    process.stderr.write(` done (${formatDuration(Date.now() - start)})\n`);
+    return result;
   } catch (error) {
-    cleanup();
+    process.stderr.write(` failed (${formatDuration(Date.now() - start)})\n`);
     throw error;
   }
+}
+
+function formatDuration(milliseconds) {
+  if (milliseconds < 1000) return `${milliseconds}ms`;
+  return `${(milliseconds / 1000).toFixed(1)}s`;
 }
 
 function runGit(args, label) {

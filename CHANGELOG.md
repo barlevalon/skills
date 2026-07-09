@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [1.0.1] - 2026-07-09
+
+### Fixed
+- Show progress while fetching upstream skill repositories so bootstrap installs do not look stalled before the plan prints.
+
 ## [1.0.0] - 2026-07-09
 
 ### Changed
