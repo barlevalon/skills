@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.7] - 2026-07-09
+
+### Fixed
+- Preflight skill-folder conflicts across every target before copying, then report all conflicts together without leaving a half-installed state.
+
 ## [0.7.6] - 2026-07-09
 
 ### Changed

@@ -150,6 +150,8 @@ async function main() {
       if (!confirmed) return;
     }
 
+    assertCanInstallSkillCopies(copyTargetsForHarnesses(chosenHarnesses, selectedSkills, scope, skillSet), args.force);
+
     for (const harness of chosenHarnesses) {
       if (harness === 'pi') {
         if (skillSet.source === LOCAL_SOURCE) installPi(selectedSkills, scope);
@@ -242,6 +244,13 @@ async function installBootstrap(args, rl, yes) {
       confirmed = await askYesNo(rl, 'Bootstrap this repo and your global agent skills?', true);
       if (!confirmed) return { cleanup: projectLoaded.cleanup };
     }
+
+    assertCanInstallSkillCopies([
+      { targetRoot: path.join(cwd, '.agents/skills'), skills: projectSkills },
+      { targetRoot: path.join(cwd, '.claude/skills'), skills: projectSkills },
+      { targetRoot: path.join(os.homedir(), '.agents/skills'), skills: globalSkills },
+      { targetRoot: path.join(os.homedir(), '.claude/skills'), skills: globalSkills },
+    ], args.force);
 
     installVSCode(projectSkills, 'project', args.force, confirmed);
     installSkillCopies(globalSkills, path.join(os.homedir(), '.agents/skills'), args.force);
@@ -627,6 +636,74 @@ function installVSCode(skills, scope, replaceAnySkillDir, confirmed) {
   installSkillCopies(skills, path.join(cwd, '.claude/skills'), replaceAnySkillDir);
   upsertManagedBlock(path.join(cwd, 'AGENTS.md'), agentsBlock(skills), confirmed);
   upsertManagedBlock(path.join(cwd, '.github/copilot-instructions.md'), copilotBlock(skills), confirmed);
+}
+
+function copyTargetsForHarnesses(harnesses, skills, scope, skillSet) {
+  const targets = [];
+  for (const harness of harnesses) {
+    if (harness === 'pi' && skillSet.source !== LOCAL_SOURCE) {
+      targets.push({ targetRoot: scope === 'global' ? path.join(os.homedir(), '.agents/skills') : path.join(cwd, '.agents/skills'), skills });
+    }
+    if (harness === 'opencode') {
+      targets.push({ targetRoot: scope === 'global' ? path.join(os.homedir(), '.config/opencode/skills') : path.join(cwd, '.opencode/skills'), skills });
+    }
+    if (harness === 'claude-code') {
+      targets.push({ targetRoot: scope === 'global' ? path.join(os.homedir(), '.claude/skills') : path.join(cwd, '.claude/skills'), skills });
+    }
+    if (harness === 'vscode') {
+      targets.push({ targetRoot: scope === 'global' ? path.join(os.homedir(), '.agents/skills') : path.join(cwd, '.agents/skills'), skills });
+      targets.push({ targetRoot: scope === 'global' ? path.join(os.homedir(), '.claude/skills') : path.join(cwd, '.claude/skills'), skills });
+    }
+  }
+  return targets;
+}
+
+function assertCanInstallSkillCopies(targets, replaceAnySkillDir) {
+  const conflicts = [];
+  const seen = new Set();
+
+  for (const { targetRoot, skills } of targets) {
+    for (const skill of skills) {
+      const markerSource = skill.sourceMarker ?? skill.dir;
+      const target = path.join(targetRoot, skill.name);
+      const key = `${target}\0${markerSource}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+
+      if (skill.source !== LOCAL_SOURCE) {
+        for (const symlink of findSymlinks(skill.dir)) {
+          conflicts.push(`${displayPath(target)} cannot be installed because external source contains symlink: ${displayPath(symlink)}`);
+        }
+      }
+
+      if (!fs.existsSync(target) || replaceAnySkillDir) continue;
+      if (!isManagedInstall(target)) {
+        conflicts.push(`${displayPath(target)} already exists and was not created by this installer`);
+        continue;
+      }
+      const existingSource = readInstallMarker(target)?.source;
+      if (!canRefreshManagedInstall(existingSource, markerSource)) {
+        conflicts.push(`${displayPath(target)} is installer-managed from ${existingSource ?? 'an unknown source'} and would switch to ${markerSource}`);
+      }
+    }
+  }
+
+  if (!conflicts.length) return;
+  throw new Error(`install conflicts found; no files were changed:\n${conflicts.map((conflict) => `- ${conflict}`).join('\n')}\nRerun with --force to replace these skill folders.`);
+}
+
+function displayPath(file) {
+  const relative = path.relative(cwd, file);
+  return relative && !relative.startsWith('..') ? relative : file.replace(os.homedir(), '~');
+}
+
+function findSymlinks(directory, found = []) {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isSymbolicLink()) found.push(entryPath);
+    else if (entry.isDirectory()) findSymlinks(entryPath, found);
+  }
+  return found;
 }
 
 function installSkillCopies(skills, targetRoot, replaceAnySkillDir) {
