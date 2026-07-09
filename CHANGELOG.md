@@ -4,6 +4,12 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [0.7.5] - 2026-07-08
+
+### Added
+- Add installer support for external Matt Pocock skill bundles fetched directly from `github:mattpocock/skills`.
+- Add `--source`, `--bundle`, and `--ref` installer options.
+
 ## [0.7.4] - 2026-07-08
 
 ### Changed

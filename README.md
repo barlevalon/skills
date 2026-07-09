@@ -28,9 +28,13 @@ Examples:
 
 ```bash
 npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose --yes
+npx @barlevalon/skills@latest install --bundle matt-core --agent vscode --project --yes
+npx @barlevalon/skills@latest install --bundle matt-wayfinder --agent vscode --project --yes
 npx @barlevalon/skills@latest install --agent claude-code --skill release-prep --global --yes
 npx @barlevalon/skills@latest install --all --yes
 ```
+
+Matt Pocock workflow bundles are fetched directly from `github:mattpocock/skills` at install time instead of vendored here.
 
 See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
 

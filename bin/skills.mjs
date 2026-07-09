@@ -11,6 +11,29 @@ import { checkbox, confirm, select, Separator } from '@inquirer/prompts';
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cwd = process.cwd();
 const MARKER = 'skills';
+const LOCAL_SOURCE = 'barlevalon';
+const MATT_SOURCE = 'matt';
+const MATT_REPO = 'mattpocock/skills';
+const DEFAULT_MATT_REF = 'main';
+const RENAMED_SKILLS = new Map([
+  ['write-a-prd', 'to-spec'],
+  ['prd-to-plan', 'to-tickets'],
+]);
+
+const MATT_BUNDLES = new Map([
+  ['matt-core', {
+    label: 'Matt core flow',
+    skills: ['grilling', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd'],
+  }],
+  ['matt-wayfinder', {
+    label: 'Matt Wayfinder flow',
+    skills: ['wayfinder', 'research', 'prototype', 'grilling', 'domain-modeling'],
+  }],
+  ['matt-v1.1', {
+    label: 'Matt v1.1 workflow',
+    skills: ['grilling', 'grill-with-docs', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd', 'wayfinder', 'research', 'prototype', 'domain-modeling', 'codebase-design', 'improve-codebase-architecture'],
+  }],
+]);
 
 const HARNESS_OPTIONS = [
   { id: 'pi', label: 'Pi' },
@@ -26,16 +49,21 @@ Install barlevalon workflow skills for supported agent harnesses.
 Usage:
   npx @barlevalon/skills@latest install
   npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill diagnose
+  npx @barlevalon/skills@latest install --bundle matt-core --agent vscode --project --yes
+  npx @barlevalon/skills@latest install --source matt --skill wayfinder --yes
   npx @barlevalon/skills@latest install --all --yes
 
 Options:
   -a, --agent <name>    Harness to install for: pi, opencode, vscode, claude-code, all
   -s, --skill <name>    Skill to install. Use '*' or all for every skill
+      --source <name>   Skill source: barlevalon (default), matt
+      --bundle <name>   Skill bundle: matt-core, matt-wayfinder, matt-v1.1
+      --ref <ref>       Git ref for external sources (default: main)
   -g, --global          Install to user scope where supported
   -p, --project         Install to project scope (default)
-      --all             Select all harnesses and all skills
+      --all             Select all harnesses and all skills (do not combine with --bundle)
   -y, --yes             Do not prompt; accept defaults
-      --force           Replace existing unmanaged skill directories
+      --force           Replace existing unmanaged skill directories or switch managed sources
       --list            List available skills
   -h, --help            Show this help
 `;
@@ -54,20 +82,26 @@ async function main() {
     return;
   }
 
-  const skills = discoverSkills();
-
-  if (args.list) {
-    console.log('Available skills:');
-    for (const skill of skills) console.log(`- ${skill.name} (${skill.category})`);
-    console.log('\nDescriptions: https://github.com/barlevalon/skills#pick-a-skill');
-    return;
-  }
-
   if (command !== 'install') throw new Error(`unknown command: ${command}`);
 
   const rl = input.isTTY && output.isTTY ? null : readline.createInterface({ input, output });
+  let loaded;
   try {
     const yes = Boolean(args.yes);
+    const skillSet = await chooseSkillSet(args, rl, yes);
+    loaded = loadSkills(skillSet, args);
+    const skills = loaded.skills;
+
+    if (args.list) {
+      const listedSkills = skillSet.bundle ? selectBundleSkills(skillSet.bundle, skills) : skills;
+      console.log(`Available skills (${skillSet.label}):`);
+      for (const skill of listedSkills) console.log(`- ${skill.name} (${skill.category})`);
+      console.log(skillSet.source === LOCAL_SOURCE
+        ? '\nDescriptions: https://github.com/barlevalon/skills#pick-a-skill'
+        : `\nSource: github:${MATT_REPO}@${skillSet.ref}`);
+      return;
+    }
+
     const harnessInput = args.all
       ? ['all']
       : args.agent?.length
@@ -75,13 +109,15 @@ async function main() {
         : yes
           ? ['vscode']
           : await chooseHarnesses(rl);
-    const skillInput = args.all
-      ? ['all']
-      : args.skill?.length
-        ? args.skill
-        : yes
-          ? ['all']
-          : await chooseSkills(rl, skills);
+    const skillInput = skillSet.bundle
+      ? MATT_BUNDLES.get(skillSet.bundle).skills
+      : args.all
+        ? ['all']
+        : args.skill?.length
+          ? args.skill
+          : yes
+            ? ['all']
+            : await chooseSkills(rl, skills);
     const chosenHarnesses = normalizeHarnesses(harnessInput);
     const chosenSkills = normalizeSkills(skillInput, skills);
     const scope = args.global
@@ -96,8 +132,8 @@ async function main() {
     if (selectedSkills.length === 0) throw new Error('no skills selected');
     if (chosenHarnesses.length === 0) throw new Error('no harnesses selected');
 
-    const plan = buildPlan(chosenHarnesses, selectedSkills, scope);
-    printPlan(plan, selectedSkills);
+    const plan = buildPlan(chosenHarnesses, selectedSkills, scope, skillSet);
+    printPlan(plan, selectedSkills, skillSet);
 
     let confirmed = yes;
     if (!yes) {
@@ -106,7 +142,10 @@ async function main() {
     }
 
     for (const harness of chosenHarnesses) {
-      if (harness === 'pi') installPi(selectedSkills, scope);
+      if (harness === 'pi') {
+        if (skillSet.source === LOCAL_SOURCE) installPi(selectedSkills, scope);
+        else installSkillCopies(selectedSkills, scope === 'global' ? path.join(os.homedir(), '.agents/skills') : path.join(cwd, '.agents/skills'), args.force);
+      }
       else if (harness === 'opencode') installSkillCopies(selectedSkills, scope === 'global' ? path.join(os.homedir(), '.config/opencode/skills') : path.join(cwd, '.opencode/skills'), args.force);
       else if (harness === 'claude-code') installSkillCopies(selectedSkills, scope === 'global' ? path.join(os.homedir(), '.claude/skills') : path.join(cwd, '.claude/skills'), args.force);
       else if (harness === 'vscode') installVSCode(selectedSkills, scope, args.force, confirmed);
@@ -114,15 +153,15 @@ async function main() {
     }
 
     console.log('\nInstalled. Ask your agent for a workflow, for example:');
-    console.log('  Use tdd to implement this change.');
-    console.log('  Use diagnose before fixing this bug.');
+    for (const line of examplePrompts(selectedSkills, skillSet)) console.log(`  ${line}`);
   } finally {
+    loaded?.cleanup?.();
     rl?.close();
   }
 }
 
 function parseArgs(argv) {
-  const args = { _: [], agent: [], skill: [] };
+  const args = { _: [], agent: [], skill: [], source: [], bundle: [] };
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === '--help' || arg === '-h') args.help = true;
@@ -132,6 +171,12 @@ function parseArgs(argv) {
     else if (arg === '--force') args.force = true;
     else if (arg === '--global' || arg === '-g') args.global = true;
     else if (arg === '--project' || arg === '-p') args.project = true;
+    else if (arg === '--source') args.source.push(...splitArg(argv[++i]));
+    else if (arg.startsWith('--source=')) args.source.push(...splitArg(arg.slice('--source='.length)));
+    else if (arg === '--bundle') args.bundle.push(...splitArg(argv[++i]));
+    else if (arg.startsWith('--bundle=')) args.bundle.push(...splitArg(arg.slice('--bundle='.length)));
+    else if (arg === '--ref') args.ref = argv[++i];
+    else if (arg.startsWith('--ref=')) args.ref = arg.slice('--ref='.length);
     else if (arg === '--agent' || arg === '-a') args.agent.push(...splitArg(argv[++i]));
     else if (arg.startsWith('--agent=')) args.agent.push(...splitArg(arg.slice('--agent='.length)));
     else if (arg === '--skill' || arg === '-s') args.skill.push(...splitArg(argv[++i]));
@@ -144,6 +189,123 @@ function parseArgs(argv) {
 function splitArg(value) {
   if (!value) return [];
   return String(value).split(',').map((part) => part.trim()).filter(Boolean);
+}
+
+async function chooseSkillSet(args, rl, yes) {
+  const ref = args.ref ?? DEFAULT_MATT_REF;
+
+  if (args.bundle.length > 1) throw new Error('choose only one --bundle');
+  if (args.source.length > 1) throw new Error('choose only one --source');
+  if (args.bundle.length && args.skill.length) throw new Error('--bundle already selects skills; do not combine it with --skill');
+  if (args.bundle.length && args.all) throw new Error('--bundle selects a subset of skills; do not combine it with --all. Use --agent all with --bundle if you want every harness.');
+
+  if (args.bundle.length) {
+    if (args.source.length && normalizeSource(args.source[0]) !== MATT_SOURCE) {
+      throw new Error('--bundle uses Matt upstream skills; do not combine it with --source barlevalon');
+    }
+    const bundle = normalizeBundle(args.bundle[0]);
+    return { source: MATT_SOURCE, bundle, ref, label: MATT_BUNDLES.get(bundle).label };
+  }
+
+  if (args.source.length) {
+    const source = normalizeSource(args.source[0]);
+    return source === MATT_SOURCE
+      ? { source: MATT_SOURCE, bundle: null, ref, label: `Matt upstream (${MATT_REPO}@${ref})` }
+      : { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' };
+  }
+
+  if (yes || !input.isTTY || !output.isTTY) {
+    return { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' };
+  }
+
+  return select({
+    message: 'Install which skill set?',
+    choices: [
+      { name: 'barlevalon skills — personal/global bundle from this package', value: { source: LOCAL_SOURCE, bundle: null, ref: null, label: 'barlevalon skills' } },
+      ...[...MATT_BUNDLES.entries()].map(([bundle, config]) => ({
+        name: `${config.label} — fetched directly from github:${MATT_REPO}`,
+        value: { source: MATT_SOURCE, bundle, ref, label: config.label },
+      })),
+      { name: `Matt upstream — pick skills from github:${MATT_REPO}`, value: { source: MATT_SOURCE, bundle: null, ref, label: `Matt upstream (${MATT_REPO}@${ref})` } },
+    ],
+  });
+}
+
+function normalizeSource(value) {
+  const normalized = String(value).toLowerCase();
+  if (['barlevalon', 'local', 'alon', 'self'].includes(normalized)) return LOCAL_SOURCE;
+  if (['matt', 'mattpocock', 'mattpocock/skills', 'github:mattpocock/skills'].includes(normalized)) return MATT_SOURCE;
+  throw new Error(`unknown skill source: ${value}`);
+}
+
+function normalizeBundle(value) {
+  const normalized = String(value).toLowerCase();
+  const aliases = {
+    core: 'matt-core',
+    wayfinder: 'matt-wayfinder',
+    matt: 'matt-v1.1',
+    'matt-v1': 'matt-v1.1',
+    'v1.1': 'matt-v1.1',
+  };
+  const bundle = aliases[normalized] ?? normalized;
+  if (!MATT_BUNDLES.has(bundle)) throw new Error(`unknown bundle: ${value}`);
+  return bundle;
+}
+
+function loadSkills(skillSet, args) {
+  if (skillSet.source === LOCAL_SOURCE) return { skills: discoverSkills(root, { source: LOCAL_SOURCE }) };
+
+  const checkout = checkoutGitHubRepo(MATT_REPO, skillSet.ref ?? DEFAULT_MATT_REF);
+  try {
+    const skills = discoverSkills(checkout.dir, {
+      source: MATT_SOURCE,
+      sourceMarkerPrefix: `github:${MATT_REPO}@${checkout.ref}`,
+    });
+    if (skillSet.bundle) {
+      assertBundleSkillsExist(skillSet.bundle, skills);
+    }
+    return { skills, cleanup: checkout.cleanup };
+  } catch (error) {
+    checkout.cleanup();
+    throw error;
+  }
+}
+
+function assertBundleSkillsExist(bundle, skills) {
+  const names = new Set(skills.map((skill) => skill.name));
+  const missing = MATT_BUNDLES.get(bundle).skills.filter((skill) => !names.has(skill));
+  if (missing.length) throw new Error(`${bundle} missing upstream skills: ${missing.join(', ')}`);
+}
+
+function selectBundleSkills(bundle, skills) {
+  const names = new Set(MATT_BUNDLES.get(bundle).skills);
+  return skills.filter((skill) => names.has(skill.name));
+}
+
+function checkoutGitHubRepo(repo, ref) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'barlevalon-skills-'));
+  const cleanup = () => fs.rmSync(dir, { recursive: true, force: true });
+  try {
+    const url = `https://github.com/${repo}.git`;
+    runGit(['clone', '--depth', '1', url, dir], `clone github:${repo}`);
+    if (ref && ref !== DEFAULT_MATT_REF) {
+      const fetch = spawnSync('git', ['-C', dir, 'fetch', '--depth', '1', 'origin', ref], { encoding: 'utf8' });
+      if (fetch.status === 0) runGit(['-C', dir, 'checkout', 'FETCH_HEAD'], `checkout ${ref}`);
+      else runGit(['-C', dir, 'checkout', ref], `checkout ${ref}`);
+    }
+    const resolved = spawnSync('git', ['-C', dir, 'rev-parse', 'HEAD'], { encoding: 'utf8' });
+    const resolvedRef = resolved.status === 0 ? resolved.stdout.trim() : ref;
+    return { dir, ref: resolvedRef, cleanup };
+  } catch (error) {
+    cleanup();
+    throw error;
+  }
+}
+
+function runGit(args, label) {
+  const result = spawnSync('git', args, { encoding: 'utf8' });
+  if (result.error?.code === 'ENOENT') throw new Error('git is required to install external skill sources');
+  if (result.status !== 0) throw new Error(`${label} failed: ${(result.stderr || result.stdout).trim()}`);
 }
 
 function parseFrontmatter(text) {
@@ -169,8 +331,8 @@ function parseFrontmatter(text) {
   return fields;
 }
 
-function discoverSkills() {
-  const skillsRoot = path.join(root, 'skills');
+function discoverSkills(packageRoot = root, options = {}) {
+  const skillsRoot = path.join(packageRoot, 'skills');
   const categories = fs.readdirSync(skillsRoot, { withFileTypes: true }).filter((entry) => entry.isDirectory());
   const skills = [];
 
@@ -187,7 +349,9 @@ function discoverSkills() {
       const description = frontmatter.description ?? '';
       const packageFile = path.join(dir, 'package.json');
       const packageName = fs.existsSync(packageFile) ? JSON.parse(fs.readFileSync(packageFile, 'utf8')).name : undefined;
-      skills.push({ name, description, category: category.name, dir, packageName });
+      const relativeDir = path.relative(packageRoot, dir).split(path.sep).join('/');
+      const sourceMarker = options.sourceMarkerPrefix ? `${options.sourceMarkerPrefix}:${relativeDir}` : `package:@barlevalon/skills:${relativeDir}`;
+      skills.push({ name, description, category: category.name, dir, packageName, source: options.source ?? LOCAL_SOURCE, sourceMarker });
     }
   }
 
@@ -312,10 +476,15 @@ function normalizeSkills(values, skills) {
   return [...ids];
 }
 
-function buildPlan(harnesses, skills, scope) {
+function buildPlan(harnesses, skills, scope, skillSet = { source: LOCAL_SOURCE }) {
   const plan = [];
   for (const harness of harnesses) {
-    if (harness === 'pi') plan.push(`Pi: install ${skills.length === discoverSkills().length ? '@barlevalon/skills' : `${skills.length} single-skill package(s)`} to ${scope} settings`);
+    if (harness === 'pi') {
+      const target = skillSet.source === LOCAL_SOURCE
+        ? `install ${skills.length === discoverSkills().length ? '@barlevalon/skills' : `${skills.length} single-skill package(s)`} to ${scope} settings`
+        : `copy ${skills.length} skill folder(s) to ${scope === 'global' ? '~/.agents/skills' : '.agents/skills'}`;
+      plan.push(`Pi: ${target}`);
+    }
     if (harness === 'opencode') plan.push(`OpenCode: copy ${skills.length} skill folder(s) to ${scope === 'global' ? '~/.config/opencode/skills' : '.opencode/skills'}`);
     if (harness === 'claude-code') plan.push(`Claude Code: copy ${skills.length} skill folder(s) to ${scope === 'global' ? '~/.claude/skills' : '.claude/skills'}`);
     if (harness === 'vscode') {
@@ -325,13 +494,27 @@ function buildPlan(harnesses, skills, scope) {
       plan.push(`VS Code: ${target}`);
     }
   }
+  if (skillSet.source === MATT_SOURCE) plan.unshift(`Source: github:${MATT_REPO}@${skillSet.ref}`);
   return plan;
 }
 
-function printPlan(plan, skills) {
+function printPlan(plan, skills, skillSet = { label: 'barlevalon skills' }) {
   console.log('\nPlan:');
   for (const line of plan) console.log(`- ${line}`);
-  console.log(`\nSkills: ${skills.map((skill) => skill.name).join(', ')}`);
+  console.log(`\nSkill set: ${skillSet.label}`);
+  console.log(`Skills: ${skills.map((skill) => skill.name).join(', ')}`);
+}
+
+function examplePrompts(skills, skillSet) {
+  const names = new Set(skills.map((skill) => skill.name));
+  const examples = [];
+  if (names.has('wayfinder')) examples.push('Use wayfinder to map this feature.');
+  if (names.has('to-spec')) examples.push('Use to-spec to turn this plan into a spec.');
+  if (names.has('to-tickets')) examples.push('Use to-tickets to break this spec into tickets.');
+  if (names.has('tdd')) examples.push('Use tdd to implement this change.');
+  if (names.has('diagnose')) examples.push('Use diagnose before fixing this bug.');
+  if (examples.length) return examples.slice(0, 2);
+  return skills.slice(0, 2).map((skill) => `Use ${skill.name} for this workflow.`);
 }
 
 function installPi(skills, scope) {
@@ -369,17 +552,42 @@ function installVSCode(skills, scope, replaceAnySkillDir, confirmed) {
 
 function installSkillCopies(skills, targetRoot, replaceAnySkillDir) {
   fs.mkdirSync(targetRoot, { recursive: true });
+  removeRenamedManagedSkills(targetRoot, new Set(skills.map((skill) => skill.name)));
   for (const skill of skills) {
     const target = path.join(targetRoot, skill.name);
-    copyDirectory(skill.dir, target, replaceAnySkillDir);
+    copyDirectory(skill.dir, target, replaceAnySkillDir, {
+      markerSource: skill.sourceMarker ?? skill.dir,
+      rejectSymlinks: skill.source !== LOCAL_SOURCE,
+    });
     console.log(`copied ${skill.name} -> ${path.relative(cwd, target) || target}`);
   }
 }
 
-function copyDirectory(source, target, replaceAnySkillDir) {
+function removeRenamedManagedSkills(targetRoot, selectedSkillNames) {
+  for (const [oldName, newName] of RENAMED_SKILLS) {
+    if (!selectedSkillNames.has(newName)) continue;
+    const oldTarget = path.join(targetRoot, oldName);
+    if (!fs.existsSync(oldTarget)) continue;
+    if (!isManagedInstall(oldTarget)) {
+      console.warn(`skipped old ${oldName} at ${path.relative(cwd, oldTarget) || oldTarget}: not installer-managed`);
+      continue;
+    }
+    fs.rmSync(oldTarget, { recursive: true, force: true });
+    console.log(`removed old ${oldName} -> ${path.relative(cwd, oldTarget) || oldTarget}`);
+  }
+}
+
+function copyDirectory(source, target, replaceAnySkillDir, options = {}) {
+  const markerSource = options.markerSource ?? source;
+  if (options.rejectSymlinks) assertNoSymlinks(source);
+
   if (fs.existsSync(target)) {
     if (!replaceAnySkillDir && !isManagedInstall(target)) {
       throw new Error(`${target} already exists and was not created by this installer; rerun with --force to replace it`);
+    }
+    const existingSource = readInstallMarker(target)?.source;
+    if (!replaceAnySkillDir && !canRefreshManagedInstall(existingSource, markerSource)) {
+      throw new Error(`${target} is installer-managed from ${existingSource ?? 'an unknown source'}; rerun with --force to replace it with ${markerSource}`);
     }
     fs.rmSync(target, { recursive: true, force: true });
   }
@@ -388,11 +596,49 @@ function copyDirectory(source, target, replaceAnySkillDir) {
     dereference: true,
     filter: (file) => !path.relative(source, file).split(path.sep).includes('node_modules'),
   });
-  fs.writeFileSync(path.join(target, '.barlevalon-installed'), `source=${source}\ninstalledAt=${new Date().toISOString()}\n`);
+  fs.writeFileSync(path.join(target, '.barlevalon-installed'), `source=${markerSource}\ninstalledAt=${new Date().toISOString()}\n`);
 }
 
 function isManagedInstall(target) {
   return fs.existsSync(path.join(target, '.barlevalon-installed'));
+}
+
+function readInstallMarker(target) {
+  const marker = path.join(target, '.barlevalon-installed');
+  if (!fs.existsSync(marker)) return null;
+  const fields = {};
+  for (const line of fs.readFileSync(marker, 'utf8').split('\n')) {
+    const match = line.match(/^([^=]+)=(.*)$/);
+    if (match) fields[match[1]] = match[2];
+  }
+  return fields;
+}
+
+function canRefreshManagedInstall(existingSource, newSource) {
+  if (!existingSource || existingSource === newSource) return true;
+  const existing = classifyInstallSource(existingSource);
+  const next = classifyInstallSource(newSource);
+  if (existing.kind === 'local' && next.kind === 'local') return true;
+  if (existing.kind === 'github' && next.kind === 'github') {
+    return existing.repo === next.repo && existing.relativeDir === next.relativeDir;
+  }
+  return false;
+}
+
+function classifyInstallSource(source) {
+  const github = source.match(/^github:([^@]+)@([^:]+):(.+)$/);
+  if (github) return { kind: 'github', repo: github[1], ref: github[2], relativeDir: github[3] };
+  const localPackage = source.match(/^package:@barlevalon\/skills:(.+)$/);
+  if (localPackage) return { kind: 'local', relativeDir: localPackage[1] };
+  return { kind: 'local', relativeDir: source };
+}
+
+function assertNoSymlinks(directory) {
+  for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isSymbolicLink()) throw new Error(`external skill contains unsupported symlink: ${entryPath}`);
+    if (entry.isDirectory()) assertNoSymlinks(entryPath);
+  }
 }
 
 function upsertManagedBlock(file, body, yes) {
