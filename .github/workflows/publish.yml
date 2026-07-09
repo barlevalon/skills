@@ -25,7 +25,7 @@ jobs:
           node-version: '22'
           cache: npm
       - name: Use npm with Trusted Publisher support
-        run: npm install -g npm@latest
+        run: npm install -g npm@latest sigstore
       - run: npm ci
       - run: npm run ci
       - name: Dry-run packages
