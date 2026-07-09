@@ -28,17 +28,11 @@ function findSkillPackageDirs() {
   const skillsDir = path.join(root, 'skills');
   if (!fs.existsSync(skillsDir)) return [];
 
-  const dirs = [];
-  for (const category of fs.readdirSync(skillsDir, { withFileTypes: true })) {
-    if (!category.isDirectory()) continue;
-    const categoryDir = path.join(skillsDir, category.name);
-    for (const skill of fs.readdirSync(categoryDir, { withFileTypes: true })) {
-      if (!skill.isDirectory()) continue;
-      const skillDir = path.join(categoryDir, skill.name);
-      if (fs.existsSync(path.join(skillDir, 'package.json'))) dirs.push(skillDir);
-    }
-  }
-  return dirs.sort();
+  return fs.readdirSync(skillsDir, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(skillsDir, entry.name))
+    .filter((skillDir) => fs.existsSync(path.join(skillDir, 'package.json')))
+    .sort();
 }
 
 function packageExists(name, version) {
