@@ -27,6 +27,39 @@ Default file bootstrap:
 
 Do not combine ownership models unless duplicate names are intentional. When `npm:@barlevalon/skills` already exists in Pi settings, the installer asks before writing Pi-visible copies. With `--yes`, overlap requires explicit `--allow-pi-overlap`.
 
+## Migrate from file bootstrap to Pi
+
+Check repository status first. Then remove only skill directories carrying this installer's `.barlevalon-installed` marker:
+
+```bash
+roots=(
+  "$HOME/.agents/skills"
+  "$HOME/.claude/skills"
+  ".agents/skills"
+  ".claude/skills"
+)
+
+for root in "${roots[@]}"; do
+  [ -d "$root" ] || continue
+  while IFS= read -r -d '' marker; do
+    rm -rf -- "$(dirname "$marker")"
+  done < <(find "$root" -mindepth 2 -maxdepth 2 -type f \
+    -name .barlevalon-installed -print0)
+done
+```
+
+Never remove unmarked skill directories. Remove the `<!-- skills:start -->` through `<!-- skills:end -->` block from repo `AGENTS.md` and `.github/copilot-instructions.md`; delete either file only when no other content remains.
+
+Install or update the Pi-owned catalog:
+
+```bash
+pi install npm:@barlevalon/skills
+# Already registered:
+pi update npm:@barlevalon/skills
+```
+
+Restart Pi or run `/reload` after migration.
+
 Advanced escape hatches:
 
 ```bash

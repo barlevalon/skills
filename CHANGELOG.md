@@ -4,6 +4,9 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Changed
+- Clarify curated `tdd` ownership, upstream commit pins, and migration from file bootstrap to Pi-managed skills.
+
 ## [1.1.0] - 2026-07-10
 
 ### Added

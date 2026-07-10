@@ -27,7 +27,7 @@ npx @barlevalon/skills@latest install
 
 With no flags the installer does the normal file-based bootstrap:
 
-- installs Matt Pocock workflow skills into the current repo under `.agents/skills` and `.claude/skills`
+- installs the curated repo workflow bundle—Matt Pocock workflows plus the maintained `tdd` fork—under `.agents/skills` and `.claude/skills`
 - updates repo instruction files for agents that need them
 - installs this package's global-purpose maintained skills/forks globally; maintained `tdd` stays repo-local
 - installs canonical upstream global skills from Caveman, Matt, Vercel, Worktrunk, Cursor, and Plannotator
@@ -46,7 +46,9 @@ npx @barlevalon/skills@latest install --all --yes
 
 Do not combine Pi-managed and file-based installs unless duplicate skill names are intentional. The installer detects an existing Pi package and asks before creating Pi-visible copies; non-interactive overlap requires `--allow-pi-overlap`.
 
-The npm package contains a reproducible aggregate catalog pinned to upstream release commits for Pi. The file-based installer continues fetching selected third-party skills directly from their upstream repositories.
+Migrating from file bootstrap to Pi ownership? [Remove installer-managed copies first](docs/setup.md#migrate-from-file-bootstrap-to-pi).
+
+The npm package contains a reproducible aggregate catalog pinned to upstream releases and reviewed commits for Pi. The file-based installer continues fetching selected third-party skills directly from their upstream repositories.
 
 See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
 
