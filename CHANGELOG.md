@@ -4,6 +4,11 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [1.0.2] - 2026-07-10
+
+### Fixed
+- Stop duplicating repo-local Matt workflow skills in global skill directories during default bootstrap.
+
 ## [1.0.1] - 2026-07-09
 
 ### Fixed

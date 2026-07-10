@@ -22,7 +22,7 @@ const PLANNOTATOR_REPO = 'backnotprop/plannotator';
 const DEFAULT_MATT_REF = 'main';
 const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.1';
 const BOOTSTRAP_PLANNOTATOR_SKILLS = ['plannotator-review', 'plannotator-annotate', 'plannotator-last', 'plannotator-visual-explainer'];
-const BOOTSTRAP_MATT_GLOBAL_SKILLS = ['codebase-design', 'diagnosing-bugs', 'domain-modeling', 'grill-with-docs', 'improve-codebase-architecture', 'grilling', 'handoff', 'writing-great-skills', 'prototype', 'to-spec', 'to-tickets'];
+const BOOTSTRAP_MATT_GLOBAL_SKILLS = ['diagnosing-bugs', 'handoff', 'writing-great-skills'];
 const RENAMED_SKILLS = new Map([
   ['diagnose', 'diagnosing-bugs'],
   ['write-a-prd', 'to-spec'],
