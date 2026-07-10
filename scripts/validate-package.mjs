@@ -30,7 +30,7 @@ for (const skillPath of pkg.pi?.skills ?? []) {
   if (!matchesSkillPath(skillPath)) fail(`declared skill path does not match any skill: ${skillPath}`);
 }
 
-for (const requiredFile of ['README.md', 'LICENSE', 'CHANGELOG.md', 'docs/usage.md', 'docs/release.md', 'skills/README.md']) {
+for (const requiredFile of ['README.md', 'LICENSE', 'CHANGELOG.md', 'docs/usage.md', 'docs/release.md', 'skills/README.md', 'catalog/sources.json', 'lib/install-policy.mjs']) {
   if (!exists(requiredFile)) fail(`${requiredFile} missing`);
 }
 
@@ -82,7 +82,8 @@ console.log(`package validation passed (${skillFiles.length} skill${skillFiles.l
 function matchesSkillPath(pattern) {
   const normalizedPattern = pattern.replace(/^\.\//, '');
   const regex = new RegExp(`^${normalizedPattern.split('*').map(escapeRegex).join('[^/]+')}$`);
-  return findFiles(path.join(root, 'skills'), 'SKILL.md').some((file) => regex.test(relative(file)));
+  const roots = [path.join(root, 'skills'), path.join(root, 'catalog/skills')];
+  return roots.flatMap((directory) => findFiles(directory, 'SKILL.md')).some((file) => regex.test(relative(file)));
 }
 
 function escapeRegex(text) {

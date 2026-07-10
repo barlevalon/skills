@@ -1,6 +1,6 @@
 {
   "name": "@barlevalon/skills",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Bootstrap Alon's agentic environment with maintained local skills and upstream workflow skills.",
   "license": "MIT",
   "repository": {
@@ -28,7 +28,9 @@
   },
   "files": [
     "bin",
+    "lib",
     "skills",
+    "catalog",
     "docs",
     "CHANGELOG.md",
     "README.md",
@@ -38,14 +40,18 @@
     "skills/*"
   ],
   "scripts": {
-    "validate": "node scripts/validate-package.mjs",
+    "test": "node --test",
+    "validate": "node scripts/validate-package.mjs && node scripts/validate-catalog.mjs",
+    "catalog:sync": "node scripts/sync-catalog.mjs",
+    "catalog:check": "node scripts/sync-catalog.mjs --check",
     "pack:check": "npm pack --dry-run",
     "pack:skills": "npm run pack:check --workspaces --if-present",
-    "ci": "npm run validate && npm run pack:check && npm run pack:skills"
+    "ci": "npm run catalog:check && npm test && npm run validate && npm run pack:check && npm run pack:skills"
   },
   "pi": {
     "skills": [
-      "./skills/*/SKILL.md"
+      "./skills/*/SKILL.md",
+      "./catalog/skills/*/SKILL.md"
     ]
   },
   "curator": "Alon Hearter",

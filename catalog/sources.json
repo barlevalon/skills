@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "sources": [
+    {
+      "id": "caveman",
+      "repo": "JuliusBrussee/caveman",
+      "ref": "v1.9.1",
+      "commit": "0d95a81d35a9f2d123a5e9430d1cfc43d55f1bb0",
+      "licenses": ["LICENSE"],
+      "skills": {
+        "caveman": "skills/caveman",
+        "caveman-help": "skills/caveman-help"
+      }
+    },
+    {
+      "id": "mattpocock-skills",
+      "repo": "mattpocock/skills",
+      "ref": "v1.1.0",
+      "commit": "d574778f94cf620fcc8ce741584093bc650a61d3",
+      "licenses": ["LICENSE"],
+      "skills": {
+        "codebase-design": "skills/engineering/codebase-design",
+        "code-review": "skills/engineering/code-review",
+        "diagnosing-bugs": "skills/engineering/diagnosing-bugs",
+        "domain-modeling": "skills/engineering/domain-modeling",
+        "grill-with-docs": "skills/engineering/grill-with-docs",
+        "implement": "skills/engineering/implement",
+        "improve-codebase-architecture": "skills/engineering/improve-codebase-architecture",
+        "prototype": "skills/engineering/prototype",
+        "research": "skills/engineering/research",
+        "to-spec": "skills/engineering/to-spec",
+        "to-tickets": "skills/engineering/to-tickets",
+        "wayfinder": "skills/engineering/wayfinder",
+        "grilling": "skills/productivity/grilling",
+        "handoff": "skills/productivity/handoff",
+        "writing-great-skills": "skills/productivity/writing-great-skills"
+      }
+    },
+    {
+      "id": "vercel-skills",
+      "repo": "vercel-labs/skills",
+      "ref": "v1.5.15",
+      "commit": "75e7ea2825230197cf20bfd6fd3762acc2620746",
+      "licenses": [],
+      "declaredLicense": "MIT",
+      "licenseEvidence": ["package.json", "README.md"],
+      "skills": {
+        "find-skills": "skills/find-skills"
+      }
+    },
+    {
+      "id": "worktrunk",
+      "repo": "max-sixty/worktrunk",
+      "ref": "v0.66.0",
+      "commit": "da2a66cd7600aee49edfc4c952ca9bb4ff56ca6e",
+      "licenses": ["LICENSE"],
+      "skills": {
+        "worktrunk": "skills/worktrunk"
+      }
+    },
+    {
+      "id": "cursor-plugins",
+      "repo": "cursor/plugins",
+      "ref": "main",
+      "commit": "0dda29e839d15464a137af9935665a5a47ee09b8",
+      "licenses": ["cursor-team-kit/LICENSE"],
+      "skills": {
+        "thermo-nuclear-code-quality-review": "cursor-team-kit/skills/thermo-nuclear-code-quality-review"
+      }
+    },
+    {
+      "id": "plannotator",
+      "repo": "backnotprop/plannotator",
+      "ref": "v0.22.0",
+      "commit": "82f5648ccb1fc718407fbc794e8a40c95c94a536",
+      "licenses": ["LICENSE-MIT", "LICENSE-APACHE"],
+      "skills": {
+        "plannotator-annotate": "apps/skills/core/plannotator-annotate",
+        "plannotator-last": "apps/skills/core/plannotator-last",
+        "plannotator-review": "apps/skills/core/plannotator-review",
+        "plannotator-visual-explainer": "apps/skills/extra/plannotator-visual-explainer"
+      }
+    }
+  ]
+}

@@ -1,18 +1,31 @@
 # Setup
 
-Use the installer. With no flags, it bootstraps the normal agentic environment:
+Choose one ownership model.
+
+## Pi-managed global catalog
+
+```bash
+pi install npm:@barlevalon/skills
+pi update --extensions
+```
+
+Pi loads the complete curated catalog globally and owns package update discovery. Upstream snapshots are pinned to immutable commits in `catalog/sources.json`; a new `@barlevalon/skills` release moves those pins.
+
+## Scoped file bootstrap
 
 ```bash
 npx @barlevalon/skills@latest install
 ```
 
-Default bootstrap:
+Default file bootstrap:
 
 - Repo workflow layer: fetch Matt Pocock v1.1 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
-- Global local layer: copy this package's maintained local skills/forks to `~/.agents/skills/` and `~/.claude/skills/`.
+- Global local layer: copy this package's global-purpose maintained skills/forks to `~/.agents/skills/` and `~/.claude/skills/`; maintained `tdd` stays in the repo workflow layer.
 - Global upstream layer: fetch canonical non-project skills from `JuliusBrussee/caveman`, `mattpocock/skills`, `vercel-labs/skills`, `max-sixty/worktrunk`, and `cursor/plugins`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`. Matt workflow skills included in the repo layer are not duplicated globally.
 - Global Plannotator layer: fetch `plannotator-review`, `plannotator-annotate`, `plannotator-last`, and `plannotator-visual-explainer` from `github:backnotprop/plannotator`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`.
 - Existing skill folders that are not part of those target sets are left untouched and listed after install. Existing folders that are part of the target set but not installer-managed are conflicts; use `--force` to replace them all-or-nothing.
+
+Do not combine ownership models unless duplicate names are intentional. When `npm:@barlevalon/skills` already exists in Pi settings, the installer asks before writing Pi-visible copies. With `--yes`, overlap requires explicit `--allow-pi-overlap`.
 
 Advanced escape hatches:
 
@@ -85,6 +98,7 @@ Use `--ref <branch-or-commit>` to pin a specific upstream revision. Installed ma
     --all             Select all harnesses and all skills (do not combine with --bundle)
 -y, --yes             Do not prompt; accept defaults
     --force           Replace existing unmanaged skill directories or switch managed sources
+    --allow-pi-overlap Continue when Pi already loads this package globally
     --list            List available skills
 -h, --help            Show help
 ```

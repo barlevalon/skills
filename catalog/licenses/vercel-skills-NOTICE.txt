@@ -1,0 +1,2 @@
+vercel-labs/skills@v1.5.15 declares MIT in package.json, README.md.
+Source: https://github.com/vercel-labs/skills/tree/75e7ea2825230197cf20bfd6fd3762acc2620746

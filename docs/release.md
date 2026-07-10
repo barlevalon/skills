@@ -7,6 +7,16 @@ This repo publishes two kinds of npm packages:
 
 Versions are **independent**. Do not bump every package just because one skill changed.
 
+The root package also ships the generated Pi catalog in `catalog/skills/`. `catalog/sources.json` records immutable upstream refs and commits. Refresh catalog snapshots deliberately:
+
+```bash
+npm run catalog:sync
+npm run catalog:check
+npm run validate
+```
+
+Commit source-lock and generated catalog changes together. Prefer upstream release tags; use a reviewed commit pin only when a source has no releases.
+
 ## Versioning
 
 Use SemVer per package:
@@ -21,6 +31,7 @@ Examples:
 - Change only release docs: bump root `package.json` only if the bundled package should be republished.
 - Add a new skill: publish that skill at `0.1.0` or `1.0.0` as appropriate; bump the root bundle because its contents changed.
 - Change shared repo tooling only: no npm release unless package contents or publish behavior changed.
+- Move an upstream catalog pin: bump the root package because Pi-installed contents changed; individual maintained skill packages remain unchanged.
 
 ## Pre-release validation
 

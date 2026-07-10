@@ -4,6 +4,16 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [1.1.0] - 2026-07-10
+
+### Added
+- Ship the complete curated skill catalog in the root Pi package, including immutable snapshots of selected upstream skills.
+- Record upstream release refs, commit pins, licenses, and per-skill provenance under `catalog/`.
+
+### Changed
+- Warn before the file installer creates names already provided by a globally registered Pi package.
+- Keep the maintained `tdd` fork repo-local in default file bootstrap instead of duplicating it globally.
+
 ## [1.0.2] - 2026-07-10
 
 ### Fixed

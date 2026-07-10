@@ -9,17 +9,27 @@ A skill is a directory with a `SKILL.md` entry point plus any helper references,
 
 ## Install
 
-Run the installer:
+Choose one install path.
+
+For Pi-managed global skills with Pi-owned update discovery:
+
+```bash
+pi install npm:@barlevalon/skills
+```
+
+This loads the complete curated catalog—maintained skills plus pinned upstream releases—globally in Pi. Update it with `pi update --extensions`.
+
+For scoped copies across supported harnesses:
 
 ```bash
 npx @barlevalon/skills@latest install
 ```
 
-With no flags it does the normal bootstrap:
+With no flags the installer does the normal file-based bootstrap:
 
 - installs Matt Pocock workflow skills into the current repo under `.agents/skills` and `.claude/skills`
 - updates repo instruction files for agents that need them
-- installs this package's maintained local skills/forks globally
+- installs this package's global-purpose maintained skills/forks globally; maintained `tdd` stays repo-local
 - installs canonical upstream global skills from Caveman, Matt, Vercel, Worktrunk, Cursor, and Plannotator
 - reports any pre-existing skill folders it left untouched
 
@@ -34,7 +44,9 @@ npx @barlevalon/skills@latest install --agent claude-code --skill release-prep -
 npx @barlevalon/skills@latest install --all --yes
 ```
 
-Third-party workflow skills are fetched directly from their upstream GitHub repositories at install time instead of vendored here.
+Do not combine Pi-managed and file-based installs unless duplicate skill names are intentional. The installer detects an existing Pi package and asks before creating Pi-visible copies; non-interactive overlap requires `--allow-pi-overlap`.
+
+The npm package contains a reproducible aggregate catalog pinned to upstream release commits for Pi. The file-based installer continues fetching selected third-party skills directly from their upstream repositories.
 
 See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
 
@@ -79,7 +91,7 @@ Full list: [docs/usage.md](docs/usage.md)
 
 ## Upstream sources
 
-Default bootstrap fetches canonical skills from:
+Pi installs use the immutable refs recorded in [`catalog/sources.json`](catalog/sources.json). File-based bootstrap fetches canonical skills from:
 
 - `JuliusBrussee/caveman`
 - `mattpocock/skills`

@@ -7,6 +7,14 @@ import { stdin as input, stdout as output } from 'node:process';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { checkbox, confirm, select, Separator } from '@inquirer/prompts';
+import {
+  canRefreshManagedInstall,
+  isManagedInstall,
+  isObsoleteGlobalTddSource,
+  piPackageRegistered,
+  readInstallMarker,
+  removeManagedInstall,
+} from '../lib/install-policy.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const cwd = process.cwd();
@@ -76,6 +84,7 @@ Options:
       --all             Select all harnesses and all skills (do not combine with --bundle)
   -y, --yes             Do not prompt; accept defaults
       --force           Replace existing unmanaged skill directories or switch managed sources
+      --allow-pi-overlap Continue when Pi already loads this package globally
       --list            List available skills
   -h, --help            Show this help
 `;
@@ -149,6 +158,12 @@ async function main() {
     if (selectedSkills.length === 0) throw new Error('no skills selected');
     if (chosenHarnesses.length === 0) throw new Error('no harnesses selected');
 
+    const installsLocalPiSubset = chosenHarnesses.includes('pi')
+      && skillSet.source === LOCAL_SOURCE
+      && selectedSkills.length !== discoverSkills().length;
+    const writesPiVisibleCopies = chosenHarnesses.includes('vscode') || (chosenHarnesses.includes('pi') && skillSet.source !== LOCAL_SOURCE);
+    if ((writesPiVisibleCopies || installsLocalPiSubset) && !await confirmPiOverlap(args, rl, yes, 'Selected targets add skill sources that Pi will discover.')) return;
+
     const plan = buildPlan(chosenHarnesses, selectedSkills, scope, skillSet);
     printPlan(plan, selectedSkills, skillSet);
 
@@ -188,6 +203,7 @@ function parseArgs(argv) {
     else if (arg === '--all') args.all = true;
     else if (arg === '--yes' || arg === '-y') args.yes = true;
     else if (arg === '--force') args.force = true;
+    else if (arg === '--allow-pi-overlap') args.allowPiOverlap = true;
     else if (arg === '--global' || arg === '-g') args.global = true;
     else if (arg === '--project' || arg === '-p') args.project = true;
     else if (arg === '--source') args.source.push(...splitArg(argv[++i]));
@@ -210,6 +226,14 @@ function splitArg(value) {
   return String(value).split(',').map((part) => part.trim()).filter(Boolean);
 }
 
+async function confirmPiOverlap(args, rl, yes, reason) {
+  if (!piPackageRegistered() || args.allowPiOverlap) return true;
+  const message = `${reason} Pi already loads npm:@barlevalon/skills globally, so duplicate names will produce collision warnings.`;
+  if (yes) throw new Error(`${message} Remove --yes to choose interactively, or pass --allow-pi-overlap.`);
+  console.warn(`\n${message}`);
+  return askYesNo(rl, 'Continue with overlapping skill copies?', false);
+}
+
 function isBootstrapInstall(args) {
   return !args.list
     && !args.all
@@ -223,6 +247,8 @@ function isBootstrapInstall(args) {
 }
 
 async function installBootstrap(args, rl, yes) {
+  if (!await confirmPiOverlap(args, rl, yes, 'Default bootstrap writes skill copies that Pi will discover.')) return;
+
   const projectSkillSet = {
     source: MATT_SOURCE,
     bundle: BOOTSTRAP_PROJECT_BUNDLE,
@@ -236,15 +262,21 @@ async function installBootstrap(args, rl, yes) {
     projectLoaded = loadSkills(projectSkillSet, args);
     upstreamGlobalLoaded = loadBootstrapGlobalUpstreamSkills(DEFAULT_MATT_REF);
     plannotatorLoaded = loadPlannotatorSkills(DEFAULT_MATT_REF);
-    const projectSkills = selectBundleSkills(BOOTSTRAP_PROJECT_BUNDLE, projectLoaded.skills);
-    const localGlobalSkills = discoverSkills(root, { source: LOCAL_SOURCE });
+    const maintainedSkills = discoverSkills(root, { source: LOCAL_SOURCE });
+    const maintainedTdd = maintainedSkills.find((skill) => skill.name === 'tdd');
+    if (!maintainedTdd) throw new Error('maintained tdd skill missing');
+    const projectSkills = selectBundleSkills(BOOTSTRAP_PROJECT_BUNDLE, projectLoaded.skills)
+      .map((skill) => skill.name === 'tdd' ? maintainedTdd : skill)
+      .sort((left, right) => left.name.localeCompare(right.name));
+    const localGlobalSkills = maintainedSkills.filter((skill) => skill.name !== 'tdd');
     const upstreamGlobalSkills = upstreamGlobalLoaded.skills;
     const plannotatorSkills = plannotatorLoaded.skills;
     const globalTargetNames = new Set([...localGlobalSkills, ...upstreamGlobalSkills, ...plannotatorSkills].map((skill) => skill.name));
 
     console.log('\nPlan:');
-    console.log(`- Repo workflow skills: install ${projectSkills.length} Matt v1.1 skill folder(s) to .agents/skills and .claude/skills`);
+    console.log(`- Repo workflow skills: install ${projectSkills.length} curated skill folder(s) to .agents/skills and .claude/skills`);
     console.log('- Repo instructions: update AGENTS.md and .github/copilot-instructions.md');
+    console.log('- Global cleanup: remove obsolete installer-managed tdd copies from ~/.agents/skills and ~/.claude/skills');
     console.log(`- Global local skills: install ${localGlobalSkills.length} barlevalon fork/personal skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
     console.log(`- Global upstream skills: install ${upstreamGlobalSkills.length} canonical upstream skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
     console.log(`- Global Plannotator skills: ensure ${plannotatorSkills.length} upstream skill folder(s) in ~/.agents/skills and ~/.claude/skills`);
@@ -277,6 +309,8 @@ async function installBootstrap(args, rl, yes) {
       { targetRoot: globalClaudeRoot, skills: plannotatorSkills },
     ], args.force);
 
+    removeObsoleteGlobalTdd(globalAgentsRoot);
+    removeObsoleteGlobalTdd(globalClaudeRoot);
     installVSCode(projectSkills, 'project', args.force, confirmed);
     installSkillCopies(localGlobalSkills, globalAgentsRoot, args.force);
     installSkillCopies(localGlobalSkills, globalClaudeRoot, args.force);
@@ -922,6 +956,14 @@ function installSkillCopies(skills, targetRoot, replaceAnySkillDir) {
   }
 }
 
+function removeObsoleteGlobalTdd(targetRoot) {
+  const target = path.join(targetRoot, 'tdd');
+  const result = removeManagedInstall(target, isObsoleteGlobalTddSource);
+  if (result.status === 'removed') console.log(`removed obsolete global tdd -> ${displayPath(target)}`);
+  else if (result.status === 'unmanaged') console.warn(`kept global tdd at ${displayPath(target)}: not installer-managed`);
+  else if (result.status === 'different-source') console.warn(`kept global tdd at ${displayPath(target)}: installer-managed from ${result.source ?? 'an unknown source'}`);
+}
+
 function removeRenamedManagedSkills(targetRoot, selectedSkillNames) {
   for (const [oldName, newName] of RENAMED_SKILLS) {
     if (!selectedSkillNames.has(newName)) continue;
@@ -956,40 +998,6 @@ function copyDirectory(source, target, replaceAnySkillDir, options = {}) {
     filter: (file) => !path.relative(source, file).split(path.sep).includes('node_modules'),
   });
   fs.writeFileSync(path.join(target, '.barlevalon-installed'), `source=${markerSource}\ninstalledAt=${new Date().toISOString()}\n`);
-}
-
-function isManagedInstall(target) {
-  return fs.existsSync(path.join(target, '.barlevalon-installed'));
-}
-
-function readInstallMarker(target) {
-  const marker = path.join(target, '.barlevalon-installed');
-  if (!fs.existsSync(marker)) return null;
-  const fields = {};
-  for (const line of fs.readFileSync(marker, 'utf8').split('\n')) {
-    const match = line.match(/^([^=]+)=(.*)$/);
-    if (match) fields[match[1]] = match[2];
-  }
-  return fields;
-}
-
-function canRefreshManagedInstall(existingSource, newSource) {
-  if (!existingSource || existingSource === newSource) return true;
-  const existing = classifyInstallSource(existingSource);
-  const next = classifyInstallSource(newSource);
-  if (existing.kind === 'local' && next.kind === 'local') return true;
-  if (existing.kind === 'github' && next.kind === 'github') {
-    return existing.repo === next.repo && existing.relativeDir === next.relativeDir;
-  }
-  return false;
-}
-
-function classifyInstallSource(source) {
-  const github = source.match(/^github:([^@]+)@([^:]+):(.+)$/);
-  if (github) return { kind: 'github', repo: github[1], ref: github[2], relativeDir: github[3] };
-  const localPackage = source.match(/^package:@barlevalon\/skills:(.+)$/);
-  if (localPackage) return { kind: 'local', relativeDir: localPackage[1] };
-  return { kind: 'local', relativeDir: source };
 }
 
 function assertNoSymlinks(directory) {
