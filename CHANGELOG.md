@@ -4,6 +4,8 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [1.2.0] - 2026-07-22
+
 ### Added
 - Add Ponytail's minimal implementation, diff review, repository audit, and simplification-debt workflows to the curated catalog and default bootstrap.
 
