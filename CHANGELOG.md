@@ -4,6 +4,9 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Added
+- Add `bento-slides` for creating and editing self-contained Bento presentations.
+
 ## [1.2.0] - 2026-07-22
 
 ### Added

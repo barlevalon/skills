@@ -21,7 +21,7 @@ Default file bootstrap:
 
 - Repo workflow layer: fetch Matt Pocock v1.1 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
 - Global local layer: copy this package's global-purpose maintained skills/forks to `~/.agents/skills/` and `~/.claude/skills/`; maintained `tdd` stays in the repo workflow layer.
-- Global upstream layer: fetch canonical non-project skills from `JuliusBrussee/caveman`, `DietrichGebert/ponytail`, `mattpocock/skills`, `vercel-labs/skills`, `max-sixty/worktrunk`, and `cursor/plugins`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`. Matt workflow skills included in the repo layer are not duplicated globally.
+- Global upstream layer: fetch canonical non-project skills from `nyblnet/bento`, `JuliusBrussee/caveman`, `DietrichGebert/ponytail`, `mattpocock/skills`, `vercel-labs/skills`, `max-sixty/worktrunk`, and `cursor/plugins`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`. Matt workflow skills included in the repo layer are not duplicated globally.
 - Global Plannotator layer: fetch `plannotator-review`, `plannotator-annotate`, `plannotator-last`, and `plannotator-visual-explainer` from `github:backnotprop/plannotator`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`.
 - Existing skill folders that are not part of those target sets are left untouched and listed after install. Existing folders that are part of the target set but not installer-managed are conflicts; use `--force` to replace them all-or-nothing.
 

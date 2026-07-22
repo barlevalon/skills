@@ -15,7 +15,7 @@ This package is a bootstrap plus a small set of local skills/syntheses. Canonica
 
 ## Upstream skills installed by bootstrap
 
-Default bootstrap fetches canonical skills directly from upstream repositories, including Matt Pocock workflow skills, Caveman mode/help, Ponytail's minimal-code workflows, Vercel `find-skills`, Worktrunk, Cursor's thermo-nuclear review skill, and selected Plannotator review skills.
+Default bootstrap fetches canonical skills directly from upstream repositories, including Matt Pocock workflow skills, Bento presentations, Caveman mode/help, Ponytail's minimal-code workflows, Vercel `find-skills`, Worktrunk, Cursor's thermo-nuclear review skill, and selected Plannotator review skills.
 
 Convention for local skills:
 

@@ -2,6 +2,16 @@
   "version": 1,
   "sources": [
     {
+      "id": "bento",
+      "repo": "nyblnet/bento",
+      "ref": "v1.0.7",
+      "commit": "6d394bb64986348d2a59599055f7d1313ecf94da",
+      "licenses": ["LICENSE"],
+      "skills": {
+        "bento-slides": "plugins/bento-slides/skills/bento-slides"
+      }
+    },
+    {
       "id": "caveman",
       "repo": "JuliusBrussee/caveman",
       "ref": "v1.9.1",

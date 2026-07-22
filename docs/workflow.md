@@ -35,6 +35,7 @@
 
 | Situation | Use |
 |---|---|
+| Slide deck or presentation | `bento-slides` |
 | Docs work | `documentation-system` |
 | Skill authoring | `writing-great-skills` |
 | Commit message | `caveman-commit` |

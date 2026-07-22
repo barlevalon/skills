@@ -30,7 +30,7 @@ With no flags the installer does the normal file-based bootstrap:
 - installs the curated repo workflow bundle—Matt Pocock workflows plus the maintained `tdd` fork—under `.agents/skills` and `.claude/skills`
 - updates repo instruction files for agents that need them
 - installs this package's global-purpose maintained skills/forks globally; maintained `tdd` stays repo-local
-- installs canonical upstream global skills from Caveman, Ponytail, Matt, Vercel, Worktrunk, Cursor, and Plannotator
+- installs canonical upstream global skills from Bento, Caveman, Ponytail, Matt, Vercel, Worktrunk, Cursor, and Plannotator
 - reports any pre-existing skill folders it left untouched
 
 Advanced escape hatches:
@@ -75,6 +75,7 @@ Use release-prep for the next release.
 | Review code | `thermo-nuclear-code-quality-review`, `ponytail-review` |
 | Audit repository complexity | `ponytail-audit` |
 | Track deliberate simplification debt | `ponytail-debt` |
+| Create presentations | `bento-slides` |
 | Write docs | `documentation-system` |
 | Write or edit skills | `writing-great-skills` |
 | Release | `release-prep` |
@@ -98,6 +99,7 @@ Full list: [docs/usage.md](docs/usage.md)
 
 Pi installs use the immutable refs recorded in [`catalog/sources.json`](catalog/sources.json). File-based bootstrap fetches canonical skills from:
 
+- `nyblnet/bento`
 - `JuliusBrussee/caveman`
 - `DietrichGebert/ponytail`
 - `mattpocock/skills`

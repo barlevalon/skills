@@ -22,6 +22,7 @@ const MARKER = 'skills';
 const LOCAL_SOURCE = 'barlevalon';
 const MATT_SOURCE = 'matt';
 const MATT_REPO = 'mattpocock/skills';
+const BENTO_REPO = 'nyblnet/bento';
 const CAVEMAN_REPO = 'JuliusBrussee/caveman';
 const PONYTAIL_REPO = 'DietrichGebert/ponytail';
 const VERCEL_SKILLS_REPO = 'vercel-labs/skills';
@@ -447,6 +448,16 @@ function loadBootstrapGlobalUpstreamSkills(ref) {
 
   try {
     const skills = [];
+
+    const bento = checkout(BENTO_REPO);
+    skills.push(...selectSkillsByName(
+      ['bento-slides'],
+      discoverFlatSkills(path.join(bento.dir, 'plugins/bento-slides/skills'), 'documents', {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${BENTO_REPO}@${bento.ref}:plugins/bento-slides/skills`,
+      }),
+      BENTO_REPO,
+    ));
 
     const caveman = checkout(CAVEMAN_REPO);
     skills.push(...selectSkillsByName(

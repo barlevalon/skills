@@ -14,6 +14,7 @@ Use release-prep for the next release.
 
 | Skill | Source | Use it for |
 |---|---|---|
+| `bento-slides` | `nyblnet/bento` | creating and editing self-contained Bento presentations |
 | `caveman` | `JuliusBrussee/caveman` | concise responses |
 | `caveman-help` | `JuliusBrussee/caveman` | caveman mode reference |
 | `caveman-commit` | local fork | commit messages |
