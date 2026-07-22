@@ -23,6 +23,7 @@ const LOCAL_SOURCE = 'barlevalon';
 const MATT_SOURCE = 'matt';
 const MATT_REPO = 'mattpocock/skills';
 const CAVEMAN_REPO = 'JuliusBrussee/caveman';
+const PONYTAIL_REPO = 'DietrichGebert/ponytail';
 const VERCEL_SKILLS_REPO = 'vercel-labs/skills';
 const WORKTRUNK_REPO = 'max-sixty/worktrunk';
 const CURSOR_PLUGINS_REPO = 'cursor/plugins';
@@ -30,6 +31,7 @@ const PLANNOTATOR_REPO = 'backnotprop/plannotator';
 const DEFAULT_MATT_REF = 'main';
 const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.1';
 const BOOTSTRAP_PLANNOTATOR_SKILLS = ['plannotator-review', 'plannotator-annotate', 'plannotator-last', 'plannotator-visual-explainer'];
+const BOOTSTRAP_PONYTAIL_SKILLS = ['ponytail', 'ponytail-review', 'ponytail-audit', 'ponytail-debt'];
 const BOOTSTRAP_MATT_GLOBAL_SKILLS = ['diagnosing-bugs', 'handoff', 'writing-great-skills'];
 const RENAMED_SKILLS = new Map([
   ['diagnose', 'diagnosing-bugs'],
@@ -454,6 +456,16 @@ function loadBootstrapGlobalUpstreamSkills(ref) {
         sourceMarkerPrefix: `github:${CAVEMAN_REPO}@${caveman.ref}:skills`,
       }),
       CAVEMAN_REPO,
+    ));
+
+    const ponytail = checkout(PONYTAIL_REPO);
+    skills.push(...selectSkillsByName(
+      BOOTSTRAP_PONYTAIL_SKILLS,
+      discoverFlatSkills(path.join(ponytail.dir, 'skills'), 'engineering', {
+        source: MATT_SOURCE,
+        sourceMarkerPrefix: `github:${PONYTAIL_REPO}@${ponytail.ref}:skills`,
+      }),
+      PONYTAIL_REPO,
     ));
 
     const vercel = checkout(VERCEL_SKILLS_REPO);

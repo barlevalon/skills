@@ -4,6 +4,9 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+### Added
+- Add Ponytail's minimal implementation, diff review, repository audit, and simplification-debt workflows to the curated catalog and default bootstrap.
+
 ### Changed
 - Clarify curated `tdd` ownership, upstream commit pins, and migration from file bootstrap to Pi-managed skills.
 

@@ -13,6 +13,19 @@
       }
     },
     {
+      "id": "ponytail",
+      "repo": "DietrichGebert/ponytail",
+      "ref": "v4.8.4",
+      "commit": "bc9ee949d5f439e8b9f3bb92c6d6d3d1e6ebd324",
+      "licenses": ["LICENSE"],
+      "skills": {
+        "ponytail": "skills/ponytail",
+        "ponytail-audit": "skills/ponytail-audit",
+        "ponytail-debt": "skills/ponytail-debt",
+        "ponytail-review": "skills/ponytail-review"
+      }
+    },
+    {
       "id": "mattpocock-skills",
       "repo": "mattpocock/skills",
       "ref": "v1.1.0",

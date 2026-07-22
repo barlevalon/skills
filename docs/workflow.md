@@ -16,6 +16,7 @@
 |---|---|
 | Failure is unclear | `diagnosing-bugs` |
 | Behavior change is clear | `tdd` |
+| Implementation risks unnecessary complexity | `ponytail` |
 | Need worktree/branch help | `worktrunk` |
 
 ## Review
@@ -23,6 +24,9 @@
 | Situation | Use |
 |---|---|
 | Strict maintainability review | `thermo-nuclear-code-quality-review` |
+| Diff needs an over-engineering delete-list | `ponytail-review` |
+| Whole repository needs a complexity audit | `ponytail-audit` |
+| Deliberate simplifications need a debt ledger | `ponytail-debt` |
 | Architecture feels tangled | `improve-codebase-architecture` |
 | Need reusable module/interface vocabulary | `codebase-design` |
 | Need a visual explanation | `plannotator-visual-explainer` |

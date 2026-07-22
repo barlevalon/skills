@@ -17,6 +17,10 @@ Use release-prep for the next release.
 | `caveman` | `JuliusBrussee/caveman` | concise responses |
 | `caveman-help` | `JuliusBrussee/caveman` | caveman mode reference |
 | `caveman-commit` | local fork | commit messages |
+| `ponytail` | `DietrichGebert/ponytail` | choosing the smallest implementation that works |
+| `ponytail-review` | `DietrichGebert/ponytail` | reviewing a diff for removable complexity |
+| `ponytail-audit` | `DietrichGebert/ponytail` | auditing a repository for over-engineering |
+| `ponytail-debt` | `DietrichGebert/ponytail` | collecting deliberate simplification markers into a debt ledger |
 | `find-skills` | `vercel-labs/skills` | finding more skills |
 | `documentation-system` | local | tutorials, how-tos, reference docs, explanations |
 | `codebase-design` | `mattpocock/skills` | reusable deep-module design vocabulary |
