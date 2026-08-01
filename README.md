@@ -91,7 +91,7 @@ Full list: [docs/usage.md](docs/usage.md)
 | Skill | Why it lives here | Influences / credits |
 |---|---|---|
 | `caveman-commit` | local commit-message policy fork | based on `JuliusBrussee/caveman` |
-| `documentation-system` | local documentation workflow | inspired by Divio's four-quadrant documentation model |
+| `documentation-system` | local documentation workflow | based on the current [Diátaxis](https://diataxis.fr/) framework |
 | `tdd` | local TDD discipline synthesis | influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
 | `release-prep` | local release preparation workflow | authored for this package's release process |
 

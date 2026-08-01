@@ -1,7 +1,7 @@
 {
   "name": "@barlevalon/documentation-system-skill",
-  "version": "1.0.0",
-  "description": "Apply Divio's four-quadrant documentation system to write, audit, classify, restructure, and review technical documentation. Use when creating or improving tutorials, how-to guides, reference docs, explanations, docs...",
+  "version": "1.1.0",
+  "description": "Apply the Diátaxis framework to write, audit, organize, and improve tutorials, how-to guides, reference, explanation, and technical documentation architecture.",
   "license": "MIT",
   "repository": {
     "type": "git",

@@ -1,288 +1,309 @@
 ---
 name: documentation-system
-description: Apply Divio's four-quadrant documentation system to write, audit, classify, restructure, and review technical documentation. Use when creating or improving tutorials, how-to guides, reference docs, explanations, docs IA, README sections, docs plans, or when documentation feels mixed, bloated, incomplete, or hard to navigate.
+description: Apply the Diátaxis framework to write, audit, organize, and improve technical documentation. Use when creating or revising tutorials, how-to guides, reference, explanation, docs IA, README sections, or documentation that feels mixed, incomplete, or hard to use.
 metadata:
-  source: https://docs.divio.com/documentation-system/
-  framework: Divio Documentation System / Grand Unified Theory of Documentation
+  source: https://diataxis.fr/
+  framework: Diátaxis
 ---
 
-# Documentation System
+# Diátaxis Documentation
 
-Use Divio's documentation model: there is no single thing called documentation. There are four modes, each with one job:
+Use Diátaxis as a way to think about documentation, not as a rigid template or top-down reorganization plan.
 
-| Mode | User need | Orientation | Form | Primary promise |
+Diátaxis identifies four user needs and corresponding forms of documentation:
+
+| Form | User need | Domain | Orientation | Promise |
 |---|---|---|---|---|
-| Tutorial | "Help me start" | learning | lesson | beginner achieves something concrete |
-| How-to guide | "Help me solve this" | goal | recipe | experienced user reaches a specific outcome |
-| Reference | "Tell me exactly what this is" | information | description | machinery described accurately and consistently |
-| Explanation | "Help me understand" | understanding | discussion | context, tradeoffs, and why become clear |
+| Tutorial | acquire skill through action | study | learning | a safe, meaningful learning experience |
+| How-to guide | apply skill through action | work | goal | guidance through a real-world problem |
+| Reference | apply knowledge | work | information | accurate, orderly technical description |
+| Explanation | acquire knowledge through reflection | study | understanding | context and connections that deepen understanding |
 
-Keep modes separate. Mixing modes is usually the defect.
+The boundaries matter because each need demands different content, form, and language. Apply them at whatever scale helps: sentence, section, page, or documentation set.
 
-## Operating workflow
+## Use the compass
 
-1. Identify reader state.
-   - Newcomer learning? Tutorial.
-   - User with a concrete goal? How-to.
-   - User looking up API/CLI/config facts? Reference.
-   - User asking why, context, design, tradeoffs? Explanation.
-2. Pick exactly one primary mode per document.
-3. Move off-mode material elsewhere or convert it into links.
-4. Write in the mode's shape.
-5. Review with the quadrant checklist.
-6. If auditing existing docs, produce a split/merge plan before rewriting.
+When form is unclear, ask two questions:
 
-## Classification rules
+1. Does the user need **action** or **cognition**?
+2. Is the user **acquiring** skill or **applying** it?
 
-Ask:
+| Content | User activity | Form |
+|---|---|---|
+| informs action | acquisition/study | tutorial |
+| informs action | application/work | how-to guide |
+| informs cognition | application/work | reference |
+| informs cognition | acquisition/study | explanation |
 
-- Does title start with "How to ..." and answer a specific problem? `how-to`.
-- Does it teach a beginner through a safe, meaningful first project chosen by the author? `tutorial`.
-- Is it structured like code/API/CLI/config and only describes facts? `reference`.
-- Does it discuss concepts, background, reasons, alternatives, or tradeoffs? `explanation`.
+Use these terms flexibly. Identify the actual user need, not the label that an existing file or heading claims.
 
-If more than one is true, classify by dominant user need, then extract the rest.
+## Work iteratively
 
-## Mode rules
+Do not begin by imposing four directories, creating empty sections, or planning a complete rewrite.
+
+1. Choose one small piece already in front of you.
+2. Ask what user need it serves and how well it serves it.
+3. Use the compass when its purpose is uncertain.
+4. Choose one immediate improvement: add, remove, move, split, rename, verify, or rewrite.
+5. Make that improvement complete and usable.
+6. Repeat.
+
+Let information architecture emerge from well-formed content. Structure documentation from the inside out. Documentation can always improve without ever being “finished,” while each published state should remain useful and coherent.
+
+For new documentation, start with the user need and write the smallest useful form that serves it. Do not create speculative coverage merely to fill all four forms.
+
+## Form guidance
 
 ### Tutorial
 
-Use when the reader needs guided first success.
+A tutorial is a lesson: a practical, learning-oriented experience in which the learner gains skill through doing something meaningful.
+
+The author carries responsibility for the learner’s safety and success. Design the experience, not a transfer of facts.
 
 Must:
-- Be a lesson, not a manual.
-- Take responsibility for what the learner does and in what order.
-- Use concrete steps with visible results quickly.
-- Keep the path robust and repeatable.
-- Prefer a meaningful small accomplishment over completeness.
-- Include only minimum explanation needed to finish.
-- Link to explanations/reference instead of embedding them.
+- State what **we will make or accomplish**, giving the learner a clear destination.
+- Lead through concrete, meaningful actions in a logical learning journey.
+- Deliver visible, comprehensible results early and often.
+- Maintain a narrative of expected results and likely failure signs.
+- Point out what the learner should notice.
+- Use small steps and support repetition where practical.
+- Make the journey meaningful, successful, logical, and usefully complete.
+- Minimize explanation and ignore options or alternatives that interrupt the lesson.
+- Test the full journey with representative learners and supported environments.
 
 Avoid:
-- Detours, options, edge cases, abstractions, best-practice debates.
-- Assuming expert judgment.
-- Steps not tested end-to-end.
+- “You will learn…” promises; describe what the learner will do instead.
+- Assuming the learner can make expert choices.
+- Detours, broad option lists, edge-case catalogues, and conceptual lectures.
+- Calling a task recipe a tutorial merely because it contains steps.
 
-Template:
+Useful language:
 
 ```md
-# Build/Do <small meaningful thing>
+# Build <small meaningful thing>
 
-In this tutorial, you will <concrete outcome>.
+In this tutorial, we will <concrete accomplishment>.
 
-## Prerequisites
-- <minimal known-good setup>
+## Before you begin
+<minimal known-good starting point>
 
-## 1. <First visible step>
-<exact action>
+## <First concrete action>
+<exact direction>
 
-Expected result: <what they should see>
+You should see:
+<expected result>
 
-## 2. <Next step>
+Notice that <learning cue>.
+
+## <Next action>
 ...
 
-## What you achieved
-- <concrete accomplishments>
+## What you made
+<brief acknowledgement of the accomplishment>
 
-## Next steps
-- <link to how-to/reference/explanation>
+## Where to go next
+<link to a related tutorial, how-to guide, reference, or explanation>
 ```
 
 ### How-to guide
 
-Use when the reader has a specific goal and enough background to ask for it.
+A how-to guide gives goal-oriented directions for a competent user facing a real-world problem or desired result.
+
+Write from the user’s project, not from the machinery’s features. Tools are means to the user’s end.
 
 Must:
-- Answer "How do I ...?"
-- Start at a reasonable point, not from absolute zero.
-- Provide ordered steps toward one practical result.
-- Focus on outcome, not teaching.
-- Allow limited adaptation for common variants.
-- Leave out unrelated details.
-- Link to explanation/reference for context and full facts.
+- Address a specific, meaningful goal or problem.
+- Assume suitable competence; do not turn the guide into a lesson.
+- Provide an executable solution through actions, judgement, or both.
+- Arrange guidance in a logical sequence that follows the user’s activity and thinking.
+- Preserve flow and minimize context switching.
+- Remain adaptable to realistic variants.
+- Prefer practical usability over completeness.
+- Start and end at reasonable points that the user can connect to their own work.
+- Use an exact title, usually “How to <achieve result>”.
+
+A how-to guide need not be a simple linear procedure. Real problems can require branches, overlapping actions, multiple entry or exit points, and user judgement.
 
 Avoid:
-- Beginner teaching.
-- Conceptual essays.
-- Exhaustive option catalogues.
-- Vague titles like "Authentication" when "How to enable LDAP authentication" fits.
+- Teaching from first principles.
+- Feature-led topics with no human purpose.
+- Exhaustive option catalogues or long rationale.
+- Open-ended goals such as “How to build a web application.”
 
-Template:
+Useful language:
 
 ```md
 # How to <achieve specific result>
 
-Use this guide when <situation>.
+This guide shows you how to <solve problem or reach result>.
 
-## Prerequisites
-- <assumed knowledge/setup>
+## Before you begin
+<assumed knowledge and state>
 
-## Steps
-1. <action>
-2. <action>
-3. <action>
+## <Action or decision>
+<directions, including conditions where needed>
 
-## Verify
-<expected result/check>
+If <situation>, <action>.
 
-## Variations
-- If <case>, do <adjustment>.
+## Verify the result
+<check tied to the user's goal>
 
-## Related
-- <reference/explanation links>
+## Related information
+<link to reference or explanation>
 ```
 
 ### Reference
 
-Use when the reader needs accurate lookup information about machinery.
+Reference is information-oriented technical description. Users consult it during work for truth and certainty.
 
 Must:
-- Describe only.
-- Mirror code/API/CLI/config structure where possible.
-- Be complete, accurate, and consistent.
-- Use stable headings and repeated field formats.
-- Include examples only to illustrate usage.
-- Record constraints, defaults, types, parameters, errors, side effects, compatibility.
+- Describe the machinery neutrally, succinctly, and authoritatively.
+- Be accurate, precise, complete, clear, and consistent.
+- Mirror the product’s logical structure where that helps users navigate both together.
+- Use standard, repeated patterns readers can scan.
+- State behavior, syntax, types, defaults, constraints, side effects, errors, limitations, and compatibility where relevant.
+- Include succinct examples when they illuminate usage without becoming instruction.
+- Generate from authoritative sources when practical, then verify generated output.
 
 Avoid:
-- Teaching journeys.
-- Task recipes beyond basic invocation/use.
-- Background essays or rationale.
-- Opinion unless clearly part of semantics/constraints.
+- Task journeys, teaching narratives, rationale, speculation, and opinion.
+- Restructuring reference around imagined user tasks when product structure is the better map.
+- Clever prose where predictable formatting works better.
 
-Template:
+Useful shape:
 
 ```md
-# <API/command/module/config name>
+# <API, command, module, or configuration item>
 
-Brief factual description.
+<brief factual description>
 
-## Signature / Syntax
+## Syntax
 `<exact form>`
 
-## Parameters / Options / Fields
+## Parameters, options, or fields
 | Name | Type | Required | Default | Description |
-|---|---:|---:|---:|---|
-
-## Returns / Output
-<facts>
+|---|---|---|---|---|
 
 ## Behavior
-<rules, constraints, side effects>
+<facts, constraints, side effects, warnings>
+
+## Output
+<facts>
 
 ## Errors
-| Error | Cause | Notes |
-|---|---|---|
+<errors and conditions>
 
 ## Examples
-<minimal illustrative examples>
+<minimal illustrations>
 
 ## See also
-- <how-to/explanation links>
+<links to related how-to guides or explanation>
 ```
 
 ### Explanation
 
-Use when the reader needs context, reasons, or a bigger mental model.
+Explanation is understanding-oriented, discursive material that helps readers reflect on a bounded topic.
+
+It provides a higher and wider perspective than task guidance or technical description. It should make sense away from immediate work in the product.
 
 Must:
-- Clarify and illuminate a topic.
-- Discuss why things are as they are.
-- Compare alternatives and tradeoffs.
-- Include background, history, constraints, design rationale.
-- Be readable away from code/task pressure.
+- Deepen and broaden understanding.
+- Connect the topic to related ideas.
+- Provide background, context, design reasons, history, and technical constraints where useful.
+- Draw implications and use examples to illuminate them.
+- Admit relevant opinion, perspective, alternatives, and counterexamples.
+- Bound the topic around a meaningful question, often an implicit “why?” or “tell me about…”.
 
 Avoid:
-- Ordered task instructions.
-- API catalogues.
-- Pretending an opinion is a fact.
-- Making the reader hunt through essays for operational steps.
+- Required action sequences.
+- API or option catalogues.
+- Unbounded essays that absorb every related topic.
+- Presenting opinion as neutral fact.
 
-Template:
+Useful shape:
 
 ```md
-# Understanding <topic>
+# About <bounded topic>
 
-<Short framing: why this topic matters.>
+<why this topic deserves reflection>
 
 ## Context
 <background and problem space>
 
-## Mental model
-<core concepts and relationships>
+## Connections
+<relationships and mental model>
 
 ## Why it works this way
 <constraints, decisions, history>
 
-## Alternatives and tradeoffs
-<option A vs B, when each matters>
+## Alternatives and perspectives
+<tradeoffs, counterexamples, opinions identified as such>
 
-## Consequences
-<practical implications without step-by-step instructions>
+## Implications
+<how this changes understanding>
 
-## Related
-- <tutorial/how-to/reference links>
+## Related information
+<links to tutorials, how-to guides, or reference>
 ```
 
-## Audit checklist
+## Auditing and review
 
-For each document, report:
+Inspect content at the smallest useful scale. Do not force an entire page into one form when a problematic paragraph is the real unit to fix.
+
+For each item reviewed, report:
 
 ```md
-## Documentation audit: <doc>
+## Diátaxis review: <item>
 
-Primary mode: tutorial | how-to | reference | explanation
-Reader need: <need>
-Pass/fail: <summary>
+User need: <action/cognition + acquisition/application>
+Likely form: tutorial | how-to guide | reference | explanation
+Current fit: <what works and what conflicts>
 
-### Off-mode material
-- <section>: belongs in <mode> because <reason>
+### Functional quality
+- Accuracy: <evidence or verification needed>
+- Completeness: <relevant gaps>
+- Consistency and precision: <issues>
+- Usefulness: <fit to actual need>
 
-### Missing material
-- <needed doc/section>: <mode> because <reason>
+### Form and flow
+- <language, ordering, interruptions, misplaced material>
 
-### Proposed structure
-- <keep>
-- <move/split>
-- <rewrite>
+### Next improvement
+1. <single smallest change that improves it now>
 
-### Immediate edits
-1. <smallest valuable edit>
-2. <next edit>
+### Later opportunities
+- <only evidenced follow-up work; no speculative four-quadrant backlog>
 ```
 
-## Writing output contract
+Use the compass to diagnose mixed content:
+- Action + acquisition belongs in a tutorial.
+- Action + application belongs in a how-to guide.
+- Cognition + application belongs in reference.
+- Cognition + acquisition belongs in explanation.
 
-When asked to write docs:
+Move or link off-purpose material when that improves flow. Do not split content mechanically; a small amount of another form can support the primary need when it does not interrupt it.
 
-1. State selected mode in one line.
-2. Write the doc in that mode.
-3. Add "Related docs" links/stubs for displaced modes.
-4. Do not mix modes to be helpful. Link instead.
+## Quality boundary
 
-When asked to plan docs IA:
+Diátaxis helps content fit human needs, develop flow, and expose hidden problems. It does **not** guarantee functional quality.
 
-```md
-docs/
-  tutorials/
-    <lesson>.md
-  how-to/
-    how-to-<goal>.md
-  reference/
-    <api-or-component>.md
-  explanation/
-    <concept>.md
-```
+Always validate objective qualities separately:
+- accuracy against product behavior and authoritative sources
+- completeness against supported scope
+- consistency across related documentation
+- precision of terminology, commands, examples, and constraints
+- usefulness with representative user goals
 
-Smaller projects may omit empty quadrants, but keep labels and intent clear when material exists.
+Functional quality is required before deeper qualities such as flow, anticipation, fit, and pleasure in use can hold.
 
-## Review gates
+## Output contract
 
-Reject or revise if:
-- Tutorial has untested or invisible-result steps.
-- How-to lacks a specific goal.
-- Reference explains rationale instead of describing facts.
-- Explanation contains command sequences users must follow.
-- One document tries to be all four modes.
+When writing or revising documentation:
 
-Use this final note when helpful: "This content is useful, but belongs in <mode>, not here. Link it."
+1. Name the user need and selected form in one short line when useful to the requester.
+2. Produce the requested documentation, not a framework lecture.
+3. Link to other forms only when they serve a real adjacent need.
+4. Preserve existing information architecture unless a concrete problem justifies changing it.
+5. Prefer one complete improvement now over a speculative redesign.
+
+Source of truth: [Diátaxis](https://diataxis.fr/).

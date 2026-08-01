@@ -9,7 +9,7 @@ This package is a bootstrap plus a small set of local skills/syntheses. Canonica
 | Skill | Why it lives here | Influences / credits |
 |---|---|---|
 | [`caveman-commit`](caveman-commit/SKILL.md) | Local commit-message policy fork | Based on `JuliusBrussee/caveman`'s `caveman-commit` skill |
-| [`documentation-system`](documentation-system/SKILL.md) | Local documentation workflow | Inspired by Divio's four-quadrant documentation system |
+| [`documentation-system`](documentation-system/SKILL.md) | Local documentation workflow | Based on the current [Diátaxis](https://diataxis.fr/) framework |
 | [`tdd`](tdd/SKILL.md) | Local synthesis of test-first discipline | Influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
 | [`release-prep`](release-prep/SKILL.md) | Local release preparation workflow | Authored for this package's release process |
 
