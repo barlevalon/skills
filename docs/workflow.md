@@ -29,7 +29,6 @@
 | Deliberate simplifications need a debt ledger | `ponytail-debt` |
 | Architecture feels tangled | `improve-codebase-architecture` |
 | Need reusable module/interface vocabulary | `codebase-design` |
-| Need a visual explanation | `plannotator-visual-explainer` |
 
 ## Communicate
 

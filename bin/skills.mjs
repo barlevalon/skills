@@ -28,10 +28,8 @@ const PONYTAIL_REPO = 'DietrichGebert/ponytail';
 const VERCEL_SKILLS_REPO = 'vercel-labs/skills';
 const WORKTRUNK_REPO = 'max-sixty/worktrunk';
 const CURSOR_PLUGINS_REPO = 'cursor/plugins';
-const PLANNOTATOR_REPO = 'backnotprop/plannotator';
 const DEFAULT_MATT_REF = 'main';
 const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.1';
-const BOOTSTRAP_PLANNOTATOR_SKILLS = ['plannotator-review', 'plannotator-annotate', 'plannotator-last', 'plannotator-visual-explainer'];
 const BOOTSTRAP_PONYTAIL_SKILLS = ['ponytail', 'ponytail-review', 'ponytail-audit', 'ponytail-debt'];
 const BOOTSTRAP_MATT_GLOBAL_SKILLS = ['diagnosing-bugs', 'handoff', 'writing-great-skills'];
 const RENAMED_SKILLS = new Map([
@@ -260,11 +258,9 @@ async function installBootstrap(args, rl, yes) {
   };
   let projectLoaded;
   let upstreamGlobalLoaded;
-  let plannotatorLoaded;
   try {
     projectLoaded = loadSkills(projectSkillSet, args);
     upstreamGlobalLoaded = loadBootstrapGlobalUpstreamSkills(DEFAULT_MATT_REF);
-    plannotatorLoaded = loadPlannotatorSkills(DEFAULT_MATT_REF);
     const maintainedSkills = discoverSkills(root, { source: LOCAL_SOURCE });
     const maintainedTdd = maintainedSkills.find((skill) => skill.name === 'tdd');
     if (!maintainedTdd) throw new Error('maintained tdd skill missing');
@@ -273,8 +269,7 @@ async function installBootstrap(args, rl, yes) {
       .sort((left, right) => left.name.localeCompare(right.name));
     const localGlobalSkills = maintainedSkills.filter((skill) => skill.name !== 'tdd');
     const upstreamGlobalSkills = upstreamGlobalLoaded.skills;
-    const plannotatorSkills = plannotatorLoaded.skills;
-    const globalTargetNames = new Set([...localGlobalSkills, ...upstreamGlobalSkills, ...plannotatorSkills].map((skill) => skill.name));
+    const globalTargetNames = new Set([...localGlobalSkills, ...upstreamGlobalSkills].map((skill) => skill.name));
 
     console.log('\nPlan:');
     console.log(`- Repo workflow skills: install ${projectSkills.length} curated skill folder(s) to .agents/skills and .claude/skills`);
@@ -282,8 +277,7 @@ async function installBootstrap(args, rl, yes) {
     console.log('- Global cleanup: remove obsolete installer-managed tdd copies from ~/.agents/skills and ~/.claude/skills');
     console.log(`- Global local skills: install ${localGlobalSkills.length} barlevalon fork/personal skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
     console.log(`- Global upstream skills: install ${upstreamGlobalSkills.length} canonical upstream skill folder(s) to ~/.agents/skills and ~/.claude/skills`);
-    console.log(`- Global Plannotator skills: ensure ${plannotatorSkills.length} upstream skill folder(s) in ~/.agents/skills and ~/.claude/skills`);
-    console.log(`\nSources: github:${MATT_REPO}@${projectSkillSet.ref}, ${upstreamGlobalLoaded.sources.map((source) => `github:${source.repo}@${source.ref}`).join(', ')}, github:${PLANNOTATOR_REPO}@${plannotatorLoaded.ref}`);
+    console.log(`\nSources: github:${MATT_REPO}@${projectSkillSet.ref}, ${upstreamGlobalLoaded.sources.map((source) => `github:${source.repo}@${source.ref}`).join(', ')}`);
 
     const untouchedReport = snapshotUntouchedSkillDirs([
       { label: 'repo .agents/skills', root: path.join(cwd, '.agents/skills'), installedNames: new Set(projectSkills.map((skill) => skill.name)) },
@@ -295,7 +289,7 @@ async function installBootstrap(args, rl, yes) {
     let confirmed = yes;
     if (!yes) {
       confirmed = await askYesNo(rl, 'Bootstrap this repo and your global agent skills?', true);
-      if (!confirmed) return { cleanup: () => { projectLoaded.cleanup?.(); upstreamGlobalLoaded.cleanup?.(); plannotatorLoaded.cleanup?.(); } };
+      if (!confirmed) return { cleanup: () => { projectLoaded.cleanup?.(); upstreamGlobalLoaded.cleanup?.(); } };
     }
 
     const globalAgentsRoot = path.join(os.homedir(), '.agents/skills');
@@ -308,8 +302,6 @@ async function installBootstrap(args, rl, yes) {
       { targetRoot: globalClaudeRoot, skills: localGlobalSkills },
       { targetRoot: globalAgentsRoot, skills: upstreamGlobalSkills },
       { targetRoot: globalClaudeRoot, skills: upstreamGlobalSkills },
-      { targetRoot: globalAgentsRoot, skills: plannotatorSkills },
-      { targetRoot: globalClaudeRoot, skills: plannotatorSkills },
     ], args.force);
 
     removeObsoleteGlobalTdd(globalAgentsRoot);
@@ -319,18 +311,15 @@ async function installBootstrap(args, rl, yes) {
     installSkillCopies(localGlobalSkills, globalClaudeRoot, args.force);
     installSkillCopies(upstreamGlobalSkills, globalAgentsRoot, args.force);
     installSkillCopies(upstreamGlobalSkills, globalClaudeRoot, args.force);
-    installSkillCopies(plannotatorSkills, globalAgentsRoot, args.force);
-    installSkillCopies(plannotatorSkills, globalClaudeRoot, args.force);
 
     printUntouchedSkillDirs(untouchedReport);
 
     console.log('\nInstalled. Ask your agent for a workflow, for example:');
     for (const line of examplePrompts(projectSkills, projectSkillSet)) console.log(`  ${line}`);
-    return { cleanup: () => { projectLoaded.cleanup?.(); upstreamGlobalLoaded.cleanup?.(); plannotatorLoaded.cleanup?.(); } };
+    return { cleanup: () => { projectLoaded.cleanup?.(); upstreamGlobalLoaded.cleanup?.(); } };
   } catch (error) {
     projectLoaded?.cleanup?.();
     upstreamGlobalLoaded?.cleanup?.();
-    plannotatorLoaded?.cleanup?.();
     throw error;
   }
 }
@@ -541,30 +530,6 @@ function selectSkillsByName(names, skills, label) {
     if (!skill) throw new Error(`${label} missing upstream skill: ${name}`);
     return skill;
   });
-}
-
-function loadPlannotatorSkills(ref) {
-  const checkout = checkoutGitHubRepo(PLANNOTATOR_REPO, ref ?? DEFAULT_MATT_REF);
-  try {
-    const core = discoverFlatSkills(path.join(checkout.dir, 'apps/skills/core'), 'plannotator-core', {
-      source: MATT_SOURCE,
-      sourceMarkerPrefix: `github:${PLANNOTATOR_REPO}@${checkout.ref}:apps/skills/core`,
-    });
-    const extra = discoverFlatSkills(path.join(checkout.dir, 'apps/skills/extra'), 'plannotator-extra', {
-      source: MATT_SOURCE,
-      sourceMarkerPrefix: `github:${PLANNOTATOR_REPO}@${checkout.ref}:apps/skills/extra`,
-    });
-    const byName = new Map([...core, ...extra].map((skill) => [skill.name, skill]));
-    const skills = BOOTSTRAP_PLANNOTATOR_SKILLS.map((name) => {
-      const skill = byName.get(name);
-      if (!skill) throw new Error(`Plannotator upstream missing skill: ${name}`);
-      return skill;
-    });
-    return { skills, ref: checkout.ref, cleanup: checkout.cleanup };
-  } catch (error) {
-    checkout.cleanup();
-    throw error;
-  }
 }
 
 function assertBundleSkillsExist(bundle, skills) {

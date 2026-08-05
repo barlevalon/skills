@@ -30,7 +30,7 @@ With no flags the installer does the normal file-based bootstrap:
 - installs the curated repo workflow bundle—Matt Pocock workflows plus the maintained `tdd` fork—under `.agents/skills` and `.claude/skills`
 - updates repo instruction files for agents that need them
 - installs this package's global-purpose maintained skills/forks globally; maintained `tdd` stays repo-local
-- installs canonical upstream global skills from Bento, Caveman, Ponytail, Matt, Vercel, Worktrunk, Cursor, and Plannotator
+- installs canonical upstream global skills from Bento, Caveman, Ponytail, Matt, Vercel, Worktrunk, and Cursor
 - reports any pre-existing skill folders it left untouched
 
 Advanced escape hatches:
@@ -67,24 +67,28 @@ Use release-prep for the next release.
 | Work | Skills |
 |---|---|
 | Plan a feature | `to-spec`, `to-tickets`, `grill-with-docs`, `grilling` |
+| Map large or uncertain work | `wayfinder` |
+| Research | `research` |
+| Prototype | `prototype` |
+| Implement a prepared ticket | `implement` |
 | Debug | `diagnosing-bugs` |
 | Build test-first | `tdd` |
 | Minimize implementation complexity | `ponytail` |
-| Prototype | `prototype` |
 | Improve architecture | `improve-codebase-architecture`, `codebase-design`, `domain-modeling` |
-| Review code | `thermo-nuclear-code-quality-review`, `ponytail-review` |
+| Review code | `code-review`, `thermo-nuclear-code-quality-review`, `ponytail-review` |
 | Audit repository complexity | `ponytail-audit` |
 | Track deliberate simplification debt | `ponytail-debt` |
+| Manage branches and worktrees | `worktrunk` |
 | Create presentations | `bento-slides` |
 | Write docs | `documentation-system` |
 | Write or edit skills | `writing-great-skills` |
+| Find more skills | `find-skills` |
 | Release | `release-prep` |
 | Commit message | `caveman-commit` |
 | Concise mode | `caveman`, `caveman-help` |
 | Handoff | `handoff` |
-| Visual explanation | `plannotator-visual-explainer` |
 
-Full list: [docs/usage.md](docs/usage.md)
+Source and usage details: [docs/usage.md](docs/usage.md)
 
 ## Local skills in this package
 
@@ -106,7 +110,6 @@ Pi installs use the immutable refs recorded in [`catalog/sources.json`](catalog/
 - `vercel-labs/skills`
 - `max-sixty/worktrunk`
 - `cursor/plugins`
-- `backnotprop/plannotator`
 
 ## Docs
 

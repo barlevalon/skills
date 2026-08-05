@@ -43,10 +43,6 @@ Use release-prep for the next release.
 | `handoff` | `mattpocock/skills` | compacting a session for another agent |
 | `writing-great-skills` | `mattpocock/skills` | writing and editing predictable skills |
 | `release-prep` | local | changelog, version choice, release validation |
-| `plannotator-review` | `backnotprop/plannotator` | Plannotator review workflow |
-| `plannotator-annotate` | `backnotprop/plannotator` | Plannotator annotations |
-| `plannotator-last` | `backnotprop/plannotator` | last Plannotator report |
-| `plannotator-visual-explainer` | `backnotprop/plannotator` | visual PR/review explanation |
 
 ## Local package paths
 

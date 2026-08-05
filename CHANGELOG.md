@@ -4,8 +4,13 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [2.0.0] - 2026-08-05
+
 ### Changed
 - Update `documentation-system` from the former Divio model to current Diátaxis guidance, including the compass, iterative workflow, and functional-quality boundary.
+
+### Removed
+- Remove Plannotator skills from the catalog and default bootstrap.
 
 ## [1.3.0] - 2026-07-22
 

@@ -90,19 +90,6 @@
       "skills": {
         "thermo-nuclear-code-quality-review": "cursor-team-kit/skills/thermo-nuclear-code-quality-review"
       }
-    },
-    {
-      "id": "plannotator",
-      "repo": "backnotprop/plannotator",
-      "ref": "v0.22.0",
-      "commit": "82f5648ccb1fc718407fbc794e8a40c95c94a536",
-      "licenses": ["LICENSE-MIT", "LICENSE-APACHE"],
-      "skills": {
-        "plannotator-annotate": "apps/skills/core/plannotator-annotate",
-        "plannotator-last": "apps/skills/core/plannotator-last",
-        "plannotator-review": "apps/skills/core/plannotator-review",
-        "plannotator-visual-explainer": "apps/skills/extra/plannotator-visual-explainer"
-      }
     }
   ]
 }
