@@ -71,6 +71,7 @@ Use release-prep for the next release.
 | Research | `research` |
 | Prototype | `prototype` |
 | Implement a prepared ticket | `implement` |
+| Guide human-only setup or migration | `wizard` |
 | Debug | `diagnosing-bugs` |
 | Build test-first | `tdd` |
 | Minimize implementation complexity | `ponytail` |
@@ -81,7 +82,9 @@ Use release-prep for the next release.
 | Manage branches and worktrees | `worktrunk` |
 | Create presentations | `bento-slides` |
 | Write docs | `documentation-system` |
-| Write or edit skills | `writing-great-skills` |
+| Get decisions from another person | `to-questionnaire` |
+| Re-pitch an unclear response | `wait-what` |
+| Write agent-facing instructions | `writing-for-agents` |
 | Find more skills | `find-skills` |
 | Release | `release-prep` |
 | Commit message | `caveman-commit` |

@@ -37,11 +37,14 @@ Use release-prep for the next release.
 | `to-tickets` | `mattpocock/skills` | breaking a spec/plan into tracer-bullet tickets |
 | `prototype` | `mattpocock/skills` | throwaway UI or logic prototypes |
 | `wayfinder` | `mattpocock/skills` | mapping large work into investigation tickets |
+| `wizard` | `mattpocock/skills` | generating interactive scripts for human-only procedures |
 | `tdd` | local fork | red/green/refactor implementation |
 | `worktrunk` | `max-sixty/worktrunk` | branch and worktree workflow |
 | `thermo-nuclear-code-quality-review` | `cursor/plugins` | strict maintainability review |
 | `handoff` | `mattpocock/skills` | compacting a session for another agent |
-| `writing-great-skills` | `mattpocock/skills` | writing and editing predictable skills |
+| `to-questionnaire` | `mattpocock/skills` | collecting decisions asynchronously from another person |
+| `wait-what` | `mattpocock/skills` | re-pitching an unclear or overly verbose response |
+| `writing-for-agents` | `mattpocock/skills` | writing and editing predictable agent-facing instructions |
 | `release-prep` | local | changelog, version choice, release validation |
 
 ## Local package paths

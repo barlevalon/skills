@@ -38,8 +38,8 @@
     {
       "id": "mattpocock-skills",
       "repo": "mattpocock/skills",
-      "ref": "v1.1.0",
-      "commit": "d574778f94cf620fcc8ce741584093bc650a61d3",
+      "ref": "v1.2.2",
+      "commit": "8b36d4fb2635b3c21998dcd8144439c9e5ba7302",
       "licenses": ["LICENSE"],
       "skills": {
         "codebase-design": "skills/engineering/codebase-design",
@@ -54,9 +54,12 @@
         "to-spec": "skills/engineering/to-spec",
         "to-tickets": "skills/engineering/to-tickets",
         "wayfinder": "skills/engineering/wayfinder",
+        "wizard": "skills/engineering/wizard",
         "grilling": "skills/productivity/grilling",
         "handoff": "skills/productivity/handoff",
-        "writing-great-skills": "skills/productivity/writing-great-skills"
+        "to-questionnaire": "skills/productivity/to-questionnaire",
+        "wait-what": "skills/productivity/wait-what",
+        "writing-for-agents": "skills/productivity/writing-for-agents"
       }
     },
     {

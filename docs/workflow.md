@@ -9,6 +9,7 @@
 | Plan needs pressure-testing | `grill-with-docs` or `grilling` |
 | Domain language is fuzzy | `domain-modeling` |
 | UI/state/design is uncertain | `prototype` |
+| Decisions must come from another person | `to-questionnaire` |
 
 ## Build or fix
 
@@ -18,6 +19,7 @@
 | Behavior change is clear | `tdd` |
 | Implementation risks unnecessary complexity | `ponytail` |
 | Need worktree/branch help | `worktrunk` |
+| Setup or migration requires human-only steps | `wizard` |
 
 ## Review
 
@@ -36,9 +38,10 @@
 |---|---|
 | Slide deck or presentation | `bento-slides` |
 | Docs work | `documentation-system` |
-| Skill authoring | `writing-great-skills` |
+| Agent-facing instructions | `writing-for-agents` |
 | Commit message | `caveman-commit` |
 | Very concise responses | `caveman` |
+| Previous response did not land | `wait-what` |
 | Continue in another session | `handoff` |
 
 ## Release

@@ -4,6 +4,15 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [2.1.0] - 2026-08-05
+
+### Added
+- Add Matt Pocock's `to-questionnaire`, `wait-what`, and `wizard` skills to the global bootstrap and Pi catalog.
+
+### Changed
+- Update curated Matt Pocock skills to v1.2.2 and rename `writing-great-skills` to `writing-for-agents`.
+- Make `matt-v1.2` the default workflow bundle while retaining v1.1 bundle names as compatibility aliases.
+
 ## [2.0.0] - 2026-08-05
 
 ### Changed

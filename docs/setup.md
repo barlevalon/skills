@@ -19,7 +19,7 @@ npx @barlevalon/skills@latest install
 
 Default file bootstrap:
 
-- Repo workflow layer: fetch Matt Pocock v1.1 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
+- Repo workflow layer: fetch Matt Pocock v1.2 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
 - Global local layer: copy this package's global-purpose maintained skills/forks to `~/.agents/skills/` and `~/.claude/skills/`; maintained `tdd` stays in the repo workflow layer.
 - Global upstream layer: fetch canonical non-project skills from `nyblnet/bento`, `JuliusBrussee/caveman`, `DietrichGebert/ponytail`, `mattpocock/skills`, `vercel-labs/skills`, `max-sixty/worktrunk`, and `cursor/plugins`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`. Matt workflow skills included in the repo layer are not duplicated globally.
 - Existing skill folders that are not part of those target sets are left untouched and listed after install. Existing folders that are part of the target set but not installer-managed are conflicts; use `--force` to replace them all-or-nothing.
@@ -111,7 +111,7 @@ Available bundles:
 |---|---|
 | `matt-core` | `grilling`, `to-spec`, `to-tickets`, `implement`, `code-review`, `tdd` |
 | `matt-wayfinder` | `wayfinder`, `research`, `prototype`, `grilling`, `domain-modeling` |
-| `matt-v1.1` | Matt's v1.1 workflow set: core flow, Wayfinder, and supporting design skills |
+| `matt-v1.2` | Matt's v1.2 workflow set: core flow, Wayfinder, and supporting design skills |
 
 Use `--ref <branch-or-commit>` to pin a specific upstream revision. Installed markers record the resolved upstream commit.
 
@@ -123,7 +123,7 @@ Use `--ref <branch-or-commit>` to pin a specific upstream revision. Installed ma
 -a, --agent <name>    Harness: pi, opencode, vscode, claude-code, all
 -s, --skill <name>    Skill to install. Use '*' or all for every skill
     --source <name>   Skill source: barlevalon (default), matt
-    --bundle <name>   Skill bundle: matt-core, matt-wayfinder, matt-v1.1
+    --bundle <name>   Skill bundle: matt-core, matt-wayfinder, matt-v1.2
     --ref <ref>       Git ref for external sources (default: main)
 -g, --global          Install to user scope where supported
 -p, --project         Install to project scope (default)

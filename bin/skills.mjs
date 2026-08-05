@@ -29,13 +29,21 @@ const VERCEL_SKILLS_REPO = 'vercel-labs/skills';
 const WORKTRUNK_REPO = 'max-sixty/worktrunk';
 const CURSOR_PLUGINS_REPO = 'cursor/plugins';
 const DEFAULT_MATT_REF = 'main';
-const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.1';
+const BOOTSTRAP_PROJECT_BUNDLE = 'matt-v1.2';
 const BOOTSTRAP_PONYTAIL_SKILLS = ['ponytail', 'ponytail-review', 'ponytail-audit', 'ponytail-debt'];
-const BOOTSTRAP_MATT_GLOBAL_SKILLS = ['diagnosing-bugs', 'handoff', 'writing-great-skills'];
+const BOOTSTRAP_MATT_GLOBAL_SKILLS = [
+  'diagnosing-bugs',
+  'handoff',
+  'to-questionnaire',
+  'wait-what',
+  'wizard',
+  'writing-for-agents',
+];
 const RENAMED_SKILLS = new Map([
   ['diagnose', 'diagnosing-bugs'],
   ['write-a-prd', 'to-spec'],
   ['prd-to-plan', 'to-tickets'],
+  ['writing-great-skills', 'writing-for-agents'],
 ]);
 
 const MATT_BUNDLES = new Map([
@@ -47,8 +55,8 @@ const MATT_BUNDLES = new Map([
     label: 'Matt Wayfinder flow',
     skills: ['wayfinder', 'research', 'prototype', 'grilling', 'domain-modeling'],
   }],
-  ['matt-v1.1', {
-    label: 'Matt v1.1 workflow',
+  ['matt-v1.2', {
+    label: 'Matt v1.2 workflow',
     skills: ['grilling', 'grill-with-docs', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd', 'wayfinder', 'research', 'prototype', 'domain-modeling', 'codebase-design', 'improve-codebase-architecture'],
   }],
 ]);
@@ -78,7 +86,7 @@ Options:
   -a, --agent <name>    Harness to install for: pi, opencode, vscode, claude-code, all
   -s, --skill <name>    Skill to install. Use '*' or all for every skill
       --source <name>   Skill source: barlevalon (default), matt
-      --bundle <name>   Skill bundle: matt-core, matt-wayfinder, matt-v1.1
+      --bundle <name>   Skill bundle: matt-core, matt-wayfinder, matt-v1.2
       --ref <ref>       Git ref for external sources (default: main)
   -g, --global          Install to user scope where supported
   -p, --project         Install to project scope (default)
@@ -393,9 +401,11 @@ function normalizeBundle(value) {
   const aliases = {
     core: 'matt-core',
     wayfinder: 'matt-wayfinder',
-    matt: 'matt-v1.1',
-    'matt-v1': 'matt-v1.1',
-    'v1.1': 'matt-v1.1',
+    matt: 'matt-v1.2',
+    'matt-v1': 'matt-v1.2',
+    'matt-v1.1': 'matt-v1.2',
+    'v1.1': 'matt-v1.2',
+    'v1.2': 'matt-v1.2',
   };
   const bundle = aliases[normalized] ?? normalized;
   if (!MATT_BUNDLES.has(bundle)) throw new Error(`unknown bundle: ${value}`);
