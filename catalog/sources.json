@@ -4,8 +4,8 @@
     {
       "id": "bento",
       "repo": "nyblnet/bento",
-      "ref": "v1.0.7",
-      "commit": "6d394bb64986348d2a59599055f7d1313ecf94da",
+      "ref": "v1.0.17",
+      "commit": "efc0fab48ed1a9531bb1ae2a652a091832f64254",
       "licenses": ["LICENSE"],
       "skills": {
         "bento-slides": "plugins/bento-slides/skills/bento-slides"
@@ -14,8 +14,8 @@
     {
       "id": "caveman",
       "repo": "JuliusBrussee/caveman",
-      "ref": "v1.9.1",
-      "commit": "0d95a81d35a9f2d123a5e9430d1cfc43d55f1bb0",
+      "ref": "v2.0.0",
+      "commit": "2c67abb9833689b48c7abba88afaa77c39a18657",
       "licenses": ["LICENSE"],
       "skills": {
         "caveman": "skills/caveman",
@@ -25,8 +25,8 @@
     {
       "id": "ponytail",
       "repo": "DietrichGebert/ponytail",
-      "ref": "v4.8.4",
-      "commit": "bc9ee949d5f439e8b9f3bb92c6d6d3d1e6ebd324",
+      "ref": "v4.9.0",
+      "commit": "0a4dd63ad4541f4f655c4108a295916f3c1d8fda",
       "licenses": ["LICENSE"],
       "skills": {
         "ponytail": "skills/ponytail",
@@ -38,8 +38,8 @@
     {
       "id": "mattpocock-skills",
       "repo": "mattpocock/skills",
-      "ref": "v1.2.2",
-      "commit": "8b36d4fb2635b3c21998dcd8144439c9e5ba7302",
+      "ref": "v1.2.3",
+      "commit": "6acc160e4e0cd062dbbbd7a1b26ae92855edf07e",
       "licenses": ["LICENSE"],
       "skills": {
         "codebase-design": "skills/engineering/codebase-design",
@@ -65,8 +65,8 @@
     {
       "id": "vercel-skills",
       "repo": "vercel-labs/skills",
-      "ref": "v1.5.15",
-      "commit": "75e7ea2825230197cf20bfd6fd3762acc2620746",
+      "ref": "v1.5.22",
+      "commit": "a4d243c3d4f86cdf9385dd1b6a0733f6937e70b5",
       "licenses": [],
       "declaredLicense": "MIT",
       "licenseEvidence": ["package.json", "README.md"],
@@ -77,8 +77,8 @@
     {
       "id": "worktrunk",
       "repo": "max-sixty/worktrunk",
-      "ref": "v0.66.0",
-      "commit": "da2a66cd7600aee49edfc4c952ca9bb4ff56ca6e",
+      "ref": "v0.72.0",
+      "commit": "f57fac365b229f6a6e7941d45215276ab92aacd8",
       "licenses": ["LICENSE"],
       "skills": {
         "worktrunk": "skills/worktrunk"

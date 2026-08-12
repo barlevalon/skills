@@ -8,18 +8,13 @@ Subprocesses cannot change the parent shell's current directory. When
 `wt switch feature` runs, the `wt` binary runs as a child process and cannot
 `cd` the terminal.
 
-Worktrunk solves this with **split directive file passing**:
-
-1. Shell wrapper creates two temp files via `mktemp` (one for cd, one for exec)
-2. Shell sets `WORKTRUNK_DIRECTIVE_CD_FILE` and `WORKTRUNK_DIRECTIVE_EXEC_FILE`
-3. `wt` binary writes a raw path to the CD file (no shell escaping needed)
-4. `wt` writes shell commands to the EXEC file (only for `--execute`)
-5. Shell reads the CD file with `cd -- "$(< file)"` — no shell parsing
-6. Shell sources the EXEC file if non-empty
-7. Shell removes both temp files
-
-The split design eliminates shell injection from cd directives — the CD file
-holds a raw path that is never parsed as shell.
+Worktrunk solves this with **split directive file passing**: the shell wrapper
+creates two temp files, `wt` writes a raw path to one (cd) and shell commands
+to the other (`--execute` payloads), and the wrapper applies both after `wt`
+exits. The split design eliminates shell injection from cd directives — the CD
+file holds a raw path that is never parsed as shell. The wrapper's steps and a
+simplified implementation: [How the Shell Wrapper
+Works](#how-the-shell-wrapper-works).
 
 ## Installation
 
@@ -58,18 +53,33 @@ session.
 
 When shell integration isn't working, `wt switch` shows warnings explaining why.
 
+### "shell wrapper is out of date"
+
+**Meaning**: The active shell still has a pre-split wrapper loaded. Current
+versions no longer write shell commands to that wrapper's single directive
+file, because it mixes trusted directory paths with arbitrary shell.
+
+**Fix**: Run `wt config shell install`, then restart the shell (or reload its
+config) to activate the current split-file wrapper.
+
 ### "shell integration not installed"
 
-**Meaning**: The shell config file doesn't have the `eval "$(wt config shell init ...)"` line.
+**Meaning**: The current shell's config file doesn't have the
+`eval "$(wt config shell init ...)"` line. The current shell is detected from
+the process tree (falling back to `$SHELL`), so this refers to the shell wt
+was actually invoked from, not necessarily the login shell.
 
 **Fix**: Run `wt config shell install` or add the line manually.
 
-### "shell requires restart"
+### "shell integration installed but not active"
 
-**Meaning**: Shell integration is configured, but the current shell session was
-started before installation. The shell function isn't loaded yet.
+**Meaning**: Shell integration is configured for the current shell, but the
+shell function isn't loaded in this session — usually because the session was
+started before installation.
 
-**Fix**: Start a new terminal or run `source ~/.bashrc` (or equivalent).
+**Fix**: Start a new terminal or run `source ~/.bashrc` (or equivalent). If
+the message persists after a restart, `wt config show` reports the detected
+shell, `$SHELL`, and per-shell integration status.
 
 ### "ran ./path/to/wt; shell integration wraps wt"
 
@@ -148,6 +158,15 @@ wt() {
     return "$exit_code"
 }
 ```
+
+### Directive trust boundary
+
+The CD file contains only a raw path, so Worktrunk can pass it through to
+alias and hook subprocesses. The EXEC file contains shell code that the parent
+wrapper sources, so Worktrunk removes it from project-defined aliases and
+hooks. User-config aliases are the intentional exception: because their
+commands are authored by the user, they retain the EXEC file and can run a
+nested `wt switch --execute`.
 
 ## Debugging Checklist
 

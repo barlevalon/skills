@@ -4,6 +4,15 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [2.2.0] - 2026-08-12
+
+### Changed
+- Refresh curated upstream snapshots to Bento v1.0.17, Caveman v2.0.0, Ponytail v4.9.0, Matt Pocock skills v1.2.3, Vercel Skills v1.5.22, and Worktrunk v0.72.0.
+- Improve Caveman language precision, Ponytail debt comments, agent-portable Matt workflows, current Skills CLI guidance, and Worktrunk references.
+
+### Security
+- Warn before editing Bento decks containing live collaboration keys and redact secrets from debugging commands, outputs, and captured artifacts.
+
 ## [2.1.0] - 2026-08-05
 
 ### Added
