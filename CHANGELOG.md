@@ -4,6 +4,12 @@ All notable changes to this package are documented here.
 
 ## Unreleased
 
+## [2.3.0] - 2026-08-28
+
+### Changed
+- Refresh curated upstream snapshots to Bento v1.0.18, Caveman v2.3.1, Vercel Skills v1.5.23, and Worktrunk v0.75.0.
+- Improve Caveman compression guidance and align Worktrunk references with current command targeting, approval, picker, and agent-integration behavior.
+
 ## [2.2.0] - 2026-08-12
 
 ### Changed

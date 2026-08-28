@@ -14,7 +14,7 @@ The table renders progressively: branch names, paths, and commit hashes appear i
 
 List all worktrees:
 
-```
+```console
 $ wt list
   Branch       Status        HEAD±    main↕     main…±  Remote⇅  Commit   Age   Message
 @ feature-api  +   ↕⇡     +54   -5   ↑4  ↓1  +234  -24   ⇡3      6814f02  30m   Add API tests
@@ -27,7 +27,7 @@ $ wt list
 
 Include CI status and LLM summaries:
 
-```
+```console
 $ wt list --full
   Branch       Status        HEAD±    main↕     main…±  Summary                                                 Remote⇅  CI    Commit
 @ feature-api  +   ↕⇡     +54   -5   ↑4  ↓1  +234  -24  Refactor API to REST architecture with middleware        ⇡3      #412  6814f02
@@ -40,7 +40,7 @@ $ wt list --full
 
 Include branches that don't have worktrees:
 
-```
+```console
 $ wt list --branches --full
   Branch       Status        HEAD±    main↕     main…±  Summary                                                 Remote⇅  CI    Commit
 @ feature-api  +   ↕⇡     +54   -5   ↑4  ↓1  +234  -24  Refactor API to REST architecture with middleware        ⇡3      #412  6814f02
@@ -55,7 +55,7 @@ $ wt list --branches --full
 
 Output as JSON for scripting:
 
-```bash
+```console
 $ wt list --format=json
 ```
 
@@ -65,7 +65,7 @@ $ wt list --format=json
 |--------|-------|
 | Branch | Branch name; a detached worktree has none, so it shows its short hash in dim yellow |
 | Status | Compact symbols (see below) |
-| HEAD± | Uncommitted changes: +added -deleted lines |
+| HEAD± | Uncommitted changes, including untracked files: +added -deleted lines |
 | main↕ | Commits ahead/behind default branch |
 | main…± | Line diffs since the merge-base (three-dot) with the default branch |
 | Summary | LLM-generated branch summary; requires `--full`, `summary = true`, and [`commit.generation`](https://worktrunk.dev/config/#commit) [experimental] |
@@ -171,7 +171,7 @@ The single highest-priority state describing the branch's relation to the defaul
 | `∅` | `"orphan"` | No common ancestor with the default branch |
 | `_` | `"empty"` | Same commit as the default branch, working tree clean — safe to remove; row dimmed |
 | `⊂` | `"integrated"` | Content [integrated](https://worktrunk.dev/remove/#branch-cleanup) into the default branch or merge target via different history; the matching check is in `integration_reason`; row dimmed |
-| `✗` | `"would_conflict"` | Merging into the default branch would conflict (simulated with `git merge-tree`) and the branch isn't already integrated; with `--full`, the check includes uncommitted changes |
+| `✗` | `"would_conflict"` | Merging into the default branch would conflict (simulated with `git merge-tree`) and the branch isn't already integrated; with `--full`, the check includes tracked uncommitted changes |
 | `–` | `"same_commit"` | Same commit as the default branch, but with uncommitted changes |
 | `↕` | `"diverged"` | Both ahead of and behind the default branch |
 | `↑` | `"ahead"` | Has commits the default branch doesn't |
@@ -264,10 +264,10 @@ Item fields:
 | `worktree` | `{path, main, current, previous, detached, locked, prunable, branch_mismatch, duplicate_branch, operation, changes}`; absent on branch-only rows. `locked`/`prunable` are `{reason}` objects and can co-occur; `operation` is `"rebase"` or `"merge"`; `changes` holds the five working-tree flags plus `conflicted` and `diff {added, deleted}` |
 | `default_branch` | Relation to the default branch: `{ahead, behind, diff, orphan, integration, merge_conflicts}`; absent on the default branch itself. `integration.reason` is one of `same_commit`, `ancestor`, `no_added_changes`, `trees_match`, `merge_adds_nothing`, `patch_id_match`; a dirty tree skips the checks, leaving `integration` null |
 | `upstream` | Tracking branch: `{remote, branch, ahead, behind}`; absent when none is configured |
-| `pr` | Open PR/MR: `{number, url, review, mergeable, repo}`; collected with `--full` or a listed `ci` column. `review` uses the schema 1 `ci.review_state` vocabulary; `mergeable` is false when the forge reports conflicts, null otherwise |
-| `checks` | CI pipeline: `{status, source, stale}`; `status` is `passed`, `running`, or `failed` — null when a conflicts report masks it |
+| `pr` | Open PR/MR: `{number, url, review, mergeable, repo}`; collected with `--full`. `review` uses the schema 1 `ci.review_state` vocabulary; `mergeable` is false when the forge reports conflicts, null otherwise |
+| `checks` | CI pipeline: `{status, source, stale}`; collected with `--full`. `status` is `passed`, `running`, or `failed` — null when a conflicts report masks it |
 | `dev_server` | `{url, listening}` from the project's `list.url` template |
-| `summary` | LLM branch summary (requires `[list] summary = true`) |
+| `summary` | LLM branch summary; needs `--full`, `[list] summary = true`, and a `[commit.generation]` command |
 | `vars` | Per-branch variables from [`wt config state vars`](https://worktrunk.dev/config/#wt-config-state-vars) |
 | `display` | Rendered strings: `state` (schema 1's `main_state` vocabulary), `symbols`, `statusline` (with ANSI colors and OSC 8 hyperlinks), `columns` (custom-column cells keyed by header) |
 
@@ -277,7 +277,7 @@ Schema 1 names map directly: `commit` → `head`, `working_tree` →
 `url_active` → `dev_server`, `statusline`/`symbols`/`columns` → `display.*`,
 and the per-item `repo` moves to the envelope's `repo.forge`.
 
-```bash
+```console
 # Current worktree path (for scripts)
 $ wt list --format=json | jq -r '.items[] | select(.worktree.current) | .worktree.path'
 
@@ -300,7 +300,7 @@ optional there rather than required-and-null.
 
 The original bare-array format, and the default while unset:
 
-```bash
+```console
 # Current worktree path (for scripts)
 $ wt list --format=json | jq -r '.[] | select(.is_current) | .path'
 

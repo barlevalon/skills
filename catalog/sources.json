@@ -4,8 +4,8 @@
     {
       "id": "bento",
       "repo": "nyblnet/bento",
-      "ref": "v1.0.17",
-      "commit": "efc0fab48ed1a9531bb1ae2a652a091832f64254",
+      "ref": "v1.0.18",
+      "commit": "92db85b4112dba4fd3e65c1f42e383ef683addc9",
       "licenses": ["LICENSE"],
       "skills": {
         "bento-slides": "plugins/bento-slides/skills/bento-slides"
@@ -14,8 +14,8 @@
     {
       "id": "caveman",
       "repo": "JuliusBrussee/caveman",
-      "ref": "v2.0.0",
-      "commit": "2c67abb9833689b48c7abba88afaa77c39a18657",
+      "ref": "v2.3.1",
+      "commit": "b5ec6351396b643a17cbbec4a6eee8b3fb9dd782",
       "licenses": ["LICENSE"],
       "skills": {
         "caveman": "skills/caveman",
@@ -65,8 +65,8 @@
     {
       "id": "vercel-skills",
       "repo": "vercel-labs/skills",
-      "ref": "v1.5.22",
-      "commit": "a4d243c3d4f86cdf9385dd1b6a0733f6937e70b5",
+      "ref": "v1.5.23",
+      "commit": "435076e78988e1e6ec40d00b0b1d76bdbbc5419a",
       "licenses": [],
       "declaredLicense": "MIT",
       "licenseEvidence": ["package.json", "README.md"],
@@ -77,8 +77,8 @@
     {
       "id": "worktrunk",
       "repo": "max-sixty/worktrunk",
-      "ref": "v0.72.0",
-      "commit": "f57fac365b229f6a6e7941d45215276ab92aacd8",
+      "ref": "v0.75.0",
+      "commit": "38bb020b04d5b2955ace022d30e0b4f24640d31a",
       "licenses": ["LICENSE"],
       "skills": {
         "worktrunk": "skills/worktrunk"

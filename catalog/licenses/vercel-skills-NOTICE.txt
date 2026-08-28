@@ -1,2 +1,2 @@
-vercel-labs/skills@v1.5.22 declares MIT in package.json, README.md.
-Source: https://github.com/vercel-labs/skills/tree/a4d243c3d4f86cdf9385dd1b6a0733f6937e70b5
+vercel-labs/skills@v1.5.23 declares MIT in package.json, README.md.
+Source: https://github.com/vercel-labs/skills/tree/435076e78988e1e6ec40d00b0b1d76bdbbc5419a

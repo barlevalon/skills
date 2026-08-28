@@ -1,6 +1,6 @@
 ---
 name: worktrunk
-description: Guidance for Worktrunk (the `wt` CLI) — git worktree management, hooks, and config. Load when editing .config/wt.toml or ~/.config/worktrunk/config.toml; adding, modifying, or debugging hooks (post-merge, post-start, pre-commit, pre-merge, post-switch, etc.); configuring commit message generation or command aliases; or troubleshooting wt behavior. Also answers general worktrunk/wt questions.
+description: Guidance for Worktrunk (the `wt` CLI) — git worktree management, hooks, and config. Load when working out which worktree a `wt` command will act on, or reaching for the global `-C <path>` to target one; editing .config/wt.toml or ~/.config/worktrunk/config.toml; adding, modifying, or debugging hooks (post-merge, post-start, pre-commit, pre-merge, post-switch, etc.); configuring commit message generation or command aliases; or troubleshooting wt behavior. Also answers general worktrunk/wt questions.
 license: MIT OR Apache-2.0
 compatibility: Requires the `wt` CLI (https://worktrunk.dev)
 ---
@@ -23,6 +23,23 @@ Reference files are synced from [worktrunk.dev](https://worktrunk.dev) documenta
 - **reference/troubleshooting.md**: Troubleshooting for LLM and hooks (Claude-specific)
 
 For command-specific options, run `wt <command> --help`. For configuration, follow the workflows below.
+
+## Which worktree a command acts on
+
+`wt` finds the *repository* from the working directory, and the *worktree* from the command's own arguments. Two rules cover every case:
+
+1. **A command that names a branch already names its worktree.** Worktrees are addressed by branch name, so `wt switch <branch>`, `wt remove <branch>`, `wt step diff --branch <branch>`, and `wt config state marker set --branch <branch>` act on that branch's worktree no matter which worktree you run them from. Every such argument also accepts the worktree's own path, for the cases a branch cannot name — a second checkout of the same branch, or a detached worktree (which `marker` still rejects, since it keys state by branch name).
+2. **`-C <path>` moves the working directory, not the worktree selection.** Reach for it when the repository lookup is what's wrong: a *different* repository; a command that acts on the current worktree and takes no branch argument (`wt merge`, `wt step rebase|squash|push` — their `[TARGET]` is the merge target, not a worktree); or a caller whose working directory isn't inside a repository at all, such as an agent hook the host pins elsewhere.
+
+Layering `-C` on top of a branch argument names the same worktree twice. From inside the `alpha` worktree of a repo that also has `beta`:
+
+```bash
+wt step diff --branch beta                    # ✓ the branch argument selects the worktree
+wt -C ../repo.beta step diff --branch beta    # ✗ says beta twice
+
+wt switch --create beta                       # ✓ --base already defaults to the default branch
+wt -C ../repo switch --create beta            # ✗ -C adds nothing; you are already in that repo
+```
 
 ## Two types of configuration
 
@@ -118,14 +135,14 @@ Agents running `wt merge`, `wt switch`, or other commands that trigger hooks wil
 ○ post-merge install:
   cargo install --path .
 ✗ Cannot prompt for approval in non-interactive environment
-↳ To skip prompts in CI/CD, add --yes; to pre-approve commands, run wt config approvals add
+↳ To skip prompts in CI/CD, add --yes; to pre-approve commands, run wt config approvals add --yes
 ```
 
 The resolution is for the user to make the trust decision themselves:
 
 - **`wt config approvals add`** — interactive prompt where the user reviews each command before it is stored to `~/.config/worktrunk/approvals.toml`. Run once per project; the approval persists across invocations until the command template changes or the project moves. This is the path to recommend — the user reviews and consents to exactly the commands that will run.
 
-**When invoked as an agent, stop and escalate to the user.** Approving a project's hooks is a security decision about whether this repository should be trusted to run arbitrary commands on the user's machine — that decision belongs to the user, not the agent. Tell the user to run `wt config approvals add` and let them review the commands. Do not run `--yes` on the user's behalf: it skips the approval gate for that invocation, so reaching for it to unblock a command defeats the protection. `--yes` exists for CI/CD pipelines that already control their own hook contents; it is not a shortcut for an interactive agent to silence an approval prompt.
+**When invoked as an agent, stop and escalate to the user.** Approving a project's hooks is a security decision about whether this repository should be trusted to run arbitrary commands on the user's machine — that decision belongs to the user, not the agent. Tell the user to run `wt config approvals add` and let them review the commands. Do not reach for either `--yes` on the user's behalf: on the blocked command it skips the gate for that invocation, and `wt config approvals add --yes` records every command the project declares with nobody reading them. Both exist for CI/CD pipelines and containers that already control their own hook contents; neither is a shortcut for an interactive agent to silence an approval prompt.
 
 ## Advanced: agent handoffs
 
