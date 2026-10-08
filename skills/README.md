@@ -12,6 +12,7 @@ This package is a bootstrap plus a small set of local skills/syntheses. Canonica
 | [`documentation-system`](documentation-system/SKILL.md) | Local documentation workflow | Based on the current [Diátaxis](https://diataxis.fr/) framework |
 | [`tdd`](tdd/SKILL.md) | Local synthesis of test-first discipline | Influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
 | [`release-prep`](release-prep/SKILL.md) | Local release preparation workflow | Authored for this package's release process |
+| [`pr`](pr/SKILL.md) | Self-contained PR drafting and approval-gated browser workflow | Workmux `open-pr`, Matt Pocock `pr`, and Dex Horthy `show-me` |
 
 ## Upstream skills installed by bootstrap
 

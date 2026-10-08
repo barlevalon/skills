@@ -2,7 +2,21 @@
 
 All notable changes to this package are documented here.
 
-## Unreleased
+## [3.0.0] - 2026-10-08
+
+### Breaking
+- Domain readers and setup now use `GLOSSARY.md` / `GLOSSARY-MAP.md` instead of `CONTEXT.md` / `CONTEXT-MAP.md`. Migrate actual project glossaries and their references during a coordinated cutover; package updates do not rename files automatically. See the [deployment checklist](docs/matt-v1.3-deployment.md).
+- Maintained `@barlevalon/tdd-skill` releases independently as **2.0.0** for the domain filename change. Its test-first and refactoring discipline is unchanged. Other existing maintained package versions are unchanged.
+
+### Added
+- Add unchanged upstream `teach` v1.3.1 to the Pi catalog and global file bootstrap, including workspace-format references, reusable lesson-component guidance, retrieval/spacing practice, and confirmation before mission changes.
+- Add unchanged upstream `setup-matt-pocock-skills` v1.3.1 to the Pi catalog and all Matt file-bootstrap workflow bundles.
+- Add upstream `retro` unchanged from Matt Pocock skills v1.3.1 to the Pi catalog and global file bootstrap, documenting shared Pi skill-loading guidance.
+- Add maintained `@barlevalon/pr-skill` **1.0.0**, combining branch context and browser-based creation with concise evidence and merge-risk descriptions. It is explicitly invoked, self-contained, and requires approval for commit, push, and browser actions.
+
+### Changed
+- Refresh the selected Matt catalog to v1.3.1 under one source; retain existing workflows alongside the newly curated setup, retro, and teach directories. Maintained TDD remains separate.
+- Align maintained TDD's domain reader with `GLOSSARY.md`; preserve its test-first and refactoring safeguards. Document required project-glossary, Pi-loading, and standalone-skill deployment steps separately from package validation.
 
 ## [2.3.0] - 2026-08-28
 

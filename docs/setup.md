@@ -11,6 +11,40 @@ pi update --extensions
 
 Pi loads the complete curated catalog globally and owns package update discovery. Upstream snapshots are pinned to immutable commits in `catalog/sources.json`; a new `@barlevalon/skills` release moves those pins.
 
+The Matt v1.3.1 refresh requires a coordinated domain and skill-loading cutover. Complete the [deployment checklist](matt-v1.3-deployment.md) before updating an existing installation; passing package checks does not migrate project files or global instructions.
+
+## Skill loading across harnesses
+
+Catalog snapshots stay unchanged upstream files. Some name a `Skill` tool that not every harness exposes. In Pi, read the advertised `SKILL.md` for the named reference and any supporting files it points to. Explicit-only workflows still require a user request; loading a reference does not authorize delegation, publication, or edits.
+
+For consistent loading, add this shared rule to your harness instructions:
+
+> When a skill names a Skill tool that this harness does not expose, read the named skill's advertised SKILL.md and required references instead. Respect explicit-only invocation and existing action-approval rules.
+
+This is guidance, not an automatically installed instruction. The upstream `retro` remains explicitly invoked and uses the already-bundled `writing-for-agents` reference.
+
+## Configure a project's workflows
+
+After installation, explicitly invoke `setup-matt-pocock-skills` in an application repo when workflows such as `to-spec`, `to-tickets`, or `wayfinder` lack its tracker or domain conventions:
+
+```text
+Use setup-matt-pocock-skills to configure this repo. Show the proposed changes before writing.
+```
+
+It proposes an instruction block and `docs/agents/` files for the issue tracker, optional triage labels, and domain layout. It does not select or install skills. Existing project instructions can supply the same context; a GitHub remote does not override a project's Jira or Linear workflow.
+
+The Pi catalog carries unchanged setup v1.3.1 to match its GLOSSARY-based consumers. File-bootstrap bundles fetch setup from the selected Matt ref, like the other bundled workflows. Before deploying the package, review any standalone setup copy and its dotfile ownership to avoid duplicate discovery; installation does not retire those copies automatically.
+
+## Learn across sessions
+
+Explicitly invoke `teach` from the workspace where you want to keep learning state:
+
+```text
+Use teach to help me learn this topic over multiple sessions.
+```
+
+It uses the mission, resources, glossary, lessons, reusable assets, and learning records in that workspace. The catalog carries the complete unchanged v1.3.1 skill directory; the global file bootstrap fetches it from the selected Matt ref. Updating the skill does not replace learning-workspace data. Review any standalone `teach` copy and its mise declarations before deploying the package to avoid duplicate discovery; retiring that copy is a separate action.
+
 ## Scoped file bootstrap
 
 ```bash
@@ -19,7 +53,7 @@ npx @barlevalon/skills@latest install
 
 Default file bootstrap:
 
-- Repo workflow layer: fetch Matt Pocock v1.2 workflow skills from `github:mattpocock/skills`, copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
+- Repo workflow layer: fetch the curated Matt workflow selection (bundle `matt-v1.2`) from `github:mattpocock/skills` at the selected ref (default `main`), copy them to `.agents/skills/` and `.claude/skills/`, then update `AGENTS.md` and `.github/copilot-instructions.md`.
 - Global local layer: copy this package's global-purpose maintained skills/forks to `~/.agents/skills/` and `~/.claude/skills/`; maintained `tdd` stays in the repo workflow layer.
 - Global upstream layer: fetch canonical non-project skills from `nyblnet/bento`, `JuliusBrussee/caveman`, `DietrichGebert/ponytail`, `mattpocock/skills`, `vercel-labs/skills`, `max-sixty/worktrunk`, and `cursor/plugins`, then copy them to `~/.agents/skills/` and `~/.claude/skills/`. Matt workflow skills included in the repo layer are not duplicated globally.
 - Existing skill folders that are not part of those target sets are left untouched and listed after install. Existing folders that are part of the target set but not installer-managed are conflicts; use `--force` to replace them all-or-nothing.
@@ -109,9 +143,11 @@ Available bundles:
 
 | Bundle | Includes |
 |---|---|
-| `matt-core` | `grilling`, `to-spec`, `to-tickets`, `implement`, `code-review`, `tdd` |
-| `matt-wayfinder` | `wayfinder`, `research`, `prototype`, `grilling`, `domain-modeling` |
-| `matt-v1.2` | Matt's v1.2 workflow set: core flow, Wayfinder, and supporting design skills |
+| `matt-core` | `setup-matt-pocock-skills`, `grilling`, `to-spec`, `to-tickets`, `implement`, `code-review`, `tdd` |
+| `matt-wayfinder` | `setup-matt-pocock-skills`, `wayfinder`, `research`, `prototype`, `grilling`, `domain-modeling` |
+| `matt-v1.2` | Curated workflow set: setup, core flow, Wayfinder, and supporting design skills |
+
+`matt-v1.2` is the retained bundle identifier, not an upstream release pin. File-based installs use the selected ref; the Pi catalog uses the immutable v1.3.1 snapshot.
 
 Use `--ref <branch-or-commit>` to pin a specific upstream revision. Installed markers record the resolved upstream commit.
 

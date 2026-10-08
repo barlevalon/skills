@@ -48,6 +48,8 @@ Do not combine Pi-managed and file-based installs unless duplicate skill names a
 
 Migrating from file bootstrap to Pi ownership? [Remove installer-managed copies first](docs/setup.md#migrate-from-file-bootstrap-to-pi).
 
+Before deploying the Matt v1.3.1 refresh, complete the [domain and Pi-loading cutover checklist](docs/matt-v1.3-deployment.md). Package validation does not migrate project glossaries or global instructions.
+
 The npm package contains a reproducible aggregate catalog pinned to upstream releases and reviewed commits for Pi. The file-based installer continues fetching selected third-party skills directly from their upstream repositories.
 
 See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
@@ -66,6 +68,7 @@ Use release-prep for the next release.
 
 | Work | Skills |
 |---|---|
+| Configure project tracker and domain conventions | `setup-matt-pocock-skills` (explicit invocation) |
 | Plan a feature | `to-spec`, `to-tickets`, `grill-with-docs`, `grilling` |
 | Map large or uncertain work | `wayfinder` |
 | Research | `research` |
@@ -77,6 +80,9 @@ Use release-prep for the next release.
 | Minimize implementation complexity | `ponytail` |
 | Improve architecture | `improve-codebase-architecture`, `codebase-design`, `domain-modeling` |
 | Review code | `code-review`, `thermo-nuclear-code-quality-review`, `ponytail-review` |
+| Draft and open a PR | `pr` (explicit invocation) |
+| Learn from a coding session | `retro` (explicit invocation) |
+| Learn a topic across sessions | `teach` (explicit invocation) |
 | Audit repository complexity | `ponytail-audit` |
 | Track deliberate simplification debt | `ponytail-debt` |
 | Manage branches and worktrees | `worktrunk` |
@@ -101,6 +107,7 @@ Source and usage details: [docs/usage.md](docs/usage.md)
 | `documentation-system` | local documentation workflow | based on the current [Diátaxis](https://diataxis.fr/) framework |
 | `tdd` | local TDD discipline synthesis | influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
 | `release-prep` | local release preparation workflow | authored for this package's release process |
+| `pr` | self-contained PR drafting and approval-gated browser workflow | influenced by Workmux `open-pr`, Matt Pocock `pr`, and Dex Horthy `show-me` |
 
 ## Upstream sources
 

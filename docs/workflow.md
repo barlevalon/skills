@@ -4,6 +4,7 @@
 
 | Situation | Use |
 |---|---|
+| Project tracker or domain conventions need configuration | `setup-matt-pocock-skills` (explicit invocation) |
 | Current conversation should become a spec | `to-spec` |
 | Spec/plan needs tracer-bullet tickets | `to-tickets` |
 | Plan needs pressure-testing | `grill-with-docs` or `grilling` |
@@ -31,6 +32,13 @@
 | Deliberate simplifications need a debt ledger | `ponytail-debt` |
 | Architecture feels tangled | `improve-codebase-architecture` |
 | Need reusable module/interface vocabulary | `codebase-design` |
+| Learn from a coding session | `retro` (explicit invocation) |
+
+## Learn
+
+| Situation | Use |
+|---|---|
+| Learn a topic across sessions in a dedicated workspace | `teach` (explicit invocation) |
 
 ## Communicate
 
@@ -40,6 +48,7 @@
 | Docs work | `documentation-system` |
 | Agent-facing instructions | `writing-for-agents` |
 | Commit message | `caveman-commit` |
+| Draft and open a pull request | `pr` (explicit invocation) |
 | Very concise responses | `caveman` |
 | Previous response did not land | `wait-what` |
 | Continue in another session | `handoff` |

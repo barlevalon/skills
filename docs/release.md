@@ -52,7 +52,7 @@ For the first publish of a new package only, publish it manually from a clean ch
 npm login
 npm whoami
 npm run ci
-npm publish ./skills/<category>/<skill> --access public
+npm publish ./skills/<skill> --access public
 ```
 
 After the package exists on npm, configure Trusted Publisher for it:

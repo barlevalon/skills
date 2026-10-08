@@ -34,6 +34,8 @@ const BOOTSTRAP_PONYTAIL_SKILLS = ['ponytail', 'ponytail-review', 'ponytail-audi
 const BOOTSTRAP_MATT_GLOBAL_SKILLS = [
   'diagnosing-bugs',
   'handoff',
+  'retro',
+  'teach',
   'to-questionnaire',
   'wait-what',
   'wizard',
@@ -49,15 +51,15 @@ const RENAMED_SKILLS = new Map([
 const MATT_BUNDLES = new Map([
   ['matt-core', {
     label: 'Matt core flow',
-    skills: ['grilling', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd'],
+    skills: ['setup-matt-pocock-skills', 'grilling', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd'],
   }],
   ['matt-wayfinder', {
     label: 'Matt Wayfinder flow',
-    skills: ['wayfinder', 'research', 'prototype', 'grilling', 'domain-modeling'],
+    skills: ['setup-matt-pocock-skills', 'wayfinder', 'research', 'prototype', 'grilling', 'domain-modeling'],
   }],
   ['matt-v1.2', {
     label: 'Matt v1.2 workflow',
-    skills: ['grilling', 'grill-with-docs', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd', 'wayfinder', 'research', 'prototype', 'domain-modeling', 'codebase-design', 'improve-codebase-architecture'],
+    skills: ['setup-matt-pocock-skills', 'grilling', 'grill-with-docs', 'to-spec', 'to-tickets', 'implement', 'code-review', 'tdd', 'wayfinder', 'research', 'prototype', 'domain-modeling', 'codebase-design', 'improve-codebase-architecture'],
   }],
 ]);
 

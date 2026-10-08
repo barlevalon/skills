@@ -20,7 +20,7 @@ Bad tests are coupled to implementation. They mock internal collaborators, test 
 
 See [tests.md](tests.md), [mocking.md](mocking.md), and [testing-anti-patterns.md](testing-anti-patterns.md).
 
-When exploring the codebase, read `CONTEXT.md` if present so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
+When exploring the codebase, read `GLOSSARY.md` if present so test names and interface vocabulary match the project's domain language, and respect ADRs in the area you're touching.
 
 ## Iron rule
 

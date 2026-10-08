@@ -23,3 +23,4 @@ That is the same progressive-disclosure pattern used by modern agent skill syste
 ## Maintainers
 
 - [Release process](release.md)
+- [Matt v1.3.1 deployment checklist](matt-v1.3-deployment.md) — domain naming, Pi reference loading, and standalone-skill ownership.
