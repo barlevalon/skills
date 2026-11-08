@@ -14,6 +14,7 @@ Upstream projects are linked, not mirrored. This repository has no installer, pa
 | [Matt Pocock's skills](https://github.com/mattpocock/skills) | Spec-to-ticket workflows, Wayfinder exploration, domain modeling, and learning across sessions. |
 | [Ponytail](https://github.com/DietrichGebert/ponytail) | Minimal-code implementation, complexity audits, simplification debt, and focused reviews. |
 | [Cursor Team Kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit) | CLI/UI checks, deslop, and the thermo-nuclear code-quality review. |
+| [dogfood](https://github.com/vercel-labs/agent-browser/tree/main/skill-data/dogfood) | Exploratory web-app testing with reproducible bug reports, screenshots, and videos. |
 
 ### Communication and presentation
 
@@ -21,6 +22,8 @@ Upstream projects are linked, not mirrored. This repository has no installer, pa
 |---|---|
 | [Bento](https://github.com/nyblnet/bento) | Building presentations with `bento-slides`. |
 | [Caveman](https://github.com/JuliusBrussee/caveman) | Terse communication modes and commit-message guidance. |
+| [canvas-design](https://github.com/anthropics/skills/tree/main/skills/canvas-design) | Original static designs, posters, and artwork in PNG and PDF. |
+| [show-me](https://github.com/humanlayer/skills/tree/main/plugins/show-me/skills/show-me) | Concise visual explanations with diagrams, code-shape sketches, and HTML artifacts. |
 
 ### Discovery and worktrees
 
