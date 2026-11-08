@@ -1,25 +1,15 @@
-# Skills
+# Personal skills
 
-Portable Agent Skills maintained in this repository.
+Bespoke workflows, deliberate forks, and local syntheses maintained in this repository. Third-party collections are linked from the [upstream reading list](../README.md#upstream-picks), not copied here.
 
-This package is a bootstrap plus a small set of local skills/syntheses. Canonical third-party skills are fetched from upstream during install instead of vendored here.
-
-## Local skills
-
-| Skill | Why it lives here | Influences / credits |
+| Skill | Local purpose | Sources and influences |
 |---|---|---|
-| [`caveman-commit`](caveman-commit/SKILL.md) | Local commit-message policy fork | Based on `JuliusBrussee/caveman`'s `caveman-commit` skill |
-| [`documentation-system`](documentation-system/SKILL.md) | Local documentation workflow | Based on the current [Diátaxis](https://diataxis.fr/) framework |
-| [`tdd`](tdd/SKILL.md) | Local synthesis of test-first discipline | Influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
-| [`release-prep`](release-prep/SKILL.md) | Local release preparation workflow | Authored for this package's release process |
-| [`pr`](pr/SKILL.md) | Self-contained PR drafting and approval-gated browser workflow | Workmux `open-pr`, Matt Pocock `pr`, and Dex Horthy `show-me` |
+| [caveman-commit](caveman-commit/SKILL.md) | Scope-first, release-aware commit messages | [Julius Brussee's caveman-commit](https://github.com/JuliusBrussee/caveman/tree/main/skills/caveman-commit) |
+| [documentation-system](documentation-system/SKILL.md) | Needs-led documentation writing and review | [Diátaxis](https://diataxis.fr/) |
+| [pr](pr/SKILL.md) | Evidence-backed PR drafting with action approvals | Workmux `open-pr`, Matt Pocock `pr`, and Humanlayer `show-me`; see the [credits](pr/README.md#credits) |
+| [release-prep](release-prep/SKILL.md) | Evidence-backed release preparation and readiness checks | Locally authored |
+| [tdd](tdd/SKILL.md) | Public-behavior tests and explicit RED/GREEN/REFACTOR discipline | Matt Pocock's TDD skill and Obra's test-driven-development skill; see the [credits](tdd/README.md#credits) |
 
-## Upstream skills installed by bootstrap
+Each skill is a standalone folder with a `SKILL.md` entry point, a README, a license, and any supporting references. Read the entry point and follow its linked references. Keep the complete folder and license when copying a skill for a supported harness.
 
-Default bootstrap fetches canonical skills directly from upstream repositories, including Matt Pocock workflow skills, Bento presentations, Caveman mode/help, Ponytail's minimal-code workflows, Vercel `find-skills`, Worktrunk, and Cursor's thermo-nuclear review skill.
-
-Convention for local skills:
-
-```text
-skills/<skill>/SKILL.md
-```
+These are optional alternatives, not a bundled methodology. Respect project instructions and choose one skill when names overlap with another collection. No package manager, installer, or automatic activation is provided.

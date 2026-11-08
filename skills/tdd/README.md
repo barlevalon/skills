@@ -2,9 +2,9 @@
 
 Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development.
 
-## Compatibility in 2.0.0
+## Project vocabulary
 
-The domain vocabulary reader now uses `GLOSSARY.md`, not `CONTEXT.md`. Migrate actual project glossaries and their instruction pointers before using the new reader; leave unrelated context files unchanged. The package does not rename project files automatically. ADR locations and the RED/GREEN/REFACTOR safeguards are unchanged.
+The skill reads `GLOSSARY.md`, not `CONTEXT.md`, for domain vocabulary. If migrating from an older version, update actual project glossaries and their instruction pointers deliberately; leave unrelated context files unchanged. The skill does not rename project files. ADR locations and the RED/GREEN/REFACTOR safeguards are unchanged.
 
 ## Credits
 

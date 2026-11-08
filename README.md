@@ -1,133 +1,58 @@
-# barlevalon/skills
+# Awesome skills
 
-[![CI](https://github.com/barlevalon/skills/actions/workflows/ci.yml/badge.svg)](https://github.com/barlevalon/skills/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/%40barlevalon%2Fskills.svg)](https://www.npmjs.com/package/@barlevalon/skills)
+A curated list of agent skills worth exploring, plus bespoke personal skills and deliberate forks.
 
-Alon's one-command bootstrap for an agentic engineering environment.
+Upstream projects are linked, not mirrored. This repository has no installer, package manifests, or publishing pipeline. Pick the skills that fit the work rather than loading every workflow at once.
 
-A skill is a directory with a `SKILL.md` entry point plus any helper references, scripts, or templates it needs. Agents see the skill name and description first, then load the full skill only when the task matches.
+## Upstream picks
 
-## Install
+### Engineering workflows
 
-Choose one install path.
-
-For Pi-managed global skills with Pi-owned update discovery:
-
-```bash
-pi install npm:@barlevalon/skills
-```
-
-This loads the complete curated catalog—maintained skills plus pinned upstream releases—globally in Pi. Update it with `pi update --extensions`.
-
-For scoped copies across supported harnesses:
-
-```bash
-npx @barlevalon/skills@latest install
-```
-
-With no flags the installer does the normal file-based bootstrap:
-
-- installs the curated repo workflow bundle—Matt Pocock workflows plus the maintained `tdd` fork—under `.agents/skills` and `.claude/skills`
-- updates repo instruction files for agents that need them
-- installs this package's global-purpose maintained skills/forks globally; maintained `tdd` stays repo-local
-- installs canonical upstream global skills from Bento, Caveman, Ponytail, Matt, Vercel, Worktrunk, and Cursor
-- reports any pre-existing skill folders it left untouched
-
-Advanced escape hatches:
-
-```bash
-npx @barlevalon/skills@latest install --agent vscode --skill tdd --skill release-prep --yes
-npx @barlevalon/skills@latest install --bundle matt-core --agent vscode --project --yes
-npx @barlevalon/skills@latest install --bundle matt-wayfinder --agent vscode --project --yes
-npx @barlevalon/skills@latest install --source matt --skill diagnosing-bugs --agent vscode --project --yes
-npx @barlevalon/skills@latest install --agent claude-code --skill release-prep --global --yes
-npx @barlevalon/skills@latest install --all --yes
-```
-
-Do not combine Pi-managed and file-based installs unless duplicate skill names are intentional. The installer detects an existing Pi package and asks before creating Pi-visible copies; non-interactive overlap requires `--allow-pi-overlap`.
-
-Migrating from file bootstrap to Pi ownership? [Remove installer-managed copies first](docs/setup.md#migrate-from-file-bootstrap-to-pi).
-
-Before deploying the Matt v1.3.1 refresh, complete the [domain and Pi-loading cutover checklist](docs/matt-v1.3-deployment.md). Package validation does not migrate project glossaries or global instructions.
-
-The npm package contains a reproducible aggregate catalog pinned to upstream releases and reviewed commits for Pi. The file-based installer continues fetching selected third-party skills directly from their upstream repositories.
-
-See [docs/setup.md](docs/setup.md) for options and manual fallback setup.
-
-## Use
-
-Ask your agent for a workflow:
-
-```text
-Use tdd to implement this change.
-Use diagnosing-bugs before fixing this bug.
-Use release-prep for the next release.
-```
-
-## Pick a skill
-
-| Work | Skills |
+| Project | Worth a look for |
 |---|---|
-| Configure project tracker and domain conventions | `setup-matt-pocock-skills` (explicit invocation) |
-| Plan a feature | `to-spec`, `to-tickets`, `grill-with-docs`, `grilling` |
-| Map large or uncertain work | `wayfinder` |
-| Research | `research` |
-| Prototype | `prototype` |
-| Implement a prepared ticket | `implement` |
-| Guide human-only setup or migration | `wizard` |
-| Debug | `diagnosing-bugs` |
-| Build test-first | `tdd` |
-| Minimize implementation complexity | `ponytail` |
-| Improve architecture | `improve-codebase-architecture`, `codebase-design`, `domain-modeling` |
-| Review code | `code-review`, `thermo-nuclear-code-quality-review`, `ponytail-review` |
-| Draft and open a PR | `pr` (explicit invocation) |
-| Learn from a coding session | `retro` (explicit invocation) |
-| Learn a topic across sessions | `teach` (explicit invocation) |
-| Audit repository complexity | `ponytail-audit` |
-| Track deliberate simplification debt | `ponytail-debt` |
-| Manage branches and worktrees | `worktrunk` |
-| Create presentations | `bento-slides` |
-| Write docs | `documentation-system` |
-| Get decisions from another person | `to-questionnaire` |
-| Re-pitch an unclear response | `wait-what` |
-| Write agent-facing instructions | `writing-for-agents` |
-| Find more skills | `find-skills` |
-| Release | `release-prep` |
-| Commit message | `caveman-commit` |
-| Concise mode | `caveman`, `caveman-help` |
-| Handoff | `handoff` |
+| [Cursor pstack](https://github.com/cursor/plugins/tree/main/pstack) | Engineering playbooks, investigation, competing designs, adversarial review, and verification. |
+| [Matt Pocock's skills](https://github.com/mattpocock/skills) | Spec-to-ticket workflows, Wayfinder exploration, domain modeling, and learning across sessions. |
+| [Ponytail](https://github.com/DietrichGebert/ponytail) | Minimal-code implementation, complexity audits, simplification debt, and focused reviews. |
+| [Cursor Team Kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit) | CLI/UI checks, deslop, and the thermo-nuclear code-quality review. |
 
-Source and usage details: [docs/usage.md](docs/usage.md)
+### Communication and presentation
 
-## Local skills in this package
+| Project | Worth a look for |
+|---|---|
+| [Bento](https://github.com/nyblnet/bento) | Building presentations with `bento-slides`. |
+| [Caveman](https://github.com/JuliusBrussee/caveman) | Terse communication modes and commit-message guidance. |
 
-| Skill | Why it lives here | Influences / credits |
-|---|---|---|
-| `caveman-commit` | local commit-message policy fork | based on `JuliusBrussee/caveman` |
-| `documentation-system` | local documentation workflow | based on the current [Diátaxis](https://diataxis.fr/) framework |
-| `tdd` | local TDD discipline synthesis | influenced by Matt Pocock's `tdd` skill and Obra's `test-driven-development` superpower |
-| `release-prep` | local release preparation workflow | authored for this package's release process |
-| `pr` | self-contained PR drafting and approval-gated browser workflow | influenced by Workmux `open-pr`, Matt Pocock `pr`, and Dex Horthy `show-me` |
+### Discovery and worktrees
 
-## Upstream sources
+| Project | Worth a look for |
+|---|---|
+| [Vercel Skills](https://github.com/vercel-labs/skills) | Finding skills through `find-skills`. |
+| [Worktrunk](https://github.com/max-sixty/worktrunk) | Git worktree management and its accompanying agent skill. |
 
-Pi installs use the immutable refs recorded in [`catalog/sources.json`](catalog/sources.json). File-based bootstrap fetches canonical skills from:
+Follow each project's documentation for setup, supported harnesses, limitations, and licensing. Links track upstream; there are no local snapshots or release pins to keep in sync.
 
-- `nyblnet/bento`
-- `JuliusBrussee/caveman`
-- `DietrichGebert/ponytail`
-- `mattpocock/skills`
-- `vercel-labs/skills`
-- `max-sixty/worktrunk`
-- `cursor/plugins`
+## Personal skills
 
-## Docs
+Only maintained local workflows, forks, and syntheses live under [`skills/`](skills/README.md).
 
-- [Setup](docs/setup.md)
-- [Workflow map](docs/workflow.md)
-- [Skill reference](docs/usage.md)
-- [Maintainer release process](docs/release.md)
+| Skill | Purpose |
+|---|---|
+| [caveman-commit](skills/caveman-commit/SKILL.md) | Scope-first, release-aware commit messages without unnecessary prose. |
+| [documentation-system](skills/documentation-system/SKILL.md) | Write and improve documentation using Diátaxis. |
+| [pr](skills/pr/SKILL.md) | Draft an evidence-backed PR and open its creation page after approval. |
+| [release-prep](skills/release-prep/SKILL.md) | Assess release readiness, choose version bumps, and prepare release notes. |
+| [tdd](skills/tdd/SKILL.md) | A personal test-first synthesis with explicit RED/GREEN/REFACTOR evidence. |
+
+Read a skill's `SKILL.md` before using it. To use a personal skill locally, copy its complete folder to a skill directory supported by the chosen harness, including references and its license. Nothing here installs or enables skills automatically. Choose one implementation when skill names overlap with another collection.
+
+Each personal skill's README records its sources and influences. Personal forks are not substitutes for tracking their upstream projects.
+
+## Former packages and installer
+
+The npm packages, cross-harness bootstrap, and bundled upstream catalog are retired from this repository. Previously published npm artifacts are unchanged; this checkout is no longer a package or an installer. Existing installations are not modified automatically.
+
+The last packaged repository state is preserved at [`v3.0.0`](https://github.com/barlevalon/skills/tree/v3.0.0). For ongoing use, follow the upstream links or select individual personal skill folders instead.
 
 ## License
 
-MIT
+Repository-authored material is [MIT licensed](LICENSE). Retained forks carry their own license notices; linked upstream projects have their own licenses.

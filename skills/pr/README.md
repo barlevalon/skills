@@ -6,9 +6,9 @@ Use `/skill:pr` in Pi, or explicitly ask an agent to use the `pr` skill. A descr
 
 The default body contains Summary, Evidence, Merge Danger, and relevant References. Repository templates and tracker requirements take precedence. Commit and push actions require approval; the browser remains the final submission step.
 
-## Distribution
+## Use
 
-Included in the root package and maintained-skill file bootstrap. Individual package metadata lives in [package.json](package.json); publication is a separate approval-gated step.
+This is a standalone personal skill, not an npm package. Read it directly or copy the complete folder, including its license, into a skill directory supported by the chosen harness.
 
 Entry point: [SKILL.md](SKILL.md).
 
