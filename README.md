@@ -1,16 +1,36 @@
 # Awesome skills
 
-A curated list of agent skills worth exploring, plus bespoke personal skills and deliberate forks.
+Start with **[pstack](https://github.com/cursor/plugins/tree/main/pstack) and [Poteto mode](https://github.com/cursor/plugins/blob/main/pstack/skills/poteto-mode/SKILL.md)** for agent-assisted engineering. The other recommendations and personal skills here are optional additions or alternatives.
 
-Upstream projects are linked, not mirrored. This repository has no installer, package manifests, or publishing pipeline. Pick the skills that fit the work rather than loading every workflow at once.
+## Main recommendation: pstack and Poteto mode
+
+[pstack](https://github.com/cursor/plugins/tree/main/pstack) is poteto's engineering workflow, distributed as a Cursor plugin. Its core is a set of Markdown skills that a coding agent can adapt to your environment. It connects investigation, design, implementation, review, and verification instead of leaving you to coordinate separate prompts.
+
+Poteto mode is the entry point. It picks a playbook for the task and calls supporting skills as needed. The practices that make it worth using include:
+
+- Reproduce bugs and investigate root causes before fixing them.
+- Settle data shapes and interfaces before implementation.
+- Use independent attempts and adversarial review to challenge a design or change.
+- Verify the actual behavior before declaring the work done.
+
+The recommendation is to use that workflow for non-trivial engineering work, rather than collect every skill below.
+
+In Cursor, follow the [upstream installation instructions](https://github.com/cursor/plugins/tree/main/pstack#install), then configure models with [`setup-pstack`](https://github.com/cursor/plugins/blob/main/pstack/skills/setup-pstack/SKILL.md). Start tasks through Poteto mode with a concrete goal and an observable finish condition:
+
+```text
+/poteto-mode retries create duplicate export rows. Reproduce the bug, fix the cause, and verify that retries produce one row.
+```
+
+For another environment, ask your agent to adapt the skills and map Cursor-specific tools and commands to the equivalents available there. Check capability gaps rather than assuming every workflow transfers unchanged. The [pstack guide](https://github.com/cursor/plugins/blob/main/pstack/docs/guide/README.md) explains the methodology.
 
 ## Upstream picks
+
+These are situational tools and alternative workflows, not a checklist to install alongside pstack. Upstream projects are linked, not mirrored. This repository has no installer, package manifests, or publishing pipeline.
 
 ### Engineering workflows
 
 | Project | Worth a look for |
 |---|---|
-| [Cursor pstack](https://github.com/cursor/plugins/tree/main/pstack) | Engineering playbooks, investigation, competing designs, adversarial review, and verification. |
 | [Matt Pocock's skills](https://github.com/mattpocock/skills) | Spec-to-ticket workflows, Wayfinder exploration, domain modeling, and learning across sessions. |
 | [Ponytail](https://github.com/DietrichGebert/ponytail) | Minimal-code implementation, complexity audits, simplification debt, and focused reviews. |
 | [Cursor Team Kit](https://github.com/cursor/plugins/tree/main/cursor-team-kit) | CLI/UI checks, deslop, and the thermo-nuclear code-quality review. |
